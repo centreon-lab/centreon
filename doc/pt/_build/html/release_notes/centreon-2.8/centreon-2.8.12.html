@@ -1,0 +1,161 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Centreon Web 2.8.12 &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Centreon Web 2.8.13" href="centreon-2.8.13.html" />
+    <link rel="prev" title="Centreon Web 2.8.11" href="centreon-2.8.11.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="centreon-2.8.13.html" title="Centreon Web 2.8.13"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="centreon-2.8.11.html" title="Centreon Web 2.8.11"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="centreon-web-2-8-12">
+<h1>Centreon Web 2.8.12<a class="headerlink" href="#centreon-web-2-8-12" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="enhancements">
+<h2>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[API] Update documentation to remove non available functions</li>
+<li>[API] Export/Import LDAP configuration</li>
+<li>[API] Export/Import ACL Groups</li>
+<li>[API] Export/Import ACL Menus</li>
+<li>[API] Export/Import ACL Actions</li>
+<li>[API] Export/Import ACL Ressources</li>
+<li>[API] Replacing contact_name by contact_alias PR #5546</li>
+<li>[Configuration] Input text not aligned in Curves page #5534 PR #5553</li>
+<li>[Monitoring] Monitoring Services by Hostgroup : improvement order suggestion #5402 PR #5552</li>
+<li>[Monitoring] Increase perfs on EventLogs for non admin user PR #5480</li>
+<li>[Knowledge Base] Display API errors #5502</li>
+<li>[Knowledge Base] Refresh page after deletion #5503</li>
+<li>[Backup] Get correct datadir with CentOS7/MariaDB PR #5484</li>
+</ul>
+</div>
+<div class="section" id="bugfix">
+<h2>Bugfix<a class="headerlink" href="#bugfix" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[ACL] Bug on Access Groups #5189</li>
+<li>[ACL] The ACL of a contact and of a contact group is deleted during duplication #5497</li>
+<li>[API] CLAPI Import not working #5541</li>
+<li>[API] CLAPI export with select filter give PHP Warning and non result #5548</li>
+<li>[API] Missing functions setseverity and unsetseverity for services by hostgroup #5262</li>
+<li>[API] Problem with icon_image and map_icon_image of Hostgroup #5292</li>
+<li>[API] Missing function setservice for Service categories #5304</li>
+<li>[API] Problem with setting gmt in API #5291</li>
+<li>[API] Contact group additive inheritance isn’t implemented #5311</li>
+<li>[API] Contact additive inheritance isn’t implemented #5310</li>
+<li>[API] Problem with delmacro for services by hostgroup #5309</li>
+<li>[API] Several bugs on HG / CG when export is filtered #5297 PR #5297</li>
+<li>[Monitoring] Sorting by duration and Maximum page size change #5287 #5410 PR #5517</li>
+<li>[Configuration] Dependent host deleted during a service dependency duplication #5531</li>
+<li>[Configuration] All pollers had “config changed” #5549</li>
+<li>[Configuration] Unable to change the severity of an host template #5472</li>
+<li>[Configuration] Unable to change the severity of a service template #5559</li>
+<li>[Configuration] Meta service - unable to change the geo_coordinates #5493 PR #5505</li>
+<li>[Configuration] Meta service - unable to add more than one contact #5506 PR #5507</li>
+<li>[Configuration] Meta service - Implied contact is deleted during duplication #5495 PR #5508</li>
+<li>[Configuration] Problem with escalation’s name during a duplication #5512 PR #5513</li>
+<li>[Configuration] Duplicate severity should remove link to objects #5478 PR #5509</li>
+<li>[Configuration] Fix search in trap select2</li>
+<li>[Configuration] Fix search in service template select2</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Centreon Web 2.8.12</a><ul>
+<li><a class="reference internal" href="#enhancements">Enhancements</a></li>
+<li><a class="reference internal" href="#bugfix">Bugfix</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="centreon-2.8.11.html"
+                        title="previous chapter">Centreon Web 2.8.11</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="centreon-2.8.13.html"
+                        title="next chapter">Centreon Web 2.8.13</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/release_notes/centreon-2.8/centreon-2.8.12.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="centreon-2.8.13.html" title="Centreon Web 2.8.13"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="centreon-2.8.11.html" title="Centreon Web 2.8.11"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

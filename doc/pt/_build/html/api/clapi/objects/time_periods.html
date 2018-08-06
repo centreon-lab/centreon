@@ -1,0 +1,299 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Time periods &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Traps" href="traps.html" />
+    <link rel="prev" title="Settings" href="settings.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="traps.html" title="Traps"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings.html" title="Settings"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="time-periods">
+<h1>Time periods<a class="headerlink" href="#time-periods" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>TP</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available time periods, use the <strong>SHOW</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o TP -a show</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span><span class="p">;</span><span class="n">alias</span><span class="p">;</span><span class="n">sunday</span><span class="p">;</span><span class="n">monday</span><span class="p">;</span><span class="n">tuesday</span><span class="p">;</span><span class="n">wednesday</span><span class="p">;</span><span class="n">thursday</span><span class="p">;</span><span class="n">friday</span><span class="p">,</span><span class="n">saturday</span>
+<span class="mi">1</span><span class="p">;</span><span class="mi">24</span><span class="n">x7</span><span class="p">;</span><span class="mi">24</span><span class="n">_Hours_A_Day</span><span class="p">,</span><span class="n">_7_Days_A_Week</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span>
+<span class="mi">2</span><span class="p">;</span><span class="n">none</span><span class="p">;</span><span class="n">No</span> <span class="n">Time</span> <span class="n">Is</span> <span class="n">A</span> <span class="n">Good</span> <span class="n">Time</span><span class="p">;;;;;;;</span>
+<span class="mi">3</span><span class="p">;</span><span class="n">nonworkhours</span><span class="p">;</span><span class="n">Non</span><span class="o">-</span><span class="n">Work</span> <span class="n">Hours</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">24</span><span class="p">:</span><span class="mi">00</span>
+<span class="mi">4</span><span class="p">;</span><span class="n">workhours</span><span class="p">;</span><span class="n">Work</span> <span class="n">hours</span><span class="p">;;</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add">
+<h2>Add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h2>
+<p>In order to add a Time Period, use the <strong>ADD</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o TP -a add -v &quot;Timeperiod_Test;Timeperiod_Test&quot;</span>
+</pre></div>
+</div>
+<p>Required fields are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Alias</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="del">
+<h2>Del<a class="headerlink" href="#del" title="Permalink to this headline">¶</a></h2>
+<p>If you want to remove a Time Period, use the <strong>DEL</strong> action. The Name is used for identifying the Time Period to delete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o TP -a del -v &quot;Timeperiod_Test&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameter of a time period, use the <strong>SETPARAM</strong> action. The Name is used for identifying the Time Period to update:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o TP -a setparam -v &quot;Timeperiod_Test;monday;00:00-24:00&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of time period</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Parameter value</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters that you may change are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>name</td>
+<td>Name</td>
+</tr>
+<tr class="row-odd"><td>alias</td>
+<td>Alias</td>
+</tr>
+<tr class="row-even"><td>sunday</td>
+<td>Time Period definition for Sunday</td>
+</tr>
+<tr class="row-odd"><td>monday</td>
+<td>Time Period definition for Monday</td>
+</tr>
+<tr class="row-even"><td>tuesday</td>
+<td>Time Period definition for Tuesday</td>
+</tr>
+<tr class="row-odd"><td>wednesday</td>
+<td>Time Period definition for Wednesday</td>
+</tr>
+<tr class="row-even"><td>thursday</td>
+<td>Time Period definition for Thursday</td>
+</tr>
+<tr class="row-odd"><td>friday</td>
+<td>Time Period definition for Friday</td>
+</tr>
+<tr class="row-even"><td>saturday</td>
+<td>Time Period definition for Saturday</td>
+</tr>
+<tr class="row-odd"><td>include</td>
+<td>example: […] -v “Timeperiod_Test;include;workhours”;
+Use delimiter <em>|</em> for multiple inclusion definitions</td>
+</tr>
+<tr class="row-even"><td>exclude</td>
+<td>example: […] -v “Timeperiod_Test;exclude;weekend”
+use delimiter <em>|</em> for multiple exclusion definitions</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="getexception">
+<h2>Getexception<a class="headerlink" href="#getexception" title="Permalink to this headline">¶</a></h2>
+<p>In order to view the exception list of a time period, use the <strong>GETEXCEPTION</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o TP -a getexception -v &quot;mytimeperiod&quot;</span>
+<span class="n">days</span><span class="p">;</span><span class="n">timerange</span>
+<span class="n">january</span> <span class="mi">1</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+<span class="n">december</span> <span class="mi">25</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setexception">
+<h2>Setexception<a class="headerlink" href="#setexception" title="Permalink to this headline">¶</a></h2>
+<p>In order to set an exception on a timeperiod, use the <strong>SETEXCEPTION</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o TP -a setexception -v &quot;mytimeperiod;january 1;00:00-24:00&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If exception does not exist, it will be created, otherwise it will be overwritten.</p>
+</div>
+</div>
+<div class="section" id="delexception">
+<h2>Delexception<a class="headerlink" href="#delexception" title="Permalink to this headline">¶</a></h2>
+<p>In order to delete an exception, use the <strong>DELEXCEPTION</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o TP -a delexception -v &quot;mytimeperiod;january 1&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of timeperiod</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Exception to remove from timeperiod</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Time periods</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#add">Add</a></li>
+<li><a class="reference internal" href="#del">Del</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+<li><a class="reference internal" href="#getexception">Getexception</a></li>
+<li><a class="reference internal" href="#setexception">Setexception</a></li>
+<li><a class="reference internal" href="#delexception">Delexception</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="settings.html"
+                        title="previous chapter">Settings</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="traps.html"
+                        title="next chapter">Traps</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/time_periods.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="traps.html" title="Traps"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="settings.html" title="Settings"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

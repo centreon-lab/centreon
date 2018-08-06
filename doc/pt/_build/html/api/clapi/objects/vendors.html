@@ -1,0 +1,264 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Vendors &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Import/Export" href="../import_export.html" />
+    <link rel="prev" title="Traps" href="traps.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../import_export.html" title="Import/Export"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="traps.html" title="Traps"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="vendors">
+<h1>Vendors<a class="headerlink" href="#vendors" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>VENDOR</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available vendors, use the <strong>SHOW</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o VENDOR -a show</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span><span class="p">;</span><span class="n">alias</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">Cisco</span><span class="p">;</span><span class="n">Cisco</span> <span class="n">Networks</span>
+<span class="mi">2</span><span class="p">;</span><span class="n">HP</span><span class="p">;</span><span class="n">HP</span> <span class="n">Networks</span>
+<span class="mi">3</span><span class="p">;</span><span class="mi">3</span><span class="n">com</span><span class="p">;</span><span class="mi">3</span><span class="n">Com</span>
+<span class="mi">4</span><span class="p">;</span><span class="n">Linksys</span><span class="p">;</span><span class="n">Linksys</span>
+<span class="mi">6</span><span class="p">;</span><span class="n">Dell</span><span class="p">;</span><span class="n">Dell</span>
+<span class="mi">7</span><span class="p">;</span><span class="n">Generic</span><span class="p">;</span><span class="n">Generic</span>
+<span class="mi">9</span><span class="p">;</span><span class="n">Zebra</span><span class="p">;</span><span class="n">Zebra</span>
+<span class="mi">11</span><span class="p">;</span><span class="n">HP</span><span class="o">-</span><span class="n">Compaq</span><span class="p">;</span><span class="n">HP</span> <span class="ow">and</span> <span class="n">Compaq</span> <span class="n">Systems</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add">
+<h2>Add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h2>
+<p>In order to add a Vendor, use the <strong>ADD</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o VENDOR -a add -v &quot;DLink;DLink routers&quot;</span>
+</pre></div>
+</div>
+<p>Required fields are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Alias</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="del">
+<h2>Del<a class="headerlink" href="#del" title="Permalink to this headline">¶</a></h2>
+<p>If you want to remove a Vendor, use the <strong>DEL</strong> action. The Name is used for identifying the Vendor to delete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o VENDOR -a del -v &quot;DLink&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameter of a Vendor, use the <strong>SETPARAM</strong> command. The Name is used for identifying the Vendor to update:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o VENDOR -a setparam -v &quot;3com;name;HP&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of Vendor</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Parameter value</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters that you may change are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>name</td>
+<td>Name</td>
+</tr>
+<tr class="row-odd"><td>alias</td>
+<td>Alias</td>
+</tr>
+<tr class="row-even"><td>description</td>
+<td>Description</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="generatetraps">
+<h2>Generatetraps<a class="headerlink" href="#generatetraps" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to generate new SNMP traps from a given MIB file. In order to do so, use the <strong>GENERATETRAPS</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o VENDOR -a generatetraps -v &quot;3com;/usr/share/mymibs/3com/A3COM-SWITCHING-SYSTEMS-MIB.mib&quot;</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="n">Done</span>
+
+<span class="n">Total</span> <span class="n">translations</span><span class="p">:</span>        <span class="mi">10</span>
+<span class="n">Successful</span> <span class="n">translations</span><span class="p">:</span>   <span class="mi">10</span>
+<span class="n">Failed</span> <span class="n">translations</span><span class="p">:</span>       <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure to put all the mib file dependencies in the /usr/share/snmp/mibs/ directory before starting the generation. Then, remove them when it is done.</p>
+</div>
+<p>Required fields are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Name</td>
+<td>Name of Vendor</td>
+</tr>
+<tr class="row-odd"><td>Mib file</td>
+<td>File path of .mib</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Vendors</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#add">Add</a></li>
+<li><a class="reference internal" href="#del">Del</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+<li><a class="reference internal" href="#generatetraps">Generatetraps</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="traps.html"
+                        title="previous chapter">Traps</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../import_export.html"
+                        title="next chapter">Import/Export</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/vendors.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../import_export.html" title="Import/Export"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="traps.html" title="Traps"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

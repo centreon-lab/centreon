@@ -1,0 +1,276 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Settings &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Time periods" href="time_periods.html" />
+    <link rel="prev" title="Service categories" href="service_categories.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="time_periods.html" title="Time periods"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="service_categories.html" title="Service categories"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="settings">
+<h1>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>Settings</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list editable settings, use the <strong>SHOW</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o SETTINGS -a show</span>
+<span class="n">parameter</span><span class="p">;</span><span class="n">value</span>
+<span class="n">broker</span><span class="p">;</span><span class="n">ndo</span>
+<span class="n">broker_correlator_script</span><span class="p">;</span>
+<span class="n">centstorage</span><span class="p">;</span><span class="mi">1</span>
+<span class="n">debug_auth</span><span class="p">;</span><span class="mi">0</span>
+<span class="n">debug_ldap_import</span><span class="p">;</span><span class="mi">0</span>
+<span class="n">debug_nagios_import</span><span class="p">;</span><span class="mi">0</span>
+<span class="n">debug_path</span><span class="p">;</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">centreon</span><span class="o">/</span>
+<span class="n">debug_rrdtool</span><span class="p">;</span><span class="mi">0</span>
+<span class="n">enable_autologin</span><span class="p">;</span><span class="mi">1</span>
+<span class="n">enable_gmt</span><span class="p">;</span><span class="mi">0</span>
+<span class="n">enable_logs_sync</span><span class="p">;</span><span class="mi">1</span>
+<span class="n">enable_perfdata_sync</span><span class="p">;</span><span class="mi">1</span>
+<span class="n">gmt</span><span class="p">;</span><span class="mi">1</span>
+<span class="n">interval_length</span><span class="p">;</span><span class="mi">60</span>
+<span class="n">mailer_path_bin</span><span class="p">;</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mail</span>
+<span class="n">nagios_path_img</span><span class="p">;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nagios</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">logos</span><span class="o">/</span>
+<span class="n">perl_library_path</span><span class="p">;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span>
+<span class="n">rrdtool_path_bin</span><span class="p">;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">rrdtool</span>
+<span class="n">snmpttconvertmib_path_bin</span><span class="p">;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">centreon</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">snmpttconvertmib</span>
+<span class="n">snmptt_unknowntrap_log_file</span><span class="p">;</span><span class="n">snmptrapd</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameter of a Vendor, use the <strong>SETPARAM</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o SETTINGS -a setparam -v &quot;;&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter value</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters that you may change are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="41%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+<th class="head">Possible values and examples</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>broker</td>
+<td>Broker engine</td>
+<td>‘broker’ for Centreon Broker</td>
+</tr>
+<tr class="row-odd"><td>broker_correlator_script</td>
+<td>This parameter is misleading (subject to changes)
+Refers to the Centreon Broker init script</td>
+<td>i.e: cbd</td>
+</tr>
+<tr class="row-even"><td>centstorage</td>
+<td>Enable/disable CentStorage</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-odd"><td>debug_auth</td>
+<td>Enable/disable authentication debug</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-even"><td>debug_ldap_import</td>
+<td>Enable/disable LDAP debug</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-odd"><td>debug_nagios_import</td>
+<td>Enable/disable Nagios configuration import</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-even"><td>debug_path</td>
+<td>Debug log files directory</td>
+<td>i.e: /var/log/centreon/</td>
+</tr>
+<tr class="row-odd"><td>debug_rrdtool</td>
+<td>Enable/disable RRDTool debug</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-even"><td>enable_autologin</td>
+<td>Enable/disable autologin</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-odd"><td>enable_gmt</td>
+<td>Enable/disable GMT management</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-even"><td>enable_logs_sync</td>
+<td>Enable/disable CentCore log synchronization
+(not necessary when using Centreon Broker)</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-odd"><td>enable_perfdata_sync</td>
+<td>Enable/disable Centcore PerfData synchronization
+(not necessary when using Centreon Broker)</td>
+<td>Enable: ‘1’, Disable: ‘0’</td>
+</tr>
+<tr class="row-even"><td>gmt</td>
+<td>GMT timezone of monitoring system</td>
+<td>i.e: 2 (for GMT+2)</td>
+</tr>
+<tr class="row-odd"><td>interval_length</td>
+<td>Monitoring interval length in seconds
+(default: 60)</td>
+<td>i.e: 120</td>
+</tr>
+<tr class="row-even"><td>mailer_path_bin</td>
+<td>Mail client bin path</td>
+<td>i.e: /bin/mail</td>
+</tr>
+<tr class="row-odd"><td>nagios_path_img</td>
+<td>Nagios image path</td>
+<td>i.e: /usr/share/nagios/html/images/logos/</td>
+</tr>
+<tr class="row-even"><td>perl_library_path</td>
+<td>Perl library path</td>
+<td>i.e: /usr/local/lib</td>
+</tr>
+<tr class="row-odd"><td>rrdtool_path_bin</td>
+<td>RRDTool bin path</td>
+<td>i.e: /usr/bin/rrdtool</td>
+</tr>
+<tr class="row-even"><td>snmpttconvertmib_path_bin</td>
+<td>SNMPTT mib converter bin path</td>
+<td>i.e: /usr/share/centreon/bin/snmpttconvertmib</td>
+</tr>
+<tr class="row-odd"><td>snmptt_unknowntrap_log_file</td>
+<td>SNMPTT unknown trap log file</td>
+<td>i.e: snmptrapd.log</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Settings</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="service_categories.html"
+                        title="previous chapter">Service categories</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="time_periods.html"
+                        title="next chapter">Time periods</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/settings.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="time_periods.html" title="Time periods"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="service_categories.html" title="Service categories"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

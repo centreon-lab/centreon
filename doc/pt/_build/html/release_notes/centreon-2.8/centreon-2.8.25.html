@@ -1,0 +1,163 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Centreon Web 2.8.25 &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Centreon 2.7" href="../centreon-2.7/index.html" />
+    <link rel="prev" title="Centreon Web 2.8.24" href="centreon-2.8.24.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../centreon-2.7/index.html" title="Centreon 2.7"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="centreon-2.8.24.html" title="Centreon Web 2.8.24"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="centreon-web-2-8-25">
+<h1>Centreon Web 2.8.25<a class="headerlink" href="#centreon-web-2-8-25" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<p>Introduction to a new banner to preparate the next releases. This feature must be
+enabled for each user. After the update, users will be asked to activate or not this
+feature. New banner will appear after refresh of the page. A rollback is still possible
+through the “My account” menu.</p>
+<div class="section" id="enhancements">
+<h2>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[UX] New banner in feature flipping mode - PR #6294</li>
+<li>[API] Submit result for passif resources - PR #6209</li>
+<li>[API] Export is too long when lot of parentship - PR #6372</li>
+</ul>
+</div>
+<div class="section" id="bug-fixes">
+<h2>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>[API] Correct real time service filters - #6080 PR #6363</li>
+<li>[API] Restore broker configuration with clapi generate too much output and input - #5011 PR #6220</li>
+<li>[API] Partial / Filtered export does not work as expected for HC, SC, CG - #5294 PR #6355</li>
+<li>[API] Export uses resource macro name instead of id for setparam - #6221 PR #6222</li>
+<li>[API] HTML Entities cause REST API Serialization Errors - #6110 PR #6234</li>
+<li>[API] Fix acl group setcontact export - PR #6224</li>
+<li>[API] Avoid to order parentship several times - PR #6373</li>
+<li>[Configuration] View contact notification  service missing - #6073 PR #6340</li>
+<li>[Downtimes] Prevent permission denied centcore cmd for downtimemanager - PR #6289</li>
+<li>[LDAP] Remove contact password if ldap password storage is disabled - #5627 PR #6347</li>
+<li>[Monitoring] Sort by service name after status in service grid - PR #6290</li>
+<li>[Reporting] Avoid bug on partitioned tables - PR #6382</li>
+</ul>
+</div>
+<div class="section" id="security">
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fix SQL injection from metrics RPN’s field - PR #6356</li>
+</ul>
+</div>
+<div class="section" id="others">
+<h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Avoid PHP notice Undefined index: centreon in notifications.php - PR #6266</li>
+<li>Delete “Ping” and “Tracert” entries (no more used) - PR #6277</li>
+<li>Fix typo in FR documentation - PR #6375</li>
+<li>Fix “how to write a stream connector” chapter - PR #6296 #6295</li>
+<li>Add some missing developers in Centreon About - PR #6410 #6253</li>
+<li>Several fixes and improvements in documentation</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Centreon Web 2.8.25</a><ul>
+<li><a class="reference internal" href="#enhancements">Enhancements</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
+<li><a class="reference internal" href="#security">Security</a></li>
+<li><a class="reference internal" href="#others">Others</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="centreon-2.8.24.html"
+                        title="previous chapter">Centreon Web 2.8.24</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../centreon-2.7/index.html"
+                        title="next chapter">Centreon 2.7</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/release_notes/centreon-2.8/centreon-2.8.25.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../centreon-2.7/index.html" title="Centreon 2.7"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="centreon-2.8.24.html" title="Centreon Web 2.8.24"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

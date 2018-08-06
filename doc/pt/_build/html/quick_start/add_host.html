@@ -1,0 +1,123 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Adicionar um host &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Adicionar um Serviço" href="add_services.html" />
+    <link rel="prev" title="Login" href="login.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="add_services.html" title="Adicionar um Serviço"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="login.html" title="Login"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Inicio Rápido</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="adicionar-um-host">
+<span id="add-host"></span><h1>Adicionar um host<a class="headerlink" href="#adicionar-um-host" title="Permalink to this headline">¶</a></h1>
+<p>Sua plataforma esta agora pronta para monitorar seus primeiros servidores ou equipamentos de rede, mas você ainda não sabe como. Não se preocupe! É muito simples iniciar o monitoramento.</p>
+<p>Primeiro, <a class="reference internal" href="login.html#centreon-login"><span class="std std-ref">conecte</span></a> a sua interface Centreon web com uma conta de administrador ou uma conta que permita você gerenciamento os objetos a serem monitorados.</p>
+<p>Vá até o menu <strong>Configuration &gt; Hosts &gt; Hosts</strong> e clique no botão <strong>Add</strong>:</p>
+<img alt="../_images/add_host_menu.png" class="align-center" src="../_images/add_host_menu.png" />
+<p>Você terá acesso a um formulário para definir o seu equipamento para monitorar, mas nem todos os campos são necessários!</p>
+<p>Para iniciar o monitoramento do seu equipamento, configure:</p>
+<ul class="simple">
+<li>O nome do objeto no campo <strong>Host Name</strong></li>
+<li>Descrição do seu objeto no campo <strong>Alias</strong></li>
+<li>Configure o endereço de IP ou Hostname (DNS) no campo <strong>IP Address / DNS</strong></li>
+<li>Clique no botão <strong>+ Add a new entry</strong> e selecione <strong>generic-host</strong></li>
+<li>Clique no botão <strong>Yes</strong> para o campo <strong>Create Services linked to the Template too</strong></li>
+</ul>
+<img alt="../_images/add_host_form.png" class="align-center" src="../_images/add_host_form.png" />
+<p>Salve as modificações clicando no botão <strong>Save</strong>.</p>
+<img alt="../_images/add_host_list.png" class="align-center" src="../_images/add_host_list.png" />
+<p>O Host esta agora definido na sua interface Centreon web, porém o motor de monitoramento ainda não esta monitorando ele!</p>
+<p>Você deve agora <a class="reference internal" href="../configuration_guide/deploy.html#deployconfiguration"><span class="std std-ref">gerar a configuração, exportar e enviar para o motor de monitoramento (poller)</span></a>.</p>
+<p>Você pode ver o resultado no menu <strong>Monitoring &gt; Status Details &gt; Hosts</strong>:</p>
+<img alt="../_images/add_host_monitoring.png" class="align-center" src="../_images/add_host_monitoring.png" />
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="login.html"
+                        title="previous chapter">Login</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="add_services.html"
+                        title="next chapter">Adicionar um Serviço</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/quick_start/add_host.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="add_services.html" title="Adicionar um Serviço"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="login.html" title="Login"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Inicio Rápido</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

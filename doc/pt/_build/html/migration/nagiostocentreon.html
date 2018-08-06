@@ -1,0 +1,178 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Leitor Nagios para Centreon CLAPI &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Inicio Rápido" href="../quick_start/index.html" />
+    <link rel="prev" title="Migrando do Nagios para o Centreon" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../quick_start/index.html" title="Inicio Rápido"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Migrando do Nagios para o Centreon"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Migrando do Nagios para o Centreon</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="leitor-nagios-para-centreon-clapi">
+<h1>Leitor Nagios para Centreon CLAPI<a class="headerlink" href="#leitor-nagios-para-centreon-clapi" title="Permalink to this headline">¶</a></h1>
+<p><strong>Leitor Nagios para Centreon CLAPI</strong> é um projeto gratuito e de código aberto para analisar
+Arquivos de configuração Nagios CFG e para transformar a configuração de monitoramento
+para o comando do Centreon CLAPI e importar a configuração para o Centreon Web
+interface.</p>
+<div class="section" id="pre-requisitos">
+<h2>Pre-requisitos<a class="headerlink" href="#pre-requisitos" title="Permalink to this headline">¶</a></h2>
+<p>Primeiro de tudo, você deve ter um servidor do Centreon instalado e pronto para uso. Por favor veja
+a documentação <a class="reference internal" href="../installation/index.html#install"><span class="std std-ref">para instalar um servidor Centreon</span></a> baseado no Centreon.</p>
+</div>
+<div class="section" id="instalacao">
+<h2>Instalação<a class="headerlink" href="#instalacao" title="Permalink to this headline">¶</a></h2>
+<p>Este script usa a biblioteca Perl-Nagios-Object para ler os arquivos de configuração CFG. Para
+instalar ele é preciso acompanhar as etapas no seu servidor Nagios(R):</p>
+<p>CentOS:</p>
+<blockquote>
+<div>$ yum install perl-Module-Build</div></blockquote>
+<p>Debian:</p>
+<blockquote>
+<div><p>$ apt-get install libmodule-build-perl</p>
+<p>$ cd /tmp
+$ wget <a class="reference external" href="http://search.cpan.org/CPAN/authors/id/D/DU/DUNCS/Nagios-Object-0.21.20.tar.gz">http://search.cpan.org/CPAN/authors/id/D/DU/DUNCS/Nagios-Object-0.21.20.tar.gz</a>
+$ tar xzf Nagios-Object-0.21.20.tar.gz
+$ cd Nagios-Object-0.21.20
+$ perl Build.PL
+$ ./Build
+$ ./Build test
+$ ./Build install</p>
+</div></blockquote>
+<p>Faça download do script do github para o seu servidor Nagios(R):</p>
+<blockquote>
+<div>$ cd /tmp
+$ git clone <a class="reference external" href="https://github.com/centreon/nagiosToCentreon.git">https://github.com/centreon/nagiosToCentreon.git</a>
+$ cd nagiosToCentreon</div></blockquote>
+</div>
+<div class="section" id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Permalink to this headline">¶</a></h2>
+<p>Em um servidor Centreon novo, o poller padrão é denominado “Central”. Se você quiser renomeá-lo
+ou se você quiser ligar esta configuração do Nagios a um poller pré-definido tem que mudar o nome
+do poller na linha 65:</p>
+<blockquote>
+<div>my $default_poller = “Central”;</div></blockquote>
+<p>Para mostrar uma ajuda do comando:</p>
+<blockquote>
+<div><p>#    Copyright (c) 2005-2015 Centreon                #
+#    Bugs to <a class="reference external" href="http://github.com/nagiosToCentreon">http://github.com/nagiosToCentreon</a>      #
+######################################################</p>
+<dl class="docutils">
+<dt>Usage: nagios_reader_to_centreon_clapi.pl</dt>
+<dd>-V (–version) Show script version
+-h (–help)    Usage help
+-C (–config)  Path to nagios.cfg file</dd>
+</dl>
+</div></blockquote>
+<p>Para executar o script, por favor use o comando abaixo:</p>
+<blockquote>
+<div>$ perl nagios_reader_to_centreon_clapi.pl –config /usr/local/nagios/etc/nagios.cfg &gt; /tmp/centreon_clapi_import_commands.txt</div></blockquote>
+<p>Exporte o arquivo /tmp/centreon_clapi_import_commands.txt para o servidor Centreon.</p>
+<p>Execute o seguinte comando para importar a configuração para dentro do seu servidor Centreon:</p>
+<blockquote>
+<div>$ /usr/share/centreon/bin/centreon -u admin -p &#64;PASSWORD -i /tmp/centreon_clapi_import_commands.txt</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Substitua <strong>&#64;PASSWORD</strong> pela a senha usada pelo o <strong>admin</strong> do Centreon web.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Leitor Nagios para Centreon CLAPI</a><ul>
+<li><a class="reference internal" href="#pre-requisitos">Pre-requisitos</a></li>
+<li><a class="reference internal" href="#instalacao">Instalação</a></li>
+<li><a class="reference internal" href="#uso">Uso</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Migrando do Nagios para o Centreon</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../quick_start/index.html"
+                        title="next chapter">Inicio Rápido</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/migration/nagiostocentreon.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../quick_start/index.html" title="Inicio Rápido"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Migrando do Nagios para o Centreon"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Migrando do Nagios para o Centreon</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

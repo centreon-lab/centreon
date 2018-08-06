@@ -1,0 +1,324 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CENGINE CFG &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Host templates" href="host_templates.html" />
+    <link rel="prev" title="Real time Downtimes" href="realtime_downtimes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="host_templates.html" title="Host templates"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="realtime_downtimes.html" title="Real time Downtimes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cengine-cfg">
+<h1>CENGINE CFG<a class="headerlink" href="#cengine-cfg" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>ENGINECFG</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available Centreon Engine conf, use the <strong>SHOW</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ENGINECFG -a show</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span><span class="p">;</span><span class="n">instance</span><span class="p">;</span><span class="n">comment</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">Centreon</span> <span class="n">Engine</span> <span class="n">CFG</span> <span class="mi">1</span><span class="p">;</span><span class="n">Central</span><span class="p">;</span><span class="n">Default</span> <span class="n">CentreonEngine</span><span class="o">.</span><span class="n">cfg</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Columns are the following :</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Centreon Engine ID</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Centreon Engine configuration name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Instance that is linked to centreon-engine.cfg</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Comments regarding the configuration file</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="add">
+<h2>Add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h2>
+<p>In order to add a Centreon Engine conf, use the <strong>ADD</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ENGINECFG -a add -v &quot;Centreon Engine cfg for poller NY;Poller-NY;Just a small comment&quot;</span>
+</pre></div>
+</div>
+<p>Required fields are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Centreon Engine configuration name</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Instance that is linked to centreon-engine.cfg</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Comment regarding the configuration file</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="del">
+<h2>Del<a class="headerlink" href="#del" title="Permalink to this headline">¶</a></h2>
+<p>If you want to remove a Centreon Engine conf, use the <strong>DEL</strong> action. The name is used for identifying the configuration to delete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ENGINECFG -a del -v &quot;Centreon Engine cfg for poller NY&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameter of a Centreon Engine conf, use the <strong>SETPARAM</strong> action. The name is used for identifying the configuration to update:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ENGINECFG -a setparam -v &quot;Centreon Engine cfg for poller NY;cfg_dir;/usr/local/nagios/etc&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of Centreon Engine configuration</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Parameter value</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters that you may change are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>nagios_name</td>
+<td>Name</td>
+</tr>
+<tr class="row-odd"><td>instance</td>
+<td>Instance that is linked to centreon-engine.cfg</td>
+</tr>
+<tr class="row-even"><td>broker_module</td>
+<td>example: […] -v “Engine CFG NY;broker_module;/usr/lib64/nagios/cbmod.so /etc/centreon-broker/central-module.xml”,
+you can use a | delimiter for defining multiple broker modules</td>
+</tr>
+<tr class="row-odd"><td>nagios_activate</td>
+<td><em>1</em> if activated, <em>0</em> otherwise</td>
+</tr>
+<tr class="row-even"><td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>Centreon CLAPI handles pretty much all the options available in a centreon-engine configuration file.
+Because the list is quite long, it is best to refer to the official documentation of Centreon Engine</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="addbrokermodule">
+<h2>Addbrokermodule<a class="headerlink" href="#addbrokermodule" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>If you want to add new broker module without removing existing modules, use the <strong>ADDBROKERMODULE</strong>::</dt>
+<dd>[<a class="reference external" href="mailto:root&#37;&#52;&#48;centreon">root<span>&#64;</span>centreon</a> ~]# ./centreon -u admin -p centreon -o ENGINECFG -a addbrokermodule -v “Centreon Engine cfg for poller NY;/usr/lib64/centreon-engine/externalcmd.so”</dd>
+</dl>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of Centreon Engine configuration</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Module name</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>To add multiple modules in one line, it will put the separator “|” between the name of the modules::</dt>
+<dd>[<a class="reference external" href="mailto:root&#37;&#52;&#48;centreon">root<span>&#64;</span>centreon</a> ~]# ./centreon -u admin -p centreon -o ENGINECFG -a addbrokermodule -v “Centreon Engine cfg for poller NY;/usr/lib64/centreon-engine/externalcmd.so|/etc/centreon-broker/central-module.xml”</dd>
+</dl>
+</div>
+<div class="section" id="delbrokermodule">
+<h2>Delbrokermodule<a class="headerlink" href="#delbrokermodule" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>If you want to delete broker module, use the <strong>DELBROKERMODULE</strong>::</dt>
+<dd>[<a class="reference external" href="mailto:root&#37;&#52;&#48;centreon">root<span>&#64;</span>centreon</a> ~]# ./centreon -u admin -p centreon -o ENGINECFG -a delbrokermodule -v “Centreon Engine cfg for poller NY;/usr/lib64/centreon-engine/externalcmd.so”</dd>
+</dl>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of Centreon Engine configuration</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Module name</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>To delete multiple modules in one line, it will put the separator “|” between the name of the modules::</dt>
+<dd>[<a class="reference external" href="mailto:root&#37;&#52;&#48;centreon">root<span>&#64;</span>centreon</a> ~]# ./centreon -u admin -p centreon -o ENGINECFG -a delbrokermodule -v “Centreon Engine cfg for poller NY;/usr/lib64/centreon-engine/externalcmd.so|/etc/centreon-broker/central-module.xml”</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CENGINE CFG</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#add">Add</a></li>
+<li><a class="reference internal" href="#del">Del</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+<li><a class="reference internal" href="#addbrokermodule">Addbrokermodule</a></li>
+<li><a class="reference internal" href="#delbrokermodule">Delbrokermodule</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="realtime_downtimes.html"
+                        title="previous chapter">Real time Downtimes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="host_templates.html"
+                        title="next chapter">Host templates</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/engine_cfg.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="host_templates.html" title="Host templates"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="realtime_downtimes.html" title="Real time Downtimes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

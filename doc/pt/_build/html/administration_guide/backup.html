@@ -1,0 +1,320 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Backup &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Databases partitionning" href="partitioning/index.html" />
+    <link rel="prev" title="Configuring Broker" href="02l.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="partitioning/index.html" title="Databases partitionning"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="02l.html" title="Configuring Broker"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administration</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="backup">
+<h1>Backup<a class="headerlink" href="#backup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-it-works">
+<h2>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="daily-execution">
+<h3>Daily execution<a class="headerlink" href="#daily-execution" title="Permalink to this headline">¶</a></h3>
+<p>The backup script is executed on a daily basis with a cron job located in <strong>/etc/cron.d/centreon</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">##########################</span>
+<span class="c1"># Cron for Centreon-Backup</span>
+<span class="mi">30</span> <span class="mi">3</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">centreon</span><span class="o">/</span><span class="n">cron</span><span class="o">/</span><span class="n">centreon</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">pl</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">centreon</span><span class="o">/</span><span class="n">centreon</span><span class="o">-</span><span class="n">backup</span><span class="o">.</span><span class="n">log</span> <span class="mi">2</span><span class="o">&amp;&gt;</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>Each day at 3:30 AM, backup script checks if backup is planned on current day.</p>
+</div>
+<div class="section" id="backup-types">
+<h3>Backup types<a class="headerlink" href="#backup-types" title="Permalink to this headline">¶</a></h3>
+<p>There are two types of backup : database and configuration files.</p>
+<div class="section" id="database-backup">
+<h4>Database backup<a class="headerlink" href="#database-backup" title="Permalink to this headline">¶</a></h4>
+<p>Database backup can be processed on two databases : <strong>centreon</strong> and <strong>centreon_storage</strong></p>
+<p>There are two kinds of database backup:</p>
+<ul class="simple">
+<li>MySQLdump : mysqldump command is used to backup databases. Be careful, mysqldump can take long time on large databases.</li>
+<li>LVM Snapshot : Binary copy of MySQL files is done. You need to have a specific LV for MySQL (i.e. /var/lib/mysql) and 1GB of space in its VG.</li>
+</ul>
+<p>Backup format :</p>
+<ul class="simple">
+<li>yyyy-mm-dd-centreon.sql.gz</li>
+<li>yyyy-mm-dd-centreon_storage.sql.gz</li>
+</ul>
+</div>
+<div class="section" id="configuration-files-backup">
+<h4>Configuration files backup<a class="headerlink" href="#configuration-files-backup" title="Permalink to this headline">¶</a></h4>
+<p>All configuration files of central server can be saved : MySQL, Zend, Apache, PHP, SNMP, centreon, centreon-broker)</p>
+<p>Backup format :</p>
+<ul class="simple">
+<li>yyyy-mm-dd-Monitoring-Engine.tar.gz (centreon-engine configuration files)</li>
+<li>yyyy-mm-dd-Central.tar.gz (other configuration files)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>This part covers the configuration of centreon-backup.</p>
+<ol class="arabic simple">
+<li>Go into the menu: <strong>Administration</strong> ==&gt; <strong>Parameters</strong> ==&gt; <strong>Backup</strong></li>
+</ol>
+<p>The following window is displayed:</p>
+<img alt="../_images/backup.png" class="align-center" src="../_images/backup.png" />
+<ul class="simple">
+<li><strong>Backup enabled</strong> Enable/Disable backup</li>
+<li><strong>Backup directory</strong> Directory where backup will be stored</li>
+<li><strong>Temporary directory</strong> Directory used during backup process</li>
+<li><strong>Backup database centreon</strong> Enable backup on centreon database</li>
+<li><strong>Backup database centreon_storage</strong> Enable backup on centreon_storage database</li>
+<li><strong>Backup type</strong> Type of backup (MySQLdump or LVM snapshot)</li>
+<li><strong>Full backup</strong> Period for full backup</li>
+<li><strong>Partial backup</strong> Period for partial backup (only available with LVM snapshot backup)</li>
+<li><strong>Backup retention</strong> Retention for backups (in days)</li>
+<li><strong>Backup configuration files</strong> Enable backup of configuration files</li>
+<li><strong>MySQL configuration file path</strong> Path for MySQL configuration file</li>
+<li><strong>Zend configuration file path</strong> Path for Zend configuration file</li>
+<li><strong>SCP export enabled</strong> Enable SCP export of backups</li>
+<li><strong>Remote user</strong> Remote user for SCP export</li>
+<li><strong>Remote host</strong> Remote host for SCP export</li>
+<li><strong>Remote directory</strong> Remote directory for SCP export</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>Temporary directory</strong> can not be a folder of <strong>Backup directory</strong>.</p>
+</div>
+</div>
+<div class="section" id="restore-of-centreon-central-server">
+<h2>Restore of Centreon central server<a class="headerlink" href="#restore-of-centreon-central-server" title="Permalink to this headline">¶</a></h2>
+<p>Restore process is divided in two main steps:</p>
+<ul class="simple">
+<li>Re-install the Centreon platform following the installation documentation. Do not forget to upgrade system.</li>
+<li>Restore Centreon-Engines configuration files and Centreon databases</li>
+</ul>
+<div class="section" id="configurations-file-restore">
+<h3>Configurations file restore<a class="headerlink" href="#configurations-file-restore" title="Permalink to this headline">¶</a></h3>
+<p>Before databases restore, you have first to restore configuration files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd /var/backup</span>
+<span class="c1"># tar -xvf YYYY-MM-DD-central.tar.gz</span>
+<span class="c1"># cd backup/central/etc/centreon</span>
+<span class="c1"># cp * /etc/centreon/</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="databases-restore">
+<h3>Databases restore<a class="headerlink" href="#databases-restore" title="Permalink to this headline">¶</a></h3>
+<p>Once Centreon server reinstalled (<strong>same Centreon version</strong>), unzip centreon and centreon_storage databases backup:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># mysql</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">drop</span> <span class="n">database</span> <span class="n">centreon</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">drop</span> <span class="n">database</span> <span class="n">centreon_storage</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">CREATE</span> <span class="n">database</span> <span class="n">centreon</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">CREATE</span> <span class="n">database</span> <span class="n">centreon_storage</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">GRANT</span> <span class="n">ALL</span> <span class="n">ON</span> <span class="n">centreon</span><span class="o">.*</span> <span class="n">TO</span> <span class="s1">&#39;centreon&#39;</span><span class="o">@</span><span class="s1">&#39;&lt;centreon_ip_address&gt;n&#39;</span> <span class="n">IDENTIFIED</span> <span class="n">BY</span> <span class="s1">&#39;password&#39;</span> <span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">GRANT</span> <span class="n">ALL</span> <span class="n">ON</span> <span class="n">centreon_storage</span><span class="o">.*</span> <span class="n">TO</span> <span class="s1">&#39;centreon&#39;</span><span class="o">@</span><span class="s1">&#39;&lt;centreon_ip_address&gt;&#39;</span> <span class="n">IDENTIFIED</span> <span class="n">BY</span> <span class="s1">&#39;password&#39;</span> <span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">exit</span><span class="p">;</span>
+<span class="c1"># gzip -d YYYY-MM-DD-centreon.sql.gz</span>
+<span class="c1"># mysql centreon &lt; YYYY-MM-DD-centreon.sql</span>
+<span class="c1"># gzip -d YYYY-MM-DD-centreon_storage.sql.gz</span>
+<span class="c1"># mysql centreon_storage &lt; YYYY-MM-DD-centreon_storage.sql</span>
+</pre></div>
+</div>
+<p>This may take a while due to the size of “centreon_storage” databases.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Password is stored in configuration files previously restored. For example <strong>$mysql_passwd</strong> field in file “/etc/centreon/conf.pm”.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The default configuration does not define any password for mysql root user. That’s why we can connect to database using only command “mysql”.</p>
+</div>
+</div>
+<div class="section" id="ssh-keys-restore">
+<h3>SSH keys restore<a class="headerlink" href="#ssh-keys-restore" title="Permalink to this headline">¶</a></h3>
+<p>This step is to restore the SSH key linked to user <strong>centreon</strong> and <strong>centreon-engine</strong> within a distributed environment.
+Restoration must be done manually. We must therefore initially extract this archive into a temporary directory and move the files one by one according to their location:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd /var/backup</span>
+<span class="c1"># tar -xvf AAAA-MM-JJ-centreon-engine.tar.gz</span>
+<span class="c1"># cd backup/ssh</span>
+<span class="c1"># mkdir -p /var/spool/centreon/.ssh/</span>
+<span class="c1"># chmod 700 /var/spool/centreon/.ssh/</span>
+<span class="c1"># cp -p id_rsa /var/spool/centreon/.ssh/</span>
+<span class="c1"># cp -p id_rsa.pub /var/spool/centreon/.ssh/</span>
+</pre></div>
+</div>
+<p>Connection test from central to poller:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># su - centreon</span>
+<span class="c1"># ssh &lt;poller_ip_address&gt;</span>
+</pre></div>
+</div>
+<p>Answer “Yes” to the ask question. This is about add poller print on the central server.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You have to do this operations only if you work with a distributed environment.</p>
+</div>
+</div>
+<div class="section" id="plugins-restore">
+<h3>Plugins restore<a class="headerlink" href="#plugins-restore" title="Permalink to this headline">¶</a></h3>
+<p>Plugins have been backuped in the archive: “YYYY-MM-DD-centreon-engine.tar.gz.” Restoration must be done manually.
+We must therefore initially extract this archive into a temporary directory and move the files one by one according to their location.</p>
+<p>On each poller, you have to do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd /var/backup</span>
+<span class="c1"># tar -xvf YYYY-MM-DD-centreon-engine.tar.gz</span>
+<span class="c1"># cd backup/plugins</span>
+<span class="c1"># cp -pRf * /usr/lib/nagios/plugins</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="init-script-restore">
+<h3>Init script restore<a class="headerlink" href="#init-script-restore" title="Permalink to this headline">¶</a></h3>
+<p>Some checkpoints of Oracle or SAP entail modifying the init script scheduler to add environment variables. If you changed the init script of your scheduler, you will have to restore it.
+Extract the archive into a temporary directory and move the files according to their location:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd /var/backup</span>
+<span class="c1"># tar -xvf YYYY-MM-DD-centreon-engine.tar.gz</span>
+<span class="c1"># cd backup</span>
+<span class="c1"># cp init_d_centengine /etc/init.d/centengine</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="monitoring-agent-restore">
+<h3>Monitoring agent restore<a class="headerlink" href="#monitoring-agent-restore" title="Permalink to this headline">¶</a></h3>
+<p>In case you’re using NRPE or NSCA agents, you have to reinstall and then restore configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd /var/backup</span>
+<span class="c1"># tar -xvf YYYY-MM-DD-centreon-engine.tar.gz</span>
+<span class="c1"># cd backup/etc</span>
+<span class="c1"># cp  nrpe.cfg /etc/centreon-engine/</span>
+<span class="c1"># cp  nsca.cfg /etc/centreon-engine/</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You have to do this only if you’re using the monitoring agents.</p>
+</div>
+</div>
+<div class="section" id="generate-centreon-engine-configuration-files-within-centreon">
+<h3>Generate Centreon-Engine configuration files within centreon<a class="headerlink" href="#generate-centreon-engine-configuration-files-within-centreon" title="Permalink to this headline">¶</a></h3>
+<p>Last step is to generate the Centreon-Engine configuration files within Centreon.</p>
+</div>
+<div class="section" id="graphs-rebuild">
+<h3>Graphs rebuild<a class="headerlink" href="#graphs-rebuild" title="Permalink to this headline">¶</a></h3>
+<p>Once your monitoring platform is restored and all is doing well, you can rebuild RRD files in order to restore all performance graphs.
+To rebuild performance graphics, go to the menu <strong>Administration -&gt; Options -&gt; Centstorage -&gt; Manage</strong>.
+On this page, you must select all the services and click “Rebuild RRD Database”.</p>
+<p><strong>Your server is now restored.</strong></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Backup</a><ul>
+<li><a class="reference internal" href="#how-it-works">How it works</a><ul>
+<li><a class="reference internal" href="#daily-execution">Daily execution</a></li>
+<li><a class="reference internal" href="#backup-types">Backup types</a><ul>
+<li><a class="reference internal" href="#database-backup">Database backup</a></li>
+<li><a class="reference internal" href="#configuration-files-backup">Configuration files backup</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#restore-of-centreon-central-server">Restore of Centreon central server</a><ul>
+<li><a class="reference internal" href="#configurations-file-restore">Configurations file restore</a></li>
+<li><a class="reference internal" href="#databases-restore">Databases restore</a></li>
+<li><a class="reference internal" href="#ssh-keys-restore">SSH keys restore</a></li>
+<li><a class="reference internal" href="#plugins-restore">Plugins restore</a></li>
+<li><a class="reference internal" href="#init-script-restore">Init script restore</a></li>
+<li><a class="reference internal" href="#monitoring-agent-restore">Monitoring agent restore</a></li>
+<li><a class="reference internal" href="#generate-centreon-engine-configuration-files-within-centreon">Generate Centreon-Engine configuration files within centreon</a></li>
+<li><a class="reference internal" href="#graphs-rebuild">Graphs rebuild</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="02l.html"
+                        title="previous chapter">Configuring Broker</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="partitioning/index.html"
+                        title="next chapter">Databases partitionning</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/administration_guide/backup.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="partitioning/index.html" title="Databases partitionning"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="02l.html" title="Configuring Broker"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Administration</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

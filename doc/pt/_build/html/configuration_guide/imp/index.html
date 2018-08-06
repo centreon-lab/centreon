@@ -1,0 +1,344 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Simplified configuration of Centreon with IMP &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Advanced configuration" href="../advanced_configuration/index.html" />
+    <link rel="prev" title="Templates" href="../models.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../advanced_configuration/index.html" title="Advanced configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../models.html" title="Templates"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Configuration</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simplified-configuration-of-centreon-with-imp">
+<span id="impconfiguration"></span><h1>Simplified configuration of Centreon with IMP<a class="headerlink" href="#simplified-configuration-of-centreon-with-imp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-imp">
+<h2>What is IMP?<a class="headerlink" href="#what-is-imp" title="Permalink to this headline">¶</a></h2>
+<p>IMP (Instant Monitoring Platform) is a solution to allow to reduce the TTM (Time To Monitoring).
+Indeed, IMP allows to reduce time to deploy your monitoring and reduce time to maintain in
+working condition your Centreon platform. Templates of monitoring ready to use including monitoring
+procedure that allow to start your monitoring less than 30 minutes after the installation of your
+Centreon platform.</p>
+<p>Centreon Plugins’ project offer a large range of functionality and is one of the richest in the
+market: +170 environments is around 2000 monitoring indicators which allow to deploy your monitoring
+easily and quickly.</p>
+<p>Want to use IMP? Please follow the instructions below.</p>
+</div>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p><strong>1. Centreon 3.4</strong></p>
+<p>To use Centreon IMP you need the latest version of Centreon 3.4. This version includes
+Centreon Web 2.8.</p>
+<p>You can install Centreon 3.4 using the <a class="reference external" href="https://download.centreon.com/">ISO of Centreon</a>
+or by upgrading your Centreon platform.
+Please read documentation to install or upgrade your platform.</p>
+<p><strong>2. An Internet access</strong></p>
+<p>Your Centreon central monitoring server must have an access to Internet. This access
+allows to get the list of available Plugin Packs and to install those on your platform.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If your server doesn’t have a direct access to Internet, you can configure a proxy
+to access to Internet. The proxy configuration is available since Centreon web 2.8.2
+version. If you don’t have this version, please perform an upgrade of your platform.</p>
+</div>
+</div>
+<div class="section" id="link-your-centreon-platform-to-centreon-imp">
+<h2>Link your Centreon platform to Centreon IMP<a class="headerlink" href="#link-your-centreon-platform-to-centreon-imp" title="Permalink to this headline">¶</a></h2>
+<p>To get the Plugin Packs, your Centreon platform must have an access to Centreon user
+portal.</p>
+<p>Without Centreon user portal, your Centreon server will have access to 6 Plugin Packs. If
+you create a Centreon user portal account and you use it to connect your Centreon platform,
+you will have access to 5 more Plugin Packs. By subscribing to Centreon IMP offer, you will
+have access to +170 Plugin Packs is around 2000 monitoring indicators which allow to deploy
+your monitoring easily and quickly.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="25%" />
+<col width="24%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Without Account</th>
+<th class="head">Simple Account</th>
+<th class="head">With subscription</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>6 base Packs</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="row-odd"><td>5 added Packs</td>
+<td>&#160;</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr class="row-even"><td>+150 Packs</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>x</td>
+</tr>
+<tr class="row-odd"><td>total</td>
+<td>6 packs</td>
+<td>11 packs</td>
+<td>+170 Packs</td>
+</tr>
+</tbody>
+</table>
+<p>What are Plugin Packs available for each level?</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Standard Plugin Packs:</dt>
+<dd><ul class="first last">
+<li>Cisco standard (SNMP)</li>
+<li>Linux (SNMP)</li>
+<li>MySQL</li>
+<li>Printer standard (SNMP)</li>
+<li>UPS Standard (SNMP)</li>
+<li>Windows (SNMP)</li>
+<li>Centreon (central)</li>
+<li>Centreon DB</li>
+<li>Centreon Poller</li>
+<li>Centreon Map</li>
+<li>Centreon MBI</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>With Centreon user portal account:</dt>
+<dd><ul class="first last">
+<li>DHCP</li>
+<li>DNS</li>
+<li>FTP</li>
+<li>HTTP</li>
+<li>LDAP</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>With IMP subscription: <a class="reference external" href="https://documentation-fr.centreon.com/docs/plugins-packs/en/latest/catalog.html">All the packs in the catalog</a>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Yes 11 is different than 6 but we prefer to do not count Centreon Plugin Packs
+to monitor your Centreon platform.</p>
+</div>
+<p>To connect your Centreon platform to Centreon user portal, please follow instructions below:</p>
+</div>
+<div class="section" id="go-to-centreon-user-portal-and-create-your-account">
+<h2>1. Go to Centreon user portal and create your account<a class="headerlink" href="#go-to-centreon-user-portal-and-create-your-account" title="Permalink to this headline">¶</a></h2>
+<p>Go on Centreon web site on <a class="reference external" href="https://www.centreon.com/imp-subscribe/">subscription IMP page</a>.
+Click on “Try it” on the first column of the comparative table of offers.</p>
+<a class="reference internal image-reference" href="../../_images/create_account_03.png"><img alt="../../_images/create_account_03.png" class="align-center" src="../../_images/create_account_03.png" style="width: 1000px;" /></a>
+<p>Create your user account. This account will be used to link your Centreon platform to the Centreon IMP
+to get Plugin Packs.</p>
+<a class="reference internal image-reference" href="../../_images/create_account_04.png"><img alt="../../_images/create_account_04.png" class="align-center" src="../../_images/create_account_04.png" style="width: 1000px;" /></a>
+<p>Your account is now available. You can link your Centreon platform.</p>
+<a class="reference internal image-reference" href="../../_images/create_account_05.png"><img alt="../../_images/create_account_05.png" class="align-center" src="../../_images/create_account_05.png" style="width: 1000px;" /></a>
+</div>
+<div class="section" id="link-your-centreon-platform">
+<h2>2. Link your Centreon platform<a class="headerlink" href="#link-your-centreon-platform" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If the <strong>Administration -&gt; Extensions -&gt; Subscription</strong> is not available on your Centreon,
+please go to the <strong>Administration -&gt; Extensions -&gt; Modules</strong> menu and install the following
+modules by clicking on the “install” icon on the right:</p>
+<ul class="last simple">
+<li>centreon-pp-manager</li>
+<li>centreon-license-manager</li>
+</ul>
+</div>
+<p>Go to the <strong>Administration -&gt; Extensions -&gt; Subscription</strong> menu and connect your
+Centreon Platform using your Centreon user portal credentials. The credentials are
+your account to access to Centreon user portal.</p>
+<img alt="../../_images/imp3.png" class="align-center" src="../../_images/imp3.png" />
+<p>By clicking on the arrow icon next to “Password” field you will connect your Centreon
+platform to Centreon portal. The creation of an account on the Centreon user portal
+is free and allow to access to 11 Plugin Packs.</p>
+<img alt="../../_images/imp4.png" class="align-center" src="../../_images/imp4.png" />
+<p>Your platform is now connected: you can access to 6 more Plugin Packs.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">With your account you can connect multiple platforms at a time to do your tests.</p>
+</div>
+</div>
+<div class="section" id="discover-the-catalog-and-install-your-first-plugin-packs">
+<h2>3. Discover the catalog and install your first Plugin Packs<a class="headerlink" href="#discover-the-catalog-and-install-your-first-plugin-packs" title="Permalink to this headline">¶</a></h2>
+<p>To install Plugin Packs, click on the <strong>Setup</strong> button to access to the Plugin
+Packs catalog, or go to the <strong>Configuration &gt; Plugin pack</strong> menu.</p>
+<img alt="../../_images/imp1.png" class="align-center" src="../../_images/imp1.png" />
+<p>List of Plugin Packs appears. Only part of the catalog can be accessed according to
+your subscription. If your subscription is no longer valid or if you use Centreon IMP
+trial offer, only the first 11 Plugin Packs are available. The non-available Plugin
+Pack will be freeze.</p>
+<p>You can search Plugin Packs using:</p>
+<ul class="simple">
+<li>Keyword</li>
+<li>Category</li>
+<li>Status</li>
+<li>Last update</li>
+</ul>
+<p>Yo access to the description of a pack, click on its icon.</p>
+<img alt="../../_images/imp2.png" class="align-center" src="../../_images/imp2.png" />
+<p>To install a pack, click on installation icon.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>before installation</strong></td>
+<td><strong>after installation</strong></td>
+</tr>
+<tr class="row-even"><td><img alt="../../_images/imp5.png" class="first last" src="../../_images/imp5.png" />
+</td>
+<td><img alt="../../_images/imp6.png" class="first last" src="../../_images/imp6.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Don’t forget that each pack use a plugin to work. Each monitoring procedure will help you to
+install the plugin needed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Install plugins on each poller required. Otherwise your supervision will not work.</p>
+</div>
+</div>
+<div class="section" id="get-your-subscription">
+<h2>4. Get your subscription!<a class="headerlink" href="#get-your-subscription" title="Permalink to this headline">¶</a></h2>
+<p>You can subscribe to IMP according different period of renewal: 1 month, 6 months or
+12 months. The price decreases according to the duration of commitment.</p>
+<p>After subscribing, go to the <strong>Administration -&gt; Extensions -&gt; Subscription</strong> menu and
+connect your Centreon platform using your Centreon user portal credentials.</p>
+<p>IF you purchased a subscription you can link your Centreon platform to your subscription.
+To do this please click on the “Link” button.</p>
+<p>Select your subscription and click on “Link” button to valid this step.</p>
+<a class="reference internal image-reference" href="../../_images/link_01.png"><img alt="../../_images/link_01.png" class="align-center" src="../../_images/link_01.png" style="width: 1000px;" /></a>
+<p>Please confirm this action.</p>
+<a class="reference internal image-reference" href="../../_images/link_02.png"><img alt="../../_images/link_02.png" class="align-center" src="../../_images/link_02.png" style="width: 1000px;" /></a>
+<p>Now you have access to all Plugin Packs available in the catalog. Click on the “install” button to
+start the installation of needed Plugin Packs.</p>
+<a class="reference internal image-reference" href="../../_images/link_03.png"><img alt="../../_images/link_03.png" class="align-center" src="../../_images/link_03.png" style="width: 1000px;" /></a>
+<p>Your Centreon IMP subscription ensures that the Plugin Packs are updated as technology
+requirements and needs evolve. This may include enhancements or new additions.</p>
+<p>If you decide to stop your Centreon IMP subscription, you will not have access to these
+updates and additions. The Plugin Packs you have been using will not be uninstalled.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you wish to move your IMP subscription to another Centreon server, you need to ask Centreon
+customer support. We didn’t yet add this functionality to your Centreon web site. Please
+contact us: imp at centreon dot com.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you have some difficulties to use IMP you can contact your technical team using
+imp at centreon dot com email.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simplified configuration of Centreon with IMP</a><ul>
+<li><a class="reference internal" href="#what-is-imp">What is IMP?</a></li>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#link-your-centreon-platform-to-centreon-imp">Link your Centreon platform to Centreon IMP</a></li>
+<li><a class="reference internal" href="#go-to-centreon-user-portal-and-create-your-account">1. Go to Centreon user portal and create your account</a></li>
+<li><a class="reference internal" href="#link-your-centreon-platform">2. Link your Centreon platform</a></li>
+<li><a class="reference internal" href="#discover-the-catalog-and-install-your-first-plugin-packs">3. Discover the catalog and install your first Plugin Packs</a></li>
+<li><a class="reference internal" href="#get-your-subscription">4. Get your subscription!</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../models.html"
+                        title="previous chapter">Templates</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../advanced_configuration/index.html"
+                        title="next chapter">Advanced configuration</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/configuration_guide/imp/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../advanced_configuration/index.html" title="Advanced configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../models.html" title="Templates"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Configuration</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,819 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using sources &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Migrando do Nagios para o Centreon" href="../migration/index.html" />
+    <link rel="prev" title="Using VM" href="from_VM.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../migration/index.html" title="Migrando do Nagios para o Centreon"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="from_VM.html" title="Using VM"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Installation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-sources">
+<span id="centreon-install"></span><h1>Using sources<a class="headerlink" href="#using-sources" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="centos">
+<h3>CentOS<a class="headerlink" href="#centos" title="Permalink to this headline">¶</a></h3>
+<p>Most CentOS users will find easier to install Centreon Web by using
+<a class="reference internal" href="from_packages.html#install-from-packages"><span class="std std-ref">packages provided by Centreon</span></a>.</p>
+<p>CentOS and RHEL environments do not possess as standard on archives all the dependencies necessary for the installation of Centreon. You should add the <em>RPM Forge</em> archive</p>
+<p>el6 system:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://repository.it4i.cz/mirrors/repoforge/redhat/el6/en/x86_64/rpmforge/RPMS/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
+$ wget https://repository.it4i.cz/mirrors/repoforge/RPM-GPG-KEY.dag.txt
+</pre></div>
+</div>
+</div></blockquote>
+<p>el7 system:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://repository.it4i.cz/mirrors/repoforge/redhat/el7/en/x86_64/rpmforge/RPMS/rpmforge-release-0.5.3-1.el7.rf.x86_64.rpm
+$ wget https://repository.it4i.cz/mirrors/repoforge/RPM-GPG-KEY.dag.txt
+</pre></div>
+</div>
+</div></blockquote>
+<p>Use your favorite text editor and delete the first line of the RPM-GPG-KEY.dag.txt file. The first line should contain:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;-----BEGIN PGP PUBLIC KEY BLOCK-----&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Then perform the following commands:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rpm --import RPM-GPG-KEY.dag.txt
+$ rpm -Uvh rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm (you can adapt for el7 system)
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can now install the necessary prerequisites:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ yum update
+$ yum upgrade
+$ yum install httpd gd fontconfig-devel libjpeg-devel libpng-devel gd-devel perl-GD perl-DateTime \
+    openssl-devel perl-DBD-MySQL mysql-server mysql-devel php php-mysql php-gd php-ldap php-xml php-mbstring \
+    perl-Config-IniFiles perl-DBI perl-DBD-MySQL rrdtool perl-rrdtool perl-Crypt-DES perl-Digest-SHA1 \
+    perl-Digest-HMAC net-snmp-utils perl-Socket6 perl-IO-Socket-INET6 net-snmp net-snmp-libs php-snmp \
+    dmidecode lm_sensors perl-Net-SNMP net-snmp-perl fping cpp gcc gcc-c++ libstdc++ glib2-devel \
+    php-pear nagios-plugins
+</pre></div>
+</div>
+<p>Additional commands are necessary to configure the environment correctly:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ usermod -U apache
+$ pear channel-update pear.php.net
+</pre></div>
+</div>
+</div></blockquote>
+<p>If you can’t access the Internet directly but have to pass via a proxy, perform the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pear config-set http_proxy http://my_proxy.com:port
+</pre></div>
+</div>
+</div></blockquote>
+<p>Then execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pear upgrade-all
+</pre></div>
+</div>
+</div>
+<div class="section" id="debian-jessie-ubuntu-14-04">
+<h3>Debian jessie / Ubuntu 14.04<a class="headerlink" href="#debian-jessie-ubuntu-14-04" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Debian and Ubuntu latest version not yet supported.</p>
+</div>
+<p>Install the following prerequisites:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ apt-get install sudo tofrodos bsd-mailx lsb-release mysql-server libmysqlclient18 libdatetime-perl \
+    apache2 apache2-mpm-prefork php5 php5-mysql php-pear php5-intl php5-ldap php5-snmp php5-gd php5-sqlite \
+    rrdtool librrds-perl libconfig-inifiles-perl libcrypt-des-perl libdigest-hmac-perl \
+    libdigest-sha-perl libgd-perl snmp snmpd libnet-snmp-perl libsnmp-perl nagios-plugins
+</pre></div>
+</div>
+<p>To finish, you should install SNMP MIBs. Because of a license problem the MIB files are not available by default in Debian. To add them, change the /etc/apt/sources.list file and add the <em>non-free</em> category.</p>
+<p>To Debian, then execute the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ apt-get update
+$ apt-get install snmp-mibs-downloader
+</pre></div>
+</div>
+</div>
+<div class="section" id="suse">
+<h3>Suse<a class="headerlink" href="#suse" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="packages">
+<h4>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h4>
+<p>Install the following prerequisites:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ yast -i gcc gcc-c++ make automake apache2 php5 php5-mysql apache2-mod_php5 php5-pear \
+    php5-ldap php5-snmp php5-gd php5-soap php5-intl php5-posix php5-gettext php5-mbstring mysql \
+    libmysqlclient-devel perl-DBD-mysql mysql-community-server rrdtool perl-Config-IniFiles \
+    net-snmp perl-Net-SNMP perl-SNMP gd libjpeg-devel libpng-devel fontconfig-devel \
+    freetype2-devel sudo mailx fping iputils dos2unix cron dejavu nagios-plugins
+</pre></div>
+</div>
+<p>On some OpenSuse distributions, the default settings of the <strong>mine</strong> type are not valid to function with the Centreon web interface. Edit the <em>/etc/mime.types</em> file and find the lines:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">text</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">xsl</span> <span class="n">xsl</span>
+<span class="n">text</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">xslt</span> <span class="n">xslt</span> <span class="n">xsl</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Replace them by:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">text</span><span class="o">/</span><span class="n">xml</span> <span class="n">xsl</span>
+<span class="n">text</span><span class="o">/</span><span class="n">xml</span> <span class="n">xslt</span> <span class="n">xsl</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Save the file and restart Apache:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">apache2</span> <span class="n">restart</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="monitoring-engine">
+<h2>Monitoring engine<a class="headerlink" href="#monitoring-engine" title="Permalink to this headline">¶</a></h2>
+<p>Centreon is tested and approved only for the monitoring engine <a class="reference external" href="https://documentation.centreon.com/docs/centreon-engine/en/latest/installation/index.html#user-installation-using-sources" title="(in Centreon Engine v1.5)"><span class="xref std std-ref">Centreon Engine</span></a>.</p>
+<p>You can install it following the procedure in documentation. Don’t forget to install the
+<a class="reference external" href="http://nagios.sourceforge.net/docs/3_0/quickstart.html">Nagios plugins</a> if you have not already done so.</p>
+</div>
+<div class="section" id="stream-multiplexer">
+<h2>Stream Multiplexer<a class="headerlink" href="#stream-multiplexer" title="Permalink to this headline">¶</a></h2>
+<p>Centreon is tested and approved only for the stream multiplexer <a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/latest/installation/index.html#user-installation-using-sources" title="(in Centreon Broker v3.0)"><span class="xref std std-ref">Centreon Broker</span></a>.</p>
+<p>Install this Stream Multiplexers before continuing with the installation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Centreon Web is not compatible with Nagios monitoring engine.</p>
+</div>
+</div>
+<div class="section" id="centreon">
+<h2>Centreon<a class="headerlink" href="#centreon" title="Permalink to this headline">¶</a></h2>
+<p>Download the latest version of Centreon-web <a class="reference external" href="https://download.centreon.com">here</a>.</p>
+<div class="section" id="shell-installation">
+<h3>Shell Installation<a class="headerlink" href="#shell-installation" title="Permalink to this headline">¶</a></h3>
+<p>Extract the Centreon archive:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">zxf</span> <span class="n">centreon</span><span class="o">-</span><span class="n">web</span><span class="o">-</span><span class="mf">2.8</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>Change directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">centreon</span><span class="o">-</span><span class="n">web</span><span class="o">-</span><span class="mf">2.8</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+<p>Run the installation script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">install</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">i</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The installation script allows customised configuration; this process will show you the best paths to use. Furthermore quick yes/no questions can be replied to by [y] most of the time.</p>
+</div>
+<div class="section" id="prerequisites-check">
+<h4>Prerequisites check<a class="headerlink" href="#prerequisites-check" title="Permalink to this headline">¶</a></h4>
+<p>If the Prerequisites installation step has been run successfully you should have no problem during this stage. Otherwise repeat the Prerequisites installation process:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">###############################################################################</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">#                         Centreon (www.centreon.com)                         #</span>
+<span class="c1">#                          Thanks for using Centreon                          #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">#                                    v2.8.0                                   #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">#                              infos@centreon.com                             #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">#                   Make sure you have installed and configured               #</span>
+<span class="c1">#                   sudo - sed - php - apache - rrdtool - mysql               #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">###############################################################################</span>
+<span class="o">------------------------------------------------------------------------</span>
+        <span class="n">Checking</span> <span class="nb">all</span> <span class="n">needed</span> <span class="n">binaries</span>
+<span class="o">------------------------------------------------------------------------</span>
+<span class="n">rm</span>                                                         <span class="n">OK</span>
+<span class="n">cp</span>                                                         <span class="n">OK</span>
+<span class="n">mv</span>                                                         <span class="n">OK</span>
+<span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">chmod</span>                                                 <span class="n">OK</span>
+<span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">chown</span>                                                 <span class="n">OK</span>
+<span class="n">echo</span>                                                       <span class="n">OK</span>
+<span class="n">more</span>                                                       <span class="n">OK</span>
+<span class="n">mkdir</span>                                                      <span class="n">OK</span>
+<span class="n">find</span>                                                       <span class="n">OK</span>
+<span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">grep</span>                                                  <span class="n">OK</span>
+<span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">cat</span>                                                   <span class="n">OK</span>
+<span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sed</span>                                                   <span class="n">OK</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="license-agreement">
+<h4>License agreement<a class="headerlink" href="#license-agreement" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>This General Public License does not permit incorporating your program into
+proprietary programs.  If your program is a subroutine library, you may
+consider it more useful to permit linking proprietary applications with the
+library.  If this is what you want to do, use the GNU Library General
+Public License instead of this License.
+
+Do you accept GPLv2 license ?
+[y/n], default to [n]:
+&gt; y
+</pre></div>
+</div>
+</div>
+<div class="section" id="main-components">
+<h4>Main components<a class="headerlink" href="#main-components" title="Permalink to this headline">¶</a></h4>
+<p>Answer [y] to all the questions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+          Please choose what you want to install
+------------------------------------------------------------------------
+
+Do you want to install Centreon Nagios Plugins ?
+[y/n], default to [n]:
+&gt; y
+
+
+Definition of installation paths
+--------------------------------
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+        Starting Centreon Web Installation
+------------------------------------------------------------------------
+
+Where is your Centreon directory ?
+default to [/usr/local/share/centreon]
+&gt;
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Do you want me to create this directory ? [/usr/local/share/centreon]
+[y/n], default to [n]:
+&gt; y
+Path /usr/local/share/centreon                             OK
+
+Where is your Centreon log directory ?
+default to [/var/log/centreon]
+&gt;
+
+Do you want me to create this directory ? [/var/log/centreon]
+[y/n], default to [n]:
+&gt; y
+Path /var/log/centreon                                     OK
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Where is your Centreon configuration directory ?
+default to [/usr/local/etc/centreon]
+&gt;
+
+Do you want me to create this directory ? [/usr/local/etc/centreon]
+[y/n], default to [n]:
+&gt; y
+Path /usr/local/etc/centreon                               OK
+
+Where is your Centreon binaries directory ?
+default to [/usr/local/bin]
+&gt;
+
+Where is your Centreon variable state information directory ?
+default to [/var/lib/centreon]
+&gt;
+Path /var/lib/centreon/                                    OK
+
+Do you want me to create this directory ? [/var/lib/centreon]
+[y/n], default to [n]:
+&gt; y
+Path /var/lib/centreon                                     OK
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">rrdtool</span>                                           <span class="n">OK</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mail</span>                                              <span class="n">OK</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">php</span>                                               <span class="n">OK</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">php</span>                                             <span class="n">OK</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">perl</span>                                              <span class="n">OK</span>
+<span class="n">Finding</span> <span class="n">Apache</span> <span class="n">user</span> <span class="p">:</span>                                      <span class="n">apache</span>
+<span class="n">Finding</span> <span class="n">Apache</span> <span class="n">group</span> <span class="p">:</span>                                     <span class="n">apache</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="centreon-user-and-group">
+<h4>Centreon user and group<a class="headerlink" href="#centreon-user-and-group" title="Permalink to this headline">¶</a></h4>
+<p>The Centreon applications group: this group is used for the access
+rights between the various Centreon components.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>What is the Centreon group ? [centreon]
+default to [centreon]
+&gt;
+
+What is the Centreon user ? [centreon]
+default to [centreon]
+&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="monitoring-user">
+<h4>Monitoring user<a class="headerlink" href="#monitoring-user" title="Permalink to this headline">¶</a></h4>
+<p>This is the user used to run the monitoring engine (Centreon Engine). If you followed the
+<a class="reference external" href="https://documentation.centreon.com/docs/centreon-engine/en/latest/installation/index.html#using-sources">Centreon Engine official installation procedure</a>
+the user will likely be <em>centreon-engine</em>.</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>What is your Centreon Engine user ?
+default to [centreon-engine]
+&gt;
+</pre></div>
+</div>
+</div></blockquote>
+<p>This is the user used to run the stream broker (Centreon Broker). If you followed the
+<a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/3.0/installation/index.html#using-sources">Centreon Broker official installation procedure</a>
+the user will likely be <em>centreon-broker</em>.</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>What is your Centreon Broker user ?
+default to [centreon-broker]
+&gt;
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="monitoring-logs-directory">
+<h4>Monitoring logs directory<a class="headerlink" href="#monitoring-logs-directory" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>What is your Centreon Engine log directory ?
+default to [/var/log/centreon-engine]
+&gt;
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="plugin-path">
+<h4>Plugin path<a class="headerlink" href="#plugin-path" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Where is your monitoring plugins (libexec) directory ?
+default to [/usr/lib/nagios/plugins]
+&gt;
+Path /usr/lib/nagios/plugins                               OK
+Add group centreon to user apache                          OK
+Add group centreon to user centreon-engine                 OK
+Add group centreon-engine to user apache                   OK
+Add group centreon-engine to user centreon                 OK
+</pre></div>
+</div>
+</div>
+<div class="section" id="sudo-configuration">
+<h4>Sudo configuration<a class="headerlink" href="#sudo-configuration" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+        Configure Sudo
+------------------------------------------------------------------------
+
+Where is sudo configuration file ?
+default to [/etc/sudoers]
+&gt;
+/etc/sudoers                                               OK
+
+What is your Centreon Engine startup command (init.d, service, ...) ?
+default to [service centengine]
+&gt;
+
+Are you sure ? [service centengine]
+[y/n], default to [n]:
+&gt; y
+
+Where is your Centreon Engine binary ?
+default to [/usr/sbin/centengine]
+&gt;
+
+Where is your Centreon Engine configuration directory ?
+default to [/etc/centreon-engine]
+&gt;
+
+Where is your Centreon Broker configuration directory ?
+default to [/etc/centreon-broker]
+&gt;
+
+What is your Centreon Broker startup command (init.d, service, ...) ?
+default to [service cbd]
+&gt;
+
+Are you sure ? [service cbd]
+[y/n], default to [n]:
+&gt; y
+
+Do you want me to reconfigure your sudo ? (WARNING)
+[y/n], default to [n]:
+&gt;  y
+Configuring Sudo                                           OK
+</pre></div>
+</div>
+</div>
+<div class="section" id="apache-configuration">
+<h4>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+        Configure Apache server
+------------------------------------------------------------------------
+
+Do you want to add Centreon Apache sub configuration file ?
+[y/n], default to [n]:
+&gt; y
+Create &#39;/etc/httpd/conf.d/centreon.conf&#39;                   OK
+Configuring Apache                                         OK
+
+Do you want to reload your Apache ?
+[y/n], default to [n]:
+&gt; y
+Reloading Apache service                                   OK
+Preparing Centreon temporary files
+Change right on /var/log/centreon                          OK
+Change right on /usr/local/etc/centreon                    OK
+Change macros for insertBaseConf.sql                       OK
+Change macros for sql update files                         OK
+Change macros for php files                                OK
+Change macros for php config file                          OK
+Change macros for perl binary                              OK
+Change right on /etc/centreon-engine                       OK
+Change right on /etc/centreon-broker                       OK
+Add group centreon to user apache                          OK
+Add group centreon to user centreon-engine                 OK
+Add group centreon to user centreon                        OK
+Copy CentWeb in system directory                           OK
+Install CentWeb (web front of centreon)                    OK
+Change right for install directory
+Change right for install directory                         OK
+Install libraries                                          OK
+Write right to Smarty Cache                                OK
+Copying libinstall                                         OK
+Change macros for centreon.cron                            OK
+Install Centreon cron.d file                               OK
+Change macros for centAcl.php                              OK
+Change macros for downtimeManager.php                      OK
+Install cron directory                                     OK
+Change right for eventReportBuilder                        OK
+Change right for dashboardBuilder                          OK
+Change macros for centreon.logrotate                       OK
+Install Centreon logrotate.d file                          OK
+Prepare centFillTrapDB                                     OK
+Install centFillTrapDB                                     OK
+Prepare centreon_trap_send                                 OK
+Install centreon_trap_send                                 OK
+Prepare centreon_check_perfdata                            OK
+Install centreon_check_perfdata                            OK
+Prepare centreonSyncPlugins                                OK
+Install centreonSyncPlugins                                OK
+Prepare centreonSyncArchives                               OK
+Install centreonSyncArchives                               OK
+Prepare generateSqlLite                                    OK
+Install generateSqlLite                                    OK
+Install changeRrdDsName.pl                                 OK
+Prepare export-mysql-indexes                               OK
+Install export-mysql-indexes                               OK
+Prepare import-mysql-indexes                               OK
+Install import-mysql-indexes                               OK
+Prepare clapi binary                                       OK
+Install clapi binary                                       OK
+Centreon Web Perl lib installed                            OK
+</pre></div>
+</div>
+</div>
+<div class="section" id="pear-module-installation">
+<h4>Pear module installation<a class="headerlink" href="#pear-module-installation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">------------------------------------------------------------------------</span>
+<span class="n">Pear</span> <span class="n">Modules</span>
+<span class="o">------------------------------------------------------------------------</span>
+<span class="n">Check</span> <span class="n">PEAR</span> <span class="n">modules</span>
+<span class="n">PEAR</span>                            <span class="mf">1.4</span><span class="o">.</span><span class="mi">9</span>       <span class="mf">1.10</span><span class="o">.</span><span class="mi">1</span>         <span class="n">OK</span>
+<span class="n">DB</span>                              <span class="mf">1.7</span><span class="o">.</span><span class="mi">6</span>       <span class="mf">1.9</span><span class="o">.</span><span class="mi">2</span>          <span class="n">OK</span>
+<span class="n">DB_DataObject</span>                   <span class="mf">1.8</span><span class="o">.</span><span class="mi">4</span>       <span class="mf">1.11</span><span class="o">.</span><span class="mi">5</span>         <span class="n">OK</span>
+<span class="n">DB_DataObject_FormBuilder</span>       <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="n">RC4</span>    <span class="mf">1.0</span><span class="o">.</span><span class="mi">2</span>          <span class="n">OK</span>
+<span class="n">MDB2</span>                            <span class="mf">2.0</span><span class="o">.</span><span class="mi">0</span>       <span class="mf">2.4</span><span class="o">.</span><span class="mi">1</span>          <span class="n">OK</span>
+<span class="n">Date</span>                            <span class="mf">1.4</span><span class="o">.</span><span class="mi">6</span>       <span class="mf">1.4</span><span class="o">.</span><span class="mi">7</span>          <span class="n">OK</span>
+<span class="n">Archive_Tar</span>                     <span class="mf">1.1</span>         <span class="mf">1.3</span><span class="o">.</span><span class="mi">11</span>         <span class="n">OK</span>
+<span class="n">Auth_SASL</span>                       <span class="mf">1.0</span><span class="o">.</span><span class="mi">1</span>       <span class="mf">1.0</span><span class="o">.</span><span class="mi">6</span>          <span class="n">OK</span>
+<span class="n">Console_Getopt</span>                  <span class="mf">1.2</span>         <span class="mf">1.3</span><span class="o">.</span><span class="mi">1</span>          <span class="n">OK</span>
+<span class="n">Validate</span>                        <span class="mf">0.6</span><span class="o">.</span><span class="mi">2</span>       <span class="mf">0.8</span><span class="o">.</span><span class="mi">5</span>          <span class="n">OK</span>
+<span class="n">Log</span>                             <span class="mf">1.9</span><span class="o">.</span><span class="mi">11</span>      <span class="mf">1.12</span><span class="o">.</span><span class="mi">9</span>         <span class="n">OK</span>
+<span class="n">Archive_Zip</span>                     <span class="mf">0.1</span><span class="o">.</span><span class="mi">2</span>       <span class="mf">0.1</span><span class="o">.</span><span class="mi">2</span>          <span class="n">OK</span>
+<span class="n">All</span> <span class="n">PEAR</span> <span class="n">modules</span>                                           <span class="n">OK</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration-file-installation">
+<h4>Configuration file installation<a class="headerlink" href="#configuration-file-installation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">------------------------------------------------------------------------</span>
+                <span class="n">Centreon</span> <span class="n">Post</span> <span class="n">Install</span>
+<span class="o">------------------------------------------------------------------------</span>
+<span class="n">Create</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">centreon</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">install</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">php</span>    <span class="n">OK</span>
+<span class="n">Create</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">centreon</span><span class="o">/</span><span class="n">instCentWeb</span><span class="o">.</span><span class="n">conf</span>                      <span class="n">OK</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="performance-data-component-centstorage-installation">
+<h4>Performance data component (Centstorage) installation<a class="headerlink" href="#performance-data-component-centstorage-installation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+        Starting CentStorage Installation
+------------------------------------------------------------------------
+
+Where is your Centreon Run Dir directory ?
+default to [/var/run/centreon]
+&gt;
+
+Do you want me to create this directory ? [/var/run/centreon]
+[y/n], default to [n]:
+&gt; y
+Path /var/run/centreon                                     OK
+
+Where is your CentStorage RRD directory ?
+default to [/var/lib/centreon]
+&gt;
+Path /var/lib/centreon                                     OK
+Preparing Centreon temporary files
+/tmp/centreon-setup exists, it will be moved...
+install www/install/createTablesCentstorage.sql            OK
+Creating Centreon Directory &#39;/var/lib/centreon/status&#39;     OK
+Creating Centreon Directory &#39;/var/lib/centreon/metrics&#39;    OK
+Change right : /var/run/centreon                           OK
+Install logAnalyserBroker                                  OK
+Install nagiosPerfTrace                                    OK
+Change macros for centstorage.cron                         OK
+Install CentStorage cron                                   OK
+Change macros for centstorage.logrotate                    OK
+Install Centreon Storage logrotate.d file                  OK
+Create /usr/local/etc/centreon/instCentStorage.conf        OK
+</pre></div>
+</div>
+</div>
+<div class="section" id="poller-communication-subsystem-centcore-installation">
+<h4>Poller communication subsystem (Centcore) installation<a class="headerlink" href="#poller-communication-subsystem-centcore-installation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+        Starting CentCore Installation
+------------------------------------------------------------------------
+Preparing Centreon temporary files
+/tmp/centreon-setup exists, it will be moved...
+Copy CentCore in binary directory                          OK
+Change right : /var/run/centreon                           OK
+Change right : /var/lib/centreon                           OK
+Change macros for centcore.logrotate                       OK
+Install Centreon Core logrotate.d file                     OK
+Replace CentCore init script Macro                         OK
+Replace CentCore sysconfig script Macro                    OK
+
+Do you want me to install CentCore init script ?
+[y/n], default to [n]:
+&gt; y
+CentCore init script installed                             OK
+CentCore sysconfig script installed                        OK
+
+Do you want me to install CentCore run level ?
+[y/n], default to [n]:
+&gt; y
+CentCore Perl lib installed                                OK
+Create /usr/local/etc/centreon/instCentCore.conf           OK
+</pre></div>
+</div>
+</div>
+<div class="section" id="centreon-snmp-trap-management-installation">
+<h4>Centreon SNMP trap management installation<a class="headerlink" href="#centreon-snmp-trap-management-installation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+        Starting CentreonTrapD Installation
+------------------------------------------------------------------------
+
+Where is your SNMP configuration directory ?
+default to [/etc/snmp]
+&gt;
+/etc/snmp                                                  OK
+Finding Apache user : apache
+Preparing Centreon temporary files
+/tmp/centreon-setup exists, it will be moved...
+Change macros for snmptrapd.conf                           OK
+Replace CentreonTrapd init script Macro                    OK
+Replace CentreonTrapd sysconfig script Macro               OK
+
+Do you want me to install CentreonTrapd init script ?
+[y/n], default to [n]:
+&gt; y
+CentreonTrapd init script installed                        OK
+CentreonTrapd sysconfig script installed                   OK
+
+Do you want me to install CentreonTrapd run level ?
+[y/n], default to [n]:
+&gt; y
+trapd Perl lib installed                                   OK
+Install : snmptrapd.conf                                   OK
+Install : centreontrapdforward                             OK
+Install : centreontrapd                                    OK
+Change macros for centreontrapd.logrotate                  OK
+Install Centreon Trapd logrotate.d file                    OK
+Create /usr/local/etc/centreon/instCentPlugins.conf        OK
+</pre></div>
+</div>
+</div>
+<div class="section" id="plugin-installation">
+<h4>Plugin installation<a class="headerlink" href="#plugin-installation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>------------------------------------------------------------------------
+        Starting Centreon Plugins Installation
+------------------------------------------------------------------------
+
+Where is your CentPlugins lib directory
+default to [/var/lib/centreon/centplugins]
+&gt;
+
+Do you want me to create this directory ? [/var/lib/centreon/centplugins]
+[y/n], default to [n]:
+&gt; y
+Path /var/lib/centreon/centplugins                         OK
+Preparing Centreon temporary files
+/tmp/centreon-setup exists, it will be moved...
+Change macros for CentPlugins                              OK
+Installing the plugins                                     OK
+Change right on centreon.conf                              OK
+CentPlugins is installed
+Create /usr/local/etc/centreon/instCentPlugins.conf        OK
+</pre></div>
+</div>
+</div>
+<div class="section" id="end">
+<h4>End<a class="headerlink" href="#end" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">###############################################################################</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">#                 Go to the URL : http://localhost.localdomain/centreon/      #</span>
+<span class="c1">#                          to finish the setup                                #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">#          Report bugs at https://github.com/centreon/centreon/issues         #</span>
+<span class="c1">#          Read documentation at https://documentation.centreon.com           #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">#                         Thanks for using Centreon.                          #</span>
+<span class="c1">#                          -----------------------                            #</span>
+<span class="c1">#                        Contact : infos@centreon.com                         #</span>
+<span class="c1">#                          http://www.centreon.com                            #</span>
+<span class="c1">#                                                                             #</span>
+<span class="c1">###############################################################################</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="php-dependencies-installation">
+<h4>PHP dependencies installation<a class="headerlink" href="#php-dependencies-installation" title="Permalink to this headline">¶</a></h4>
+<p>First, you need to install PHP dependency installer <strong>composer</strong>.
+Composer can be downloaded <cite>here &lt;https://getcomposer.org/download/&gt;</cite> (it is also available in EPEL repository).</p>
+<p>Once composer is installed, go to the centreon directory (usually /usr/share/centreon/) and run the following command :</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">composer</span> <span class="n">install</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">dev</span> <span class="o">--</span><span class="n">optimize</span><span class="o">-</span><span class="n">autoloader</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="javascript-dependencies-installation">
+<h4>Javascript dependencies installation<a class="headerlink" href="#javascript-dependencies-installation" title="Permalink to this headline">¶</a></h4>
+<p>First, you need to install javascript runtime <strong>nodejs</strong>.
+Installation instructions are available <cite>here &lt;https://nodejs.org/en/download/package-manager/&gt;</cite>.</p>
+<p>Once nodejs is installed, go to the centreon directory (usually /usr/share/centreon/) and run the following commands :</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">install</span>
+<span class="n">npm</span> <span class="n">run</span> <span class="n">build</span>
+<span class="n">npm</span> <span class="n">prune</span> <span class="o">--</span><span class="n">production</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="any-operating-system">
+<h4>Any operating system<a class="headerlink" href="#any-operating-system" title="Permalink to this headline">¶</a></h4>
+<p>SELinux should be disabled; for this, you have to modify the file “/etc/sysconfig/selinux” and replace “enforcing” by “disabled”:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELINUX</span><span class="o">=</span><span class="n">disabled</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>After saving the file, please reboot your operating system to apply the changes.</p>
+<p>PHP timezone should be set: go to <cite>/etc/php.d</cite> directory and create a file named <cite>php-timezone.ini</cite> who contain the following line:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date</span><span class="o">.</span><span class="n">timezone</span> <span class="o">=</span> <span class="n">Europe</span><span class="o">/</span><span class="n">Paris</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>After saving the file, please don’t forget to restart apache server.</p>
+<p>The Mysql database server should be available to complete installation (locally or not). MariaDB is recommended.</p>
+<p>After this step you should connect to Centreon to finalise the installation process.
+This step is described <a class="reference internal" href="from_iso.html#installation-web-ces"><span class="std std-ref">here</span></a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using sources</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li><a class="reference internal" href="#centos">CentOS</a></li>
+<li><a class="reference internal" href="#debian-jessie-ubuntu-14-04">Debian jessie / Ubuntu 14.04</a></li>
+<li><a class="reference internal" href="#suse">Suse</a><ul>
+<li><a class="reference internal" href="#packages">Packages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#monitoring-engine">Monitoring engine</a></li>
+<li><a class="reference internal" href="#stream-multiplexer">Stream Multiplexer</a></li>
+<li><a class="reference internal" href="#centreon">Centreon</a><ul>
+<li><a class="reference internal" href="#shell-installation">Shell Installation</a><ul>
+<li><a class="reference internal" href="#prerequisites-check">Prerequisites check</a></li>
+<li><a class="reference internal" href="#license-agreement">License agreement</a></li>
+<li><a class="reference internal" href="#main-components">Main components</a></li>
+<li><a class="reference internal" href="#centreon-user-and-group">Centreon user and group</a></li>
+<li><a class="reference internal" href="#monitoring-user">Monitoring user</a></li>
+<li><a class="reference internal" href="#monitoring-logs-directory">Monitoring logs directory</a></li>
+<li><a class="reference internal" href="#plugin-path">Plugin path</a></li>
+<li><a class="reference internal" href="#sudo-configuration">Sudo configuration</a></li>
+<li><a class="reference internal" href="#apache-configuration">Apache configuration</a></li>
+<li><a class="reference internal" href="#pear-module-installation">Pear module installation</a></li>
+<li><a class="reference internal" href="#configuration-file-installation">Configuration file installation</a></li>
+<li><a class="reference internal" href="#performance-data-component-centstorage-installation">Performance data component (Centstorage) installation</a></li>
+<li><a class="reference internal" href="#poller-communication-subsystem-centcore-installation">Poller communication subsystem (Centcore) installation</a></li>
+<li><a class="reference internal" href="#centreon-snmp-trap-management-installation">Centreon SNMP trap management installation</a></li>
+<li><a class="reference internal" href="#plugin-installation">Plugin installation</a></li>
+<li><a class="reference internal" href="#end">End</a></li>
+<li><a class="reference internal" href="#php-dependencies-installation">PHP dependencies installation</a></li>
+<li><a class="reference internal" href="#javascript-dependencies-installation">Javascript dependencies installation</a></li>
+<li><a class="reference internal" href="#any-operating-system">Any operating system</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="from_VM.html"
+                        title="previous chapter">Using VM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../migration/index.html"
+                        title="next chapter">Migrando do Nagios para o Centreon</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/installation/from_sources.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../migration/index.html" title="Migrando do Nagios para o Centreon"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="from_VM.html" title="Using VM"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Installation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

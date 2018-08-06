@@ -1,0 +1,199 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Centreon Web 2.8.1 &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Centreon Web 2.8.2" href="centreon-2.8.2.html" />
+    <link rel="prev" title="Centreon 2.8" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="centreon-2.8.2.html" title="Centreon Web 2.8.2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Centreon 2.8"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="centreon-web-2-8-1">
+<h1>Centreon Web 2.8.1<a class="headerlink" href="#centreon-web-2-8-1" title="Permalink to this headline">¶</a></h1>
+<p>Released November 14th, 2016</p>
+<p>The 2.8.1 release for Centreon Web is now available for download. Here are its release notes.</p>
+<div class="section" id="changes">
+<h2>Changes<a class="headerlink" href="#changes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>New theme for Centreon web installation and update;</li>
+<li>Add REST exposure for Centreon API, Centreon CLAPI still available;</li>
+<li>Integration of Centreon Backup module in Centreon;</li>
+<li>Integration of Centreon Knowledge Base module in Centreon;</li>
+<li>Integration of Centreon Partitioning module in Centreon;</li>
+<li>New design to display charts using C3JS.</li>
+<li>New filters available to select display charts</li>
+<li>Possibility to display charts on 1, 2 or 3 columns;</li>
+<li>Apply zoom on one chart apply zoom for all displayed charts;</li>
+<li>Merge of meta-services and services real-time monitoring display;</li>
+<li>Strict inheritance of contacts and contacts groups from hosts on services notification parameters. Contacts and groups of contacts from services definition will be erased during generation of configuration by settings from host;</li>
+</ul>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>New servicegroups filters in real-time monitoring;</li>
+<li>New display of chart in pop-up of services in real-time monitoring and status details</li>
+<li>Add poller name in pop-up of hosts in real-time monitoring;</li>
+<li>Add monitoring command line with macros type password hidden (via ACL) in service status details;</li>
+<li>Integration of poller’s name in “Monitoring &gt; System Logs” page;</li>
+<li>Integration of ACL action on poller for generation and export of configuration;</li>
+<li>Add new notification settings to not send recovery notification if status of host or service came back quickly to non-ok (issue for SNMP traps for example);</li>
+<li>Add geo-coordinates settings on hosts, services and groups. Used by Centreon Map product;</li>
+<li>Possibility to define a command on multi-lines;</li>
+<li>Add Centreon Broker graphite and InfluxDB export;</li>
+<li>Add possibility for all Centreon web users to select their home page after connection;</li>
+<li>Add possibility to define downtimes on hostgroups, servicegroups and multi-hosts;</li>
+<li>Add an acknowledge expiration time on host and service;</li>
+<li>Better ergonomy on selectbox for Mac OS and MS Windows users;</li>
+<li>Add possibility to set downtimes on Centreon Poller display module;</li>
+<li>Add possibility to reduce Centreon Broker input/output configuration;</li>
+<li>Optimization of SQL table for logs access;</li>
+<li>Add timezone on host’s template definition;</li>
+</ul>
+</div>
+<div class="section" id="security-fixes">
+<h2>Security Fixes<a class="headerlink" href="#security-fixes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>#4668: Autologin with invalid token for imported users with null password ;</li>
+<li>#4458: User can create admin account</li>
+</ul>
+</div>
+<div class="section" id="bug-fixes">
+<h2>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>#4703: Macros are always listed on command line descriptions;</li>
+<li>#4694: Don’t display notification in pop-up for acknowledged or downtimes objects;</li>
+<li>#4585, #4584, #4590: Correction of CSV export in “Monitoring &gt; Event Logs”, “Dashboard &gt; Hostgroups” and “Dashboard &gt; Servicegroups” pages. Correction of XML error in “Dashboard &gt; Hostgroups” and “Dashboard &gt; Servicegroups” pages;</li>
+<li>#4617, #4609: Complete contextual help in hosts and services forms;</li>
+<li>#4147: Fix ACL to add widget</li>
+</ul>
+</div>
+<div class="section" id="removed-features">
+<h2>Removed Features<a class="headerlink" href="#removed-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>No possibility to split charts;</li>
+<li>No possibility to display multi-period on one chart (Day, Week, Month, Year);</li>
+</ul>
+</div>
+<div class="section" id="known-bugs-or-issues">
+<h2>Known bugs or issues<a class="headerlink" href="#known-bugs-or-issues" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>This release is not yet compatible with other commercial products
+from Centreon, like Centreon MBI, Centreon BAM or Centreon Map.
+If your are using any of these products, you are strongly advised
+<strong>NOT</strong> to update Centreon Web until new releases of the forementioned
+products are available and specifically mention Centreon Web 2.8
+compatibility ;</li>
+<li>Centreon Engine performance chart still in RRDTools PNG format ;</li>
+<li>Zoom out on chart change period on filters ;</li>
+<li>User with ACL can’t see it own previously created meta service ;</li>
+<li>Problem with recurrent downtimes and DST ;</li>
+<li>Issues on SSO Authentication</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Centreon Web 2.8.1</a><ul>
+<li><a class="reference internal" href="#changes">Changes</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#security-fixes">Security Fixes</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
+<li><a class="reference internal" href="#removed-features">Removed Features</a></li>
+<li><a class="reference internal" href="#known-bugs-or-issues">Known bugs or issues</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Centreon 2.8</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="centreon-2.8.2.html"
+                        title="next chapter">Centreon Web 2.8.2</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/release_notes/centreon-2.8/centreon-2.8.1.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="centreon-2.8.2.html" title="Centreon Web 2.8.2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Centreon 2.8"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

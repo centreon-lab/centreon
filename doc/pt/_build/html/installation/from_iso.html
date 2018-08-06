@@ -1,0 +1,373 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using Centreon ISO el7 &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using packages" href="from_packages.html" />
+    <link rel="prev" title="Downloads" href="downloads.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="from_packages.html" title="Using packages"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="downloads.html" title="Downloads"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Installation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-centreon-iso-el7">
+<span id="installisoel7"></span><h1>Using Centreon ISO el7<a class="headerlink" href="#using-centreon-iso-el7" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Installation from Centreon el6 ISO is available <a class="reference internal" href="from_iso_el6.html#installisoel6"><span class="std std-ref">here</span></a></p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1-start">
+<h3>Step 1: Start<a class="headerlink" href="#step-1-start" title="Permalink to this headline">¶</a></h3>
+<p>To install Centreon, start your server on the Centreon ISO image in version el7.
+Start with <strong>Install CentOS 7</strong>:</p>
+<a class="reference internal image-reference" href="../_images/01_bootmenu.png"><img alt="../_images/01_bootmenu.png" class="align-center" src="../_images/01_bootmenu.png" style="width: 416.65000000000003px; height: 312.0px;" /></a>
+</div>
+<div class="section" id="step-2-choice-of-language">
+<h3>Step 2: Choice of language<a class="headerlink" href="#step-2-choice-of-language" title="Permalink to this headline">¶</a></h3>
+<p>Choose the language of the installation process then click <strong>Done</strong>:</p>
+<a class="reference internal image-reference" href="../_images/02_select_install_lang.png"><img alt="../_images/02_select_install_lang.png" class="align-center" src="../_images/02_select_install_lang.png" style="width: 664.3000000000001px; height: 499.85px;" /></a>
+</div>
+<div class="section" id="step-3-component-selection">
+<h3>Step 3: Component selection<a class="headerlink" href="#step-3-component-selection" title="Permalink to this headline">¶</a></h3>
+<p>Click on the <strong>Installation Type</strong> menu:</p>
+<a class="reference internal image-reference" href="../_images/03_menu_type_install.png"><img alt="../_images/03_menu_type_install.png" class="align-center" src="../_images/03_menu_type_install.png" style="width: 665.6px; height: 499.20000000000005px;" /></a>
+<p>It is possible to choose different options:</p>
+<a class="reference internal image-reference" href="../_images/04_form_type_install.png"><img alt="../_images/04_form_type_install.png" class="align-center" src="../_images/04_form_type_install.png" style="width: 665.6px; height: 498.55px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Central with database</strong>: Install Centreon (web interface and database), monitoring engine and broker</li>
+<li><strong>Central without database</strong>: Install Centreon (web interface only), monitoring engine and broker</li>
+<li><strong>Poller</strong>: Install poller (monitoring engine and broker only)</li>
+<li><strong>Database</strong>: Install database server (use with <strong>Central server without database</strong> option)</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="step-4-system-configuration">
+<h3>Step 4: System configuration<a class="headerlink" href="#step-4-system-configuration" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="partitioning-of-disk">
+<h4>Partitioning of disk<a class="headerlink" href="#partitioning-of-disk" title="Permalink to this headline">¶</a></h4>
+<p>Click on <strong>Installation Destination</strong> menu:</p>
+<a class="reference internal image-reference" href="../_images/05_menu_filesystem.png"><img alt="../_images/05_menu_filesystem.png" class="align-center" src="../_images/05_menu_filesystem.png" style="width: 664.95px; height: 499.85px;" /></a>
+<p>Select the hard disk drive and the <strong>I will configure partitioning</strong> option, then click <strong>Done</strong>:</p>
+<a class="reference internal image-reference" href="../_images/06_select_disk.png"><img alt="../_images/06_select_disk.png" class="align-center" src="../_images/06_select_disk.png" style="width: 664.3000000000001px; height: 499.20000000000005px;" /></a>
+<p>Using <strong>+</strong> button create your own partitioning file system following <a class="reference internal" href="prerequisites.html#diskspace"><span class="std std-ref">documentation prerequisites</span></a> then click <strong>Done</strong>:</p>
+<a class="reference internal image-reference" href="../_images/07_partitioning_filesystem.png"><img alt="../_images/07_partitioning_filesystem.png" class="align-center" src="../_images/07_partitioning_filesystem.png" style="width: 664.3000000000001px; height: 499.20000000000005px;" /></a>
+<p>A confirmation window appears. Click <strong>Accept Changes</strong> to validate the partitioning:</p>
+<a class="reference internal image-reference" href="../_images/08_apply_changes.png"><img alt="../_images/08_apply_changes.png" class="align-center" src="../_images/08_apply_changes.png" style="width: 486.85px; height: 260.0px;" /></a>
+</div>
+<div class="section" id="network-configuration">
+<h4>Network configuration<a class="headerlink" href="#network-configuration" title="Permalink to this headline">¶</a></h4>
+<p>Click <strong>Network &amp; Hostname</strong> menu:</p>
+<a class="reference internal image-reference" href="../_images/09_menu_network.png"><img alt="../_images/09_menu_network.png" class="align-center" src="../_images/09_menu_network.png" style="width: 665.6px; height: 499.20000000000005px;" /></a>
+<p>Enable all network interfaces and define hostname then click <strong>Done</strong>:</p>
+<a class="reference internal image-reference" href="../_images/10_network_hostname.png"><img alt="../_images/10_network_hostname.png" class="align-center" src="../_images/10_network_hostname.png" style="width: 665.6px; height: 498.55px;" /></a>
+</div>
+<div class="section" id="timezone-configuration">
+<h4>Timezone configuration<a class="headerlink" href="#timezone-configuration" title="Permalink to this headline">¶</a></h4>
+<p>Click <strong>Date &amp; Time</strong> menu:</p>
+<a class="reference internal image-reference" href="../_images/11_menu_timezone.png"><img alt="../_images/11_menu_timezone.png" class="align-center" src="../_images/11_menu_timezone.png" style="width: 665.6px; height: 499.20000000000005px;" /></a>
+<p>Select timezone then click on configuration button:</p>
+<a class="reference internal image-reference" href="../_images/12_select_timzeone.png"><img alt="../_images/12_select_timzeone.png" class="align-center" src="../_images/12_select_timzeone.png" style="width: 665.6px; height: 499.20000000000005px;" /></a>
+<p>Enable or add a NTP server, click <strong>OK</strong> then <strong>Done</strong>:</p>
+<a class="reference internal image-reference" href="../_images/13_enable_ntp.png"><img alt="../_images/13_enable_ntp.png" class="align-center" src="../_images/13_enable_ntp.png" style="width: 325.0px; height: 259.35px;" /></a>
+</div>
+<div class="section" id="start-installation">
+<h4>Start installation<a class="headerlink" href="#start-installation" title="Permalink to this headline">¶</a></h4>
+<p>Once configuration is over click <strong>Begin Installation</strong>:</p>
+<a class="reference internal image-reference" href="../_images/14_begin_install.png"><img alt="../_images/14_begin_install.png" class="align-center" src="../_images/14_begin_install.png" style="width: 664.95px; height: 498.55px;" /></a>
+<p>Click <strong>Root Password</strong> :</p>
+<a class="reference internal image-reference" href="../_images/15_menu_root_password.png"><img alt="../_images/15_menu_root_password.png" class="align-center" src="../_images/15_menu_root_password.png" style="width: 665.6px; height: 499.20000000000005px;" /></a>
+<p>Define and confirm <strong>root</strong> user password. Click <strong>Done</strong>:</p>
+<a class="reference internal image-reference" href="../_images/16_define_root_password.png"><img alt="../_images/16_define_root_password.png" class="align-center" src="../_images/16_define_root_password.png" style="width: 664.95px; height: 499.20000000000005px;" /></a>
+<p>Wait during installation process:</p>
+<a class="reference internal image-reference" href="../_images/17_wait_install.png"><img alt="../_images/17_wait_install.png" class="align-center" src="../_images/17_wait_install.png" style="width: 664.95px; height: 499.85px;" /></a>
+<p>When the installation is finished, click <strong>Reboot</strong>:</p>
+<a class="reference internal image-reference" href="../_images/18_reboot_server.png"><img alt="../_images/18_reboot_server.png" class="align-center" src="../_images/18_reboot_server.png" style="width: 664.3000000000001px; height: 499.20000000000005px;" /></a>
+</div>
+<div class="section" id="update-system-packages">
+<h4>Update system packages<a class="headerlink" href="#update-system-packages" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Connect to your server using a terminal and execute:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># yum update</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<a class="reference internal image-reference" href="../_images/19_update_system.png"><img alt="../_images/19_update_system.png" class="align-center" src="../_images/19_update_system.png" style="width: 466.7px; height: 260.0px;" /></a>
+<p>Accept all GPG keys:</p>
+<a class="reference internal image-reference" href="../_images/20_accept_gpg_key.png"><img alt="../_images/20_accept_gpg_key.png" class="align-center" src="../_images/20_accept_gpg_key.png" style="width: 468.0px; height: 260.65000000000003px;" /></a>
+<dl class="docutils">
+<dt>Then restart your server with following command:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># reboot</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="via-the-web-interface">
+<span id="installation-web-ces"></span><h3>Via the web interface<a class="headerlink" href="#via-the-web-interface" title="Permalink to this headline">¶</a></h3>
+<p>Log into web interface via : <a class="reference external" href="http://[SERVER_IP]/centreon">http://[SERVER_IP]/centreon</a>.
+The End of installation wizard of Centreon is displayed, click on <strong>Next</strong>.</p>
+<a class="reference internal image-reference" href="../_images/acentreonwelcome.png"><img alt="../_images/acentreonwelcome.png" class="align-center" src="../_images/acentreonwelcome.png" style="width: 563.55px; height: 261.8px;" /></a>
+<p>The End of installation wizard of Centreon checks the availability of the modules, click on <strong>Next</strong>.</p>
+<a class="reference internal image-reference" href="../_images/acentreoncheckmodules.png"><img alt="../_images/acentreoncheckmodules.png" class="align-center" src="../_images/acentreoncheckmodules.png" style="width: 559.3px; height: 276.25px;" /></a>
+<p>Click on <strong>Next</strong>.</p>
+<a class="reference internal image-reference" href="../_images/amonitoringengine2.png"><img alt="../_images/amonitoringengine2.png" class="align-center" src="../_images/amonitoringengine2.png" style="width: 562.6999999999999px; height: 336.59999999999997px;" /></a>
+<p>Click on <strong>Next</strong>.</p>
+<a class="reference internal image-reference" href="../_images/abrokerinfo2.png"><img alt="../_images/abrokerinfo2.png" class="align-center" src="../_images/abrokerinfo2.png" style="width: 559.3px; height: 304.3px;" /></a>
+<p>Define the data concerning the admin user, click on <strong>Next</strong>.</p>
+<a class="reference internal image-reference" href="../_images/aadmininfo.png"><img alt="../_images/aadmininfo.png" class="align-center" src="../_images/aadmininfo.png" style="width: 560.15px; height: 325.55px;" /></a>
+<p>By default, the ‘localhost’ server is defined and the root password is empty. If you use a remote database server, these two data entries must be changed. In our box, we only need to define a password for the user accessing the Centreon databases, i.e. ‘Centreon’, click on <strong>Next</strong>.</p>
+<a class="reference internal image-reference" href="../_images/adbinfo.png"><img alt="../_images/adbinfo.png" class="align-center" src="../_images/adbinfo.png" style="width: 561.0px; height: 391.0px;" /></a>
+<p>If the following error message appears: <strong>Add innodb_file_per_table=1 in my.cnf file under the [mysqld] section and restart MySQL Server.</strong> Perform the following operation:</p>
+<ol class="arabic simple">
+<li>Log-on to the ‘root’ user on your server</li>
+<li>Modify this file</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">cnf</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Add these lines to the file</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
+<span class="n">innodb_file_per_table</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Restart mysql service</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">mysql</span> <span class="n">restart</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Click on <strong>Refresh</strong></li>
+</ol>
+<p>The End of installation wizard configures the databases, click on <strong>Next</strong>.</p>
+<a class="reference internal image-reference" href="../_images/adbconf.png"><img alt="../_images/adbconf.png" class="align-center" src="../_images/adbconf.png" style="width: 561.0px; height: 284.75px;" /></a>
+<p>The installation is finished, click on Finish.</p>
+<p>At this stage, an ad informs you of the latest Centreon news/products . If your platform is connected to the Internet, you will receive the latest information. If not, the information of the current version will be displayed.</p>
+<a class="reference internal image-reference" href="../_images/aendinstall.png"><img alt="../_images/aendinstall.png" class="align-center" src="../_images/aendinstall.png" style="width: 552.5px; height: 460.7px;" /></a>
+<p>You can now log in.</p>
+<a class="reference internal image-reference" href="../_images/aconnection.png"><img alt="../_images/aconnection.png" class="align-center" src="../_images/aconnection.png" style="width: 231.4px; height: 170.3px;" /></a>
+</div>
+<div class="section" id="start-monitoring">
+<h3>Start monitoring<a class="headerlink" href="#start-monitoring" title="Permalink to this headline">¶</a></h3>
+<p>To start the monitoring engine :</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>On the web interface, go to <strong>Configuration</strong> ==&gt; <strong>Monitoring engines</strong></li>
+<li>Leave the default options and click on <strong>Export</strong></li>
+<li>Uncheck <strong>Generate Configuration Files</strong> and <strong>Run monitoring engine debug (-v)</strong></li>
+<li>Check <strong>Move Export Files</strong> and <strong>Restart Monitoring Engine</strong></li>
+<li>Click on <strong>Export</strong> again</li>
+<li>Log into the ‘root’ user on your server</li>
+<li>Start Centreon Broker</li>
+</ol>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">cbd</span> <span class="n">start</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="8">
+<li>Start Centreon Engine</li>
+</ol>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">centengine</span> <span class="n">start</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="9">
+<li>Start centcore</li>
+</ol>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="n">centcore</span> <span class="n">start</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+<p>Monitoring is now working. You can start to monitor your IT !</p>
+</div>
+<div class="section" id="introduction-to-the-web-interface">
+<h3>Introduction to the web interface<a class="headerlink" href="#introduction-to-the-web-interface" title="Permalink to this headline">¶</a></h3>
+<p>Centreon web interface is made up of several menus, each menu has a specific function:</p>
+<img alt="../_images/amenu.png" class="align-center" src="../_images/amenu.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li>The <strong>Home</strong> menu enables access to the first home screen after logging in. It summarises the general status of the supervision.</li>
+<li>The <strong>Monitoring</strong> menu contains the status of all the supervised elements in real and delayed time via the viewing of logs and performance graphics.</li>
+<li>The <strong>Reporting</strong> menu serves to view, intuitively (via diagrams), the evolution of the supervision on a given period.</li>
+<li>The <strong>Configuration</strong> menu serves to configure all monitored objects and the supervision infrastructure.</li>
+<li>The <strong>Administration</strong> menu serves to configure the Centreon web interface and to view the general status of the servers.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="easy-monitoring-configuration">
+<span id="installation-ppm"></span><h2>Easy monitoring configuration<a class="headerlink" href="#easy-monitoring-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Centreon is great in itself, highly versatile  and can be configured to
+fit the very specifics of your monitored infrastructure. However you
+might find it useful to use Centreon IMP to get you started in minutes.
+Centreon IMP provides you Plugin Packs which are bundled configuration
+templates that highly reduce the time needed to properly monitor the
+most common services of your network.</p>
+<p>Centreon IMP needs the technical components: Centreon License Manager
+and Centreon Plugin Pack Manager to work.</p>
+<div class="section" id="install-packages">
+<h3>Install packages<a class="headerlink" href="#install-packages" title="Permalink to this headline">¶</a></h3>
+<p>When using Centreon ISO, the installation of Centreon Plugin Pack Manager is very
+easy. You’ll see that Centreon License Manager will be installed too
+as a dependency.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ yum install centreon-pp-manager
+</pre></div>
+</div>
+</div>
+<div class="section" id="web-install">
+<h3>Web install<a class="headerlink" href="#web-install" title="Permalink to this headline">¶</a></h3>
+<p>Once the packages are installed, you need to enable the module in Centreon.
+So go to the Administration -&gt; Extensions -&gt; Modules page.</p>
+<img alt="../_images/ppm_1.png" class="align-center" src="../_images/ppm_1.png" />
+<p>Install Centreon License Manager (dependency of Centreon Plugin Pack Manager) first.</p>
+<img alt="../_images/ppm_2.png" class="align-center" src="../_images/ppm_2.png" />
+<p>Then install Centreon Plugin Pack Manager itself.</p>
+<img alt="../_images/ppm_3.png" class="align-center" src="../_images/ppm_3.png" />
+<p>You’re now ready to go to Configuration -&gt; Plugin packs -&gt; Manager.
+You’ll find there 10 free Plugin Packs to get you started. 5 more are
+available after free registration and 150+ if you subscribe to the IMP
+offer (more information on <a class="reference external" href="https://www.centreon.com">our website</a>).</p>
+<img alt="../_images/ppm_4.png" class="align-center" src="../_images/ppm_4.png" />
+<p>You can continue to configure your monitoring with Centreon IMP by
+following <a class="reference internal" href="../configuration_guide/imp/index.html#impconfiguration"><span class="std std-ref">this guide</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using Centreon ISO el7</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#step-1-start">Step 1: Start</a></li>
+<li><a class="reference internal" href="#step-2-choice-of-language">Step 2: Choice of language</a></li>
+<li><a class="reference internal" href="#step-3-component-selection">Step 3: Component selection</a></li>
+<li><a class="reference internal" href="#step-4-system-configuration">Step 4: System configuration</a><ul>
+<li><a class="reference internal" href="#partitioning-of-disk">Partitioning of disk</a></li>
+<li><a class="reference internal" href="#network-configuration">Network configuration</a></li>
+<li><a class="reference internal" href="#timezone-configuration">Timezone configuration</a></li>
+<li><a class="reference internal" href="#start-installation">Start installation</a></li>
+<li><a class="reference internal" href="#update-system-packages">Update system packages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#via-the-web-interface">Via the web interface</a></li>
+<li><a class="reference internal" href="#start-monitoring">Start monitoring</a></li>
+<li><a class="reference internal" href="#introduction-to-the-web-interface">Introduction to the web interface</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#easy-monitoring-configuration">Easy monitoring configuration</a><ul>
+<li><a class="reference internal" href="#install-packages">Install packages</a></li>
+<li><a class="reference internal" href="#web-install">Web install</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="downloads.html"
+                        title="previous chapter">Downloads</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="from_packages.html"
+                        title="next chapter">Using packages</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/installation/from_iso.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="from_packages.html" title="Using packages"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="downloads.html" title="Downloads"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Installation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

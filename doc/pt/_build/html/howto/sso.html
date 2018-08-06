@@ -1,0 +1,141 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Implement SSO &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer" href="../developer/index.html" />
+    <link rel="prev" title="How to" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../developer/index.html" title="Developer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="How to"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">How to</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="implement-sso">
+<h1>Implement SSO<a class="headerlink" href="#implement-sso" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-sso-works-with-centreon">
+<h2>How SSO works with Centreon ?<a class="headerlink" href="#how-sso-works-with-centreon" title="Permalink to this headline">¶</a></h2>
+<p>This is an example of architecture with LemonLDAP :</p>
+<img alt="../_images/SSO_architecture.png" class="align-center" src="../_images/SSO_architecture.png" />
+<ol class="arabic simple">
+<li>The user signs in SSO authentication portal</li>
+<li>The authentication portal checks user access on LDAP server</li>
+<li>The LDAP server returns user information</li>
+<li>The authentication portal creates a session to store user information and returns SSO cookie to the user</li>
+<li>The user is redirected to Centreon Web and catched by the SSO handler which checks user access</li>
+<li>The SSO handler sends request to Centreon Web with login header (i.e HTTP_AUTH_USER)</li>
+<li>Centreon Web checks user access by login on LDAP server</li>
+<li>The LDAP server returns user information</li>
+<li>Centreon Web returns information to the handler</li>
+<li>The SSO handler transfers information to the user</li>
+</ol>
+</div>
+<div class="section" id="how-to-configure-sso-in-centreon">
+<h2>How to configure SSO in Centreon ?<a class="headerlink" href="#how-to-configure-sso-in-centreon" title="Permalink to this headline">¶</a></h2>
+<p>You can configure SSO in <strong>Administration &gt; Parameters</strong> :</p>
+<img alt="../_images/SSO_configuration.png" class="align-center" src="../_images/SSO_configuration.png" />
+<p>For more information, please refer <a class="reference internal" href="../administration_guide/02e.html#centreon-parameters"><span class="std std-ref">here</span></a></p>
+</div>
+<div class="section" id="security-warning">
+<h2>Security warning<a class="headerlink" href="#security-warning" title="Permalink to this headline">¶</a></h2>
+<p>SSO feature has only to be enabled in a secured and dedicated environment for SSO.
+Direct access to Centreon UI from users have to be disabled.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Implement SSO</a><ul>
+<li><a class="reference internal" href="#how-sso-works-with-centreon">How SSO works with Centreon ?</a></li>
+<li><a class="reference internal" href="#how-to-configure-sso-in-centreon">How to configure SSO in Centreon ?</a></li>
+<li><a class="reference internal" href="#security-warning">Security warning</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">How to</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../developer/index.html"
+                        title="next chapter">Developer</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/howto/sso.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../developer/index.html" title="Developer"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="How to"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >How to</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

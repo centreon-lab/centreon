@@ -1,0 +1,249 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Commands &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Contacts" href="contacts.html" />
+    <link rel="prev" title="Centreon broker" href="broker_cfg.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="contacts.html" title="Contacts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="broker_cfg.html" title="Centreon broker"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="commands">
+<h1>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>CMD</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available commands, use <strong>SHOW</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@centreon ~]# ./centreon -u admin -p centreon -o CMD -a show
+id;name;type;line
+1;check-ping;check;$USER1$/check_ping -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$
+2;check_dummy;check;$USER1$/check_dummy -o $ARG1$ -s $ARG2$
+[...]
+</pre></div>
+</div>
+<p>Columns are the following:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Command ID</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Command name</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>Command type</td>
+<td><em>check</em>, <em>notif</em>, <em>misc</em> or <em>discovery</em></td>
+</tr>
+<tr class="row-odd"><td>Command line</td>
+<td>System command line that will be run on execution</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="add">
+<h2>Add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h2>
+<p>In order to add a command use <strong>ADD</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CMD -a ADD -v &#39;check-host-alive;check;$USER1$/check_ping -H $HOSTADDRESS$ -w 3000.0,80% -c 5000.0,100% -p 1&#39;</span>
+</pre></div>
+</div>
+<p>Required columns are the following:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Command name</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Command type</td>
+<td><em>check</em>, <em>notif</em>, <em>misc</em> or <em>discovery</em></td>
+</tr>
+<tr class="row-even"><td>Command line</td>
+<td>System command line that will be run on execution</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You need to generate your configuration file and restart monitoring engine in order to apply changes.</p>
+</div>
+</div>
+<div class="section" id="del">
+<h2>Del<a class="headerlink" href="#del" title="Permalink to this headline">¶</a></h2>
+<p>If you want to remove a command use <strong>DEL</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CMD -a del -v &#39;check-host-alive&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You need to generate your configuration file and restart monitoring engine in order to apply changes.</p>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameters for a command, use the <strong>SETPARAM</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CMD -a setparam -v &#39;check-host-alive;type;notif&#39;</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CMD -a setparam -v &#39;check-host-alive;name;check-host-alive2&#39;</span>
+</pre></div>
+</div>
+<p>Parameters that you can change are the following:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>name</td>
+<td>Name of command</td>
+</tr>
+<tr class="row-odd"><td>line</td>
+<td>Command line</td>
+</tr>
+<tr class="row-even"><td>type</td>
+<td><em>check</em>, <em>notif</em>, <em>misc</em> or <em>discovery</em></td>
+</tr>
+<tr class="row-odd"><td>graph</td>
+<td>Graph template applied on command</td>
+</tr>
+<tr class="row-even"><td>example</td>
+<td>Example of arguments (i.e: !80!90)</td>
+</tr>
+<tr class="row-odd"><td>comment</td>
+<td>Comments regarding the command</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You need to generate your configuration file and restart monitoring engine in order to apply changes.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Commands</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#add">Add</a></li>
+<li><a class="reference internal" href="#del">Del</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="broker_cfg.html"
+                        title="previous chapter">Centreon broker</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="contacts.html"
+                        title="next chapter">Contacts</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/commands.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="contacts.html" title="Contacts"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="broker_cfg.html" title="Centreon broker"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

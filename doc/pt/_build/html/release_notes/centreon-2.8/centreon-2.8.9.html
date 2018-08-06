@@ -1,0 +1,167 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Centreon Web 2.8.9 &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Centreon Web 2.8.10" href="centreon-2.8.10.html" />
+    <link rel="prev" title="Centreon Web 2.8.8" href="centreon-2.8.8.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="centreon-2.8.10.html" title="Centreon Web 2.8.10"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="centreon-2.8.8.html" title="Centreon Web 2.8.8"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="centreon-web-2-8-9">
+<h1>Centreon Web 2.8.9<a class="headerlink" href="#centreon-web-2-8-9" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="bug-fixes">
+<h2>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fix Incorrect style for “Scheduled downtime” in dashboard - #5240</li>
+<li>Apply new Centreon graphical charter to add and modify pages for metaservice indicator - #5255</li>
+<li>[2.8.6] : Double quote are converted in html entities in fields Args - #5205</li>
+<li>Duplicate host template doesn’t work - #5252</li>
+<li>[BUG] “Home &gt; Poller Statistics &gt; Graphs” only works for Central - #4954</li>
+<li>“Recovery notification delay” is not written to centreon-engine’s configuration - #5249 - PR #5268</li>
+<li>Severity of ‘host category’ - #5245</li>
+<li>[2.8.8] Deploy Service action won’t work - #5215</li>
+<li>[2.8.8] Issue when adding new connector - #5233</li>
+<li>[2.8.8] Data pagination - #5259</li>
+<li>Cannot modify metaservice indicator - #5254 - PR #5267</li>
+<li>[2.7.11] Migration 2.7.11 to 2.8.x does not work #5265</li>
+<li>2.7 to 2.8 upgrade error - #5220</li>
+<li>Cannot insert numbers in service description field - #5275</li>
+<li>[2.8.7] - Timezone / Location BUG !! - #5218</li>
+<li>2.8.8 Service Trap Relation empty - #5223</li>
+<li>[2.7.x/2.8.X] Old school style in popup - #5232</li>
+<li>[BUG] ACL - Servicegroup - #5101 - PR #5222</li>
+<li>[2.8.7] Missing argument 1 for PEAR::isError() - #5214 - PR #5225</li>
+<li>[Reporting &gt; Dashboard &gt; Services] Unable to export CSV - #5170 - PR #5172</li>
+</ul>
+<div class="section" id="graphs">
+<h3>Graphs<a class="headerlink" href="#graphs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Graph are not correctly scaled - #5248</li>
+<li>[Chart] scale in charts using CPU template is wrong Kind/Bug Status/Implemented - #5130</li>
+<li>Graph scale values not working - #4815</li>
+<li>[2.8.5] Charts upper limit different from template - #5123</li>
+<li>Remove chart padding - #5288</li>
+<li>Base Graph 1000/1024 Kind/Bug Status/Implemented - #5069</li>
+<li>[2.8.6] non-admin user split chart permission - #5177</li>
+<li>After using split chart, curves are not displayed anymore (period filter not applied) - #5198 - PR #5171</li>
+<li>[GRAPH] Problem with external graph usage (Widgets, Centreon BAM) - #5270</li>
+<li>Incorrect scale and position for rta curve (performance ping graph) - #5202</li>
+<li>Wrong tool tip display on chart with two units when one of the curves is disabled - #5203</li>
+<li>Splited chart png export misnamed doesn’t work with HTTPS - #5121 - PR #5171</li>
+<li>[2.8.5] Splited chart png export misnamed - #5120</li>
+<li>[Chart] curves units are displayed on incorrect side - #5113</li>
+<li>Assign good unit and curves to y axis when 2 axis - #5150</li>
+<li>remove curves artifacts - #5153</li>
+<li>Beta 2.8 Curve with an weird shape. - #4644</li>
+<li>The round of the curves - #5143</li>
+<li>The extra legend is option in chart. - #5156</li>
+<li>Add option for display or not the toggle all curves in views charts - #5159</li>
+<li>Use the base from graph template for humanreable ticks - #5149</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Centreon Web 2.8.9</a><ul>
+<li><a class="reference internal" href="#bug-fixes">Bug Fixes</a><ul>
+<li><a class="reference internal" href="#graphs">Graphs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="centreon-2.8.8.html"
+                        title="previous chapter">Centreon Web 2.8.8</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="centreon-2.8.10.html"
+                        title="next chapter">Centreon Web 2.8.10</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/release_notes/centreon-2.8/centreon-2.8.9.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="centreon-2.8.10.html" title="Centreon Web 2.8.10"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="centreon-2.8.8.html" title="Centreon Web 2.8.8"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Centreon 2.8</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

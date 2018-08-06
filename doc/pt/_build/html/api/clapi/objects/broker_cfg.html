@@ -1,0 +1,1878 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Centreon broker &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Commands" href="commands.html" />
+    <link rel="prev" title="Resource ACL" href="acl_resource.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="commands.html" title="Commands"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="acl_resource.html" title="Resource ACL"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="centreon-broker">
+<h1>Centreon broker<a class="headerlink" href="#centreon-broker" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>CENTBROKERCFG</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available Centreon Broker CFG, use the <strong>SHOW</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a show</span>
+<span class="n">config</span> <span class="nb">id</span><span class="p">;</span><span class="n">config</span> <span class="n">name</span><span class="p">;</span><span class="n">instance</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">Central</span> <span class="n">CFG</span><span class="p">;</span><span class="n">Central</span>
+<span class="mi">2</span><span class="p">;</span><span class="n">Sattelite</span> <span class="n">CFG</span><span class="p">;</span><span class="n">Sattelite</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Columns are the following:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>ID</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Name of configuration</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Instance that is linked to broker cfg</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="add">
+<h2>Add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h2>
+<p>In order to add a Centreon Broker CFG, use the <strong>ADD</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a add -v &quot;broker cfg for poller test;Poller test&quot;</span>
+</pre></div>
+</div>
+<p>Required fields are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of configuration</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Instance that is linked to broker cfg</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="del">
+<h2>Del<a class="headerlink" href="#del" title="Permalink to this headline">¶</a></h2>
+<p>If you want to remove a Centreon Broker CFG, use the <strong>DEL</strong> action. The Name is used for identifying the configuration to delete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a del -v &quot;broker cfg for poller test&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameter of a Centreon Broker configuration, use the <strong>SETPARAM</strong> action. The configuration name is used for identifying the configuration to update:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a setparam -v &quot;broker cfg for poller test;name;new broker cfg name&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of Centreon Broker configuration</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Parameter value</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters that you may change are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>filename</td>
+<td>Filename of configuration (.xml extension)</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>Name of configuration</td>
+</tr>
+<tr class="row-even"><td>instance</td>
+<td>Instance that is linked to Centreon Broker CFG</td>
+</tr>
+<tr class="row-odd"><td>event_queue_max_size</td>
+<td>Event queue max size (when number is reached,
+temporary output will be used).</td>
+</tr>
+<tr class="row-even"><td>cache_directory</td>
+<td>Path for cache files</td>
+</tr>
+<tr class="row-odd"><td>daemon</td>
+<td>Link this configuration to cbd service (0 or 1)</td>
+</tr>
+<tr class="row-even"><td>correlation_activate</td>
+<td>Enable correlation (0 or 1)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="listinput-listoutput-and-listlogger">
+<h2>Listinput, Listoutput and Listlogger<a class="headerlink" href="#listinput-listoutput-and-listlogger" title="Permalink to this headline">¶</a></h2>
+<p>If you want to list specific input output types of Centreon Broker, use one of the following commands:
+listinput
+listoutput
+listlogger</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a listoutput -v &quot;broker cfg for poller test&quot;</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">Storage</span>
+<span class="mi">2</span><span class="p">;</span><span class="n">RRD</span>
+<span class="mi">3</span><span class="p">;</span><span class="n">PerfData</span>
+</pre></div>
+</div>
+<p>Columns are the following :</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ID</td>
+<td>I/O ID</td>
+</tr>
+<tr class="row-odd"><td>Name</td>
+<td>I/O Name</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="getinput-getoutput-and-getlogger">
+<h2>Getinput, Getoutput and Getlogger<a class="headerlink" href="#getinput-getoutput-and-getlogger" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>In order to get parameters of a specific I/O object, use one of the following commands:</dt>
+<dd><ul class="first last simple">
+<li>getinput</li>
+<li>getoutput</li>
+<li>getlogger</li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a getoutput -v &quot;broker cfg for poller test;3&quot;</span>
+<span class="n">parameter</span> <span class="n">key</span><span class="p">;</span><span class="n">parameter</span> <span class="n">value</span>
+<span class="n">db_host</span><span class="p">;</span><span class="n">localhost</span>
+<span class="n">db_name</span><span class="p">;</span><span class="n">centreon_storage</span>
+<span class="n">db_password</span><span class="p">;</span><span class="n">centreon</span>
+<span class="n">db_port</span><span class="p">;</span><span class="mi">3306</span>
+<span class="n">db_type</span><span class="p">;</span><span class="n">mysql</span>
+<span class="n">db_user</span><span class="p">;</span><span class="n">centreon</span>
+<span class="n">interval</span><span class="p">;</span><span class="mi">60</span>
+<span class="n">length</span><span class="p">;</span>
+<span class="n">name</span><span class="p">;</span><span class="n">PerfData</span>
+<span class="nb">type</span><span class="p">;</span><span class="n">storage</span>
+</pre></div>
+</div>
+<p>The ID is used for identifying the I/O to get.</p>
+<p>Columns are the following :</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Parameter key of the I/O</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter value of the I/O</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="addinput-addoutput-and-addlogger">
+<h2>Addinput, Addoutput and Addlogger<a class="headerlink" href="#addinput-addoutput-and-addlogger" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>In order to add a new I/O object, use one of the following commands:</dt>
+<dd><ul class="first last simple">
+<li><strong>ADDINPUT</strong></li>
+<li><strong>ADDOUTPUT</strong></li>
+<li><strong>ADDLOGGER</strong></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a addlogger -v &quot;broker cfg for poller test;/var/log/centreon-broker/central-module.log;file&quot;</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a listlogger -v &quot;broker cfg for poller test&quot;</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span>
+<span class="mi">1</span><span class="p">;</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">centreon</span><span class="o">-</span><span class="n">broker</span><span class="o">/</span><span class="n">central</span><span class="o">-</span><span class="n">module</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of Centreon Broker CFG</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Name of the I/O object</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Nature of I/O object</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="delinput-deloutput-and-dellogger">
+<h2>Delinput, Deloutput and Dellogger<a class="headerlink" href="#delinput-deloutput-and-dellogger" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>In order to remove an I/O object from the Centreon Broker configuration, use one of the following commands:</dt>
+<dd><ul class="first last simple">
+<li><strong>DELINPUT</strong></li>
+<li><strong>DELOUTPUT</strong></li>
+<li><strong>DELLOGGER</strong></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a dellogger -v &quot;broker cfg for poller test;1&quot;</span>
+</pre></div>
+</div>
+<p>The I/O ID is used for identifying the object to delete.</p>
+</div>
+<div class="section" id="setintput-setoutput-and-setlogger">
+<h2>Setintput, Setoutput and Setlogger<a class="headerlink" href="#setintput-setoutput-and-setlogger" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>In order to set parameters of an I/O object, use one of the following commands:</dt>
+<dd><ul class="first last simple">
+<li><strong>SETINPUT</strong></li>
+<li><strong>SETOUTPUT</strong></li>
+<li><strong>SETLOGGER</strong></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a setlogger -v &quot;broker cfg for poller test;1;debug;no&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of Centreon Broker CFG</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>ID of I/O object</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Parameter value, for multiple values, use the “,” delimiter</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>You may get help with the following CLAPI commands:</dt>
+<dd><ul class="first last simple">
+<li><strong>GETTYPELIST</strong></li>
+<li><strong>GETFIELDLIST</strong></li>
+<li><strong>GETVALUELIST</strong></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a gettypelist -v &quot;output&quot;</span>
+<span class="nb">type</span> <span class="nb">id</span><span class="p">;</span><span class="n">short</span> <span class="n">name</span><span class="p">;</span><span class="n">name</span>
+<span class="mi">27</span><span class="p">;</span><span class="n">bam_bi</span><span class="p">;</span><span class="n">BI</span> <span class="n">engine</span> <span class="p">(</span><span class="n">BAM</span><span class="p">)</span>
+<span class="mi">16</span><span class="p">;</span><span class="n">sql</span><span class="p">;</span><span class="n">Broker</span> <span class="n">SQL</span> <span class="n">Database</span>
+<span class="mi">32</span><span class="p">;</span><span class="n">correlation</span><span class="p">;</span><span class="n">Correlation</span>
+<span class="mi">28</span><span class="p">;</span><span class="n">db_cfg_reader</span><span class="p">;</span><span class="n">Database</span> <span class="n">configuration</span> <span class="n">reader</span>
+<span class="mi">29</span><span class="p">;</span><span class="n">db_cfg_writer</span><span class="p">;</span><span class="n">Database</span> <span class="n">configuration</span> <span class="n">writer</span>
+<span class="mi">11</span><span class="p">;</span><span class="n">file</span><span class="p">;</span><span class="n">File</span>
+<span class="mi">3</span><span class="p">;</span><span class="n">ipv4</span><span class="p">;</span><span class="n">IPv4</span>
+<span class="mi">10</span><span class="p">;</span><span class="n">ipv6</span><span class="p">;</span><span class="n">IPv6</span>
+<span class="mi">26</span><span class="p">;</span><span class="n">bam</span><span class="p">;</span><span class="n">Monitoring</span> <span class="n">engine</span> <span class="p">(</span><span class="n">BAM</span><span class="p">)</span>
+<span class="mi">14</span><span class="p">;</span><span class="n">storage</span><span class="p">;</span><span class="n">Perfdata</span> <span class="n">Generator</span> <span class="p">(</span><span class="n">Centreon</span> <span class="n">Storage</span><span class="p">)</span>
+<span class="mi">13</span><span class="p">;</span><span class="n">rrd</span><span class="p">;</span><span class="n">RRD</span> <span class="n">File</span> <span class="n">Generator</span>
+<span class="mi">30</span><span class="p">;</span><span class="n">graphite</span><span class="p">;</span><span class="n">Storage</span> <span class="o">-</span> <span class="n">Graphite</span>
+<span class="mi">31</span><span class="p">;</span><span class="n">influxdb</span><span class="p">;</span><span class="n">Storage</span> <span class="o">-</span> <span class="n">InfluxDB</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a getfieldlist -v &quot;ipv4&quot;</span>
+<span class="n">field</span> <span class="nb">id</span><span class="p">;</span><span class="n">short</span> <span class="n">name</span><span class="p">;</span><span class="n">name</span>
+<span class="mi">3</span><span class="p">;</span><span class="n">ca_certificate</span><span class="p">;</span><span class="n">Trusted</span> <span class="n">CA</span><span class="s1">&#39;s certificate;text</span>
+<span class="mi">2</span><span class="p">;</span><span class="n">host</span><span class="p">;</span><span class="n">Host</span> <span class="n">to</span> <span class="n">connect</span> <span class="n">to</span><span class="p">;</span><span class="n">text</span>
+<span class="mi">46</span><span class="p">;</span><span class="n">negociation</span><span class="p">;</span><span class="n">Enable</span> <span class="n">negociation</span><span class="p">;</span><span class="n">radio</span>
+<span class="mi">48</span><span class="p">;</span><span class="n">one_peer_retention_mode</span><span class="p">;</span><span class="n">One</span> <span class="n">peer</span> <span class="n">retention</span><span class="p">;</span><span class="n">radio</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">port</span><span class="p">;</span><span class="n">Connection</span> <span class="n">port</span><span class="p">;</span><span class="nb">int</span>
+<span class="mi">4</span><span class="p">;</span><span class="n">private_key</span><span class="p">;</span><span class="n">Private</span> <span class="n">key</span> <span class="n">file</span><span class="o">.</span><span class="p">;</span><span class="n">text</span>
+<span class="mi">12</span><span class="p">;</span><span class="n">protocol</span><span class="o">*</span><span class="p">;</span><span class="n">Serialization</span> <span class="n">Protocol</span><span class="p">;</span><span class="n">select</span>
+<span class="mi">5</span><span class="p">;</span><span class="n">public_cert</span><span class="p">;</span><span class="n">Public</span> <span class="n">certificate</span><span class="p">;</span><span class="n">text</span>
+<span class="mi">6</span><span class="p">;</span><span class="n">tls</span><span class="p">;</span><span class="n">Enable</span> <span class="n">TLS</span> <span class="n">encryption</span><span class="p">;</span><span class="n">radio</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that the “protocol” entry is followed by a star. This means that you have to use one of the possible values.</p>
+</div>
+<p>This is how you get the list of possible values of a given field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CENTBROKERCFG -a getvaluelist -v &quot;protocol&quot;</span>
+<span class="n">possible</span> <span class="n">values</span>
+<span class="n">ndo</span>
+</pre></div>
+</div>
+<p>The following chapters describes the parameters of each Object type</p>
+<div class="section" id="input">
+<h3>input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
+<p>ipv4:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression</td>
+<td>Compression (zlib)</td>
+<td>Enable or not data stream compression.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>compression_buffer</td>
+<td>Compression buffer size</td>
+<td>The higher the buffer size is, the best compression.
+This however increase data streaming latency.
+Use with caution.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression_level</td>
+<td>Compression level</td>
+<td>Ranges from 0 (no compression) to 9 (best compression).
+Default is -1 (zlib compression)</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in input</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>ca_certificate</td>
+<td>Trusted CA’s certificate</td>
+<td>Trusted CA’s certificate.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>host</td>
+<td>Host to connect to</td>
+<td>IP address or hostname of the host to connect to
+(leave blank for listening mode).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>one_peer_retention_mode</td>
+<td>One peer retention</td>
+<td>This allows the retention to work even
+if the socket is listening</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>port</td>
+<td>Connection port</td>
+<td>Port to listen on (empty host) or to connect to
+(with host filled).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>private_key</td>
+<td>Private key file.</td>
+<td>Private key file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>protocol</td>
+<td>Serialization protocol</td>
+<td>Serialization protocol.</td>
+<td>ndo</td>
+</tr>
+<tr class="row-even"><td>public_cert</td>
+<td>Public certificate</td>
+<td>Public certificate file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>tls</td>
+<td>Enable TLS encryption</td>
+<td>Enable TLS encryption.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>ipv6:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression</td>
+<td>Compression (zlib)</td>
+<td>Enable or not data stream compression.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>compression_buffer</td>
+<td>Compression buffer size</td>
+<td>The higher the buffer size is, the best compression.
+This however increase data streaming latency.
+Use with caution.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression_level</td>
+<td>Compression level</td>
+<td>Ranges from 0 (no compression) to 9 (best compression).
+Default is -1 (zlib compression)</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in input</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>ca_certificate</td>
+<td>Trusted CA’s certificate</td>
+<td>Trusted CA’s certificate.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>host</td>
+<td>Host to connect to</td>
+<td>IP address or hostname of the host to connect to
+(leave blank for listening mode).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>one_peer_retention_mode</td>
+<td>One peer retention</td>
+<td>This allows the retention to work even
+if the socket is listening</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>port</td>
+<td>Connection port</td>
+<td>Port to listen on (empty host) or to connect to
+(with host filled).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>private_key</td>
+<td>Private key file.</td>
+<td>Private key file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>protocol</td>
+<td>Serialization protocol</td>
+<td>Serialization protocol.</td>
+<td>ndo</td>
+</tr>
+<tr class="row-even"><td>public_cert</td>
+<td>Public certificate</td>
+<td>Public certificate file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>tls</td>
+<td>Enable TLS encryption</td>
+<td>Enable TLS encryption.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>file:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression</td>
+<td>Compression (zlib)</td>
+<td>Enable or not data stream compression.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>compression_buffer</td>
+<td>Compression buffer size</td>
+<td>The higher the buffer size is, the best compression.
+This however increase data streaming latency.
+Use with caution.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression_level</td>
+<td>Compression level</td>
+<td>Ranges from 0 (no compression) to 9 (best compression).
+Default is -1 (zlib compression)</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>max_size</td>
+<td>Maximum size of file</td>
+<td>Maximum size in bytes.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>path</td>
+<td>File path</td>
+<td>Path to the file.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>protocol</td>
+<td>Serialization protocol</td>
+<td>Serialization protocol.</td>
+<td>ndo</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="logger">
+<h3>logger<a class="headerlink" href="#logger" title="Permalink to this headline">¶</a></h3>
+<p>file:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>config</td>
+<td>Configuration messages</td>
+<td>Enable or not configuration messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>debug</td>
+<td>Debug messages</td>
+<td>Enable or not debug messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>error</td>
+<td>Error messages</td>
+<td>Enable or not error messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>info</td>
+<td>Informational messages</td>
+<td>Enable or not informational messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>level</td>
+<td>Logging level</td>
+<td>How much messages must be logged.</td>
+<td>high,low,medium</td>
+</tr>
+<tr class="row-odd"><td>max_size</td>
+<td>Max file size in bytes</td>
+<td>The maximum size of log file.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>name</td>
+<td>Name of the logger</td>
+<td>For a file logger this is the path to the file. For a
+standard logger, one of ‘stdout’ or ‘stderr’.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>standard:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>config</td>
+<td>Configuration messages</td>
+<td>Enable or not configuration messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>debug</td>
+<td>Debug messages</td>
+<td>Enable or not debug messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>error</td>
+<td>Error messages</td>
+<td>Enable or not error messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>info</td>
+<td>Informational messages</td>
+<td>Enable or not informational messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>level</td>
+<td>Logging level</td>
+<td>How much messages must be logged.</td>
+<td>high,low,medium</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>Name of the logger</td>
+<td>For a file logger this is the path to the file.
+For a standard logger, one of ‘stdout’ or ‘stderr’.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>syslog:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>config</td>
+<td>Configuration messages</td>
+<td>Enable or not configuration messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>debug</td>
+<td>Debug messages</td>
+<td>Enable or not debug messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>error</td>
+<td>Error messages</td>
+<td>Enable or not error messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>info</td>
+<td>Informational messages</td>
+<td>Enable or not informational messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>level</td>
+<td>Logging level</td>
+<td>How much messages must be logged.</td>
+<td>high,low,medium</td>
+</tr>
+</tbody>
+</table>
+<p>monitoring:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>config</td>
+<td>Configuration messages</td>
+<td>Enable or not configuration messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>debug</td>
+<td>Debug messages</td>
+<td>Enable or not debug messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>error</td>
+<td>Error messages</td>
+<td>Enable or not error messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>info</td>
+<td>Informational messages</td>
+<td>Enable or not informational messages logging.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>level</td>
+<td>Logging level</td>
+<td>How much messages must be logged.</td>
+<td>high,low,medium</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>Name of the logger</td>
+<td>For a file logger this is the path to the file.
+For a standard logger, one of ‘stdout’ or ‘stderr’.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="output">
+<h3>output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<p>ipv4:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression</td>
+<td>Compression (zlib)</td>
+<td>Enable or not data stream compression.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>compression_buffer</td>
+<td>Compression buffer size</td>
+<td>The higher the buffer size is, the best compression.
+This however increase data streaming latency.
+Use with caution.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression_level</td>
+<td>Compression level</td>
+<td>Ranges from 0 (no compression) to 9 (best compression).
+Default is -1 (zlib compression)</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>failover</td>
+<td>Failover name</td>
+<td>Name of the output which will act as failover</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in output</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>ca_certificate</td>
+<td>Trusted CA’s certificate</td>
+<td>Trusted CA’s certificate.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>host</td>
+<td>Host to connect to</td>
+<td>IP address or hostname of the host to connect to
+(leave blank for listening mode).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>one_peer_retention_mode</td>
+<td>One peer retention</td>
+<td>This allows the retention to work even
+if the socket is listening</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>port</td>
+<td>Connection port</td>
+<td>Port to listen on (empty host) or to connect to
+(with host filled).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>private_key</td>
+<td>Private key file.</td>
+<td>Private key file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>protocol</td>
+<td>Serialization protocol</td>
+<td>Serialization protocol.</td>
+<td>ndo</td>
+</tr>
+<tr class="row-odd"><td>public_cert</td>
+<td>Public certificate</td>
+<td>Public certificate file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>tls</td>
+<td>Enable TLS encryption</td>
+<td>Enable TLS encryption.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>ipv6:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression</td>
+<td>Compression (zlib)</td>
+<td>Enable or not data stream compression.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>compression_buffer</td>
+<td>Compression buffer size</td>
+<td>The higher the buffer size is, the best compression.
+This however increase data streaming latency.
+Use with caution.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression_level</td>
+<td>Compression level</td>
+<td>Ranges from 0 (no compression) to 9 (best compression).
+Default is -1 (zlib compression)</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>failover</td>
+<td>Failover name</td>
+<td>Name of the output which will act as failover</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in output</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>ca_certificate</td>
+<td>Trusted CA’s certificate</td>
+<td>Trusted CA’s certificate.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>host</td>
+<td>Host to connect to</td>
+<td>IP address or hostname of the host to connect to
+(leave blank for listening mode).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>one_peer_retention_mode</td>
+<td>One peer retention</td>
+<td>This allows the retention to work even
+if the socket is listening</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>port</td>
+<td>Connection port</td>
+<td>Port to listen on (empty host) or to connect to
+(with host filled).</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>private_key</td>
+<td>Private key file.</td>
+<td>Private key file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>protocol</td>
+<td>Serialization protocol</td>
+<td>Serialization protocol.</td>
+<td>ndo</td>
+</tr>
+<tr class="row-odd"><td>public_cert</td>
+<td>Public certificate</td>
+<td>Public certificate file path when TLS encryption is used.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>tls</td>
+<td>Enable TLS encryption</td>
+<td>Enable TLS encryption.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>file:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression</td>
+<td>Compression (zlib)</td>
+<td>Enable or not data stream compression.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>compression_buffer</td>
+<td>Compression buffer size</td>
+<td>The higher the buffer size is, the best compression.
+This however increase data streaming latency.
+Use with caution.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>compression_level</td>
+<td>Compression level</td>
+<td>Ranges from 0 (no compression) to 9 (best compression).
+Default is -1 (zlib compression)</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>failover</td>
+<td>Failover name</td>
+<td>Name of the output which will act as failover</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in output.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>max_size</td>
+<td>Maximum size of file</td>
+<td>Maximum size in bytes.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>path</td>
+<td>File path</td>
+<td>Path to the file.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>protocol</td>
+<td>Serialization protocol</td>
+<td>Serialization protocol.</td>
+<td>ndo</td>
+</tr>
+</tbody>
+</table>
+<p>rrd:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>failover</td>
+<td>Failover name</td>
+<td>Name of the output which will act as failover</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in output.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>metrics_path</td>
+<td>RRD file directory for metrics</td>
+<td>RRD file directory, for example /var/lib/centreon/metrics</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>path</td>
+<td>Unix socket</td>
+<td>The Unix socket used to communicate with rrdcached.
+This is a global option, go to
+Administration &gt; Options &gt; RRDTool to modify it.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>port</td>
+<td>TCP port</td>
+<td>The TCP port used to communicate with rrdcached.
+This is a global option, go to
+Administration &gt; Options &gt; RRDTool to modify it.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>status_path</td>
+<td>RRD file directory for statuses</td>
+<td>RRD file directory, for example /var/lib/centreon/status</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>write_metrics</td>
+<td>Enable write_metrics</td>
+<td>Enable or not write_metrics.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>write_status</td>
+<td>Enable write_status</td>
+<td>Enable or not write_status.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>store_in_data_bin</td>
+<td>Enable store_in_data_bin</td>
+<td>Enable or not store in performance data in data_bin.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>storage:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>failover</td>
+<td>Failover name</td>
+<td>Name of the output which will act as failover</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in output.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>check_replication</td>
+<td>Replication enabled</td>
+<td>When enabled, the broker engine will check whether or not
+the replication is up to date before attempting to
+update data.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>db_host</td>
+<td>DB host</td>
+<td>IP address or hostname of the database server.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>db_name</td>
+<td>DB name</td>
+<td>Database name.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>db_password</td>
+<td>DB password</td>
+<td>Password of database user.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>db_port</td>
+<td>DB port</td>
+<td>Port on which the DB server listens</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>db_type</td>
+<td>DB type</td>
+<td>Target DBMS.</td>
+<td>db2,ibase,mysql,oci,odbc,postgresql,sqlite,tds</td>
+</tr>
+<tr class="row-even"><td>db_user</td>
+<td>DB user</td>
+<td>Database user.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>interval</td>
+<td>Interval length</td>
+<td>Interval length in seconds.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>length</td>
+<td>RRD length</td>
+<td>RRD storage duration in seconds.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>queries_per_transaction</td>
+<td>Maximum queries per transaction</td>
+<td>The maximum queries per transaction before commit.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>read_timeout</td>
+<td>Transaction commit timeout</td>
+<td>The transaction timeout before running commit.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>rebuild_check_interval</td>
+<td>Rebuild check interval in seconds</td>
+<td>The interval between check if some metrics must be rebuild.
+The default value is 300s</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>store_in_data_bin</td>
+<td>Enable store_in_data_bin</td>
+<td>Enable or not store in performance data in data_bin.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>sql:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="29%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ID</th>
+<th class="head">Label</th>
+<th class="head">Description</th>
+<th class="head">Possible values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffering_timeout</td>
+<td>Buffering timeout</td>
+<td>Time in seconds to wait before launching failover.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>failover</td>
+<td>Failover name</td>
+<td>Name of the output which will act as failover</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>retry_interval</td>
+<td>Retry interval</td>
+<td>Time in seconds to wait between each connection attempt.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>category</td>
+<td>Filter category</td>
+<td>Category filter for flux in output.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>check_replication</td>
+<td>Replication enabled</td>
+<td>When enabled, the broker engine will check whether or not
+the replication is up to date before attempting to
+update data.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>db_host</td>
+<td>DB host</td>
+<td>IP address or hostname of the database server.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>db_name</td>
+<td>DB name</td>
+<td>Database name.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>db_password</td>
+<td>DB password</td>
+<td>Password of database user.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>db_port</td>
+<td>DB port</td>
+<td>Port on which the DB server listens</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>db_type</td>
+<td>DB type</td>
+<td>Target DBMS.</td>
+<td>db2,ibase,mysql,oci,odbc,postgresql,sqlite,tds</td>
+</tr>
+<tr class="row-even"><td>db_user</td>
+<td>DB user</td>
+<td>Database user.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>queries_per_transaction</td>
+<td>Maximum queries per transaction</td>
+<td>The maximum queries per transaction before commit.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>read_timeout</td>
+<td>Transaction commit timeout</td>
+<td>The transaction timeout before running commit.</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Centreon broker</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#add">Add</a></li>
+<li><a class="reference internal" href="#del">Del</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+<li><a class="reference internal" href="#listinput-listoutput-and-listlogger">Listinput, Listoutput and Listlogger</a></li>
+<li><a class="reference internal" href="#getinput-getoutput-and-getlogger">Getinput, Getoutput and Getlogger</a></li>
+<li><a class="reference internal" href="#addinput-addoutput-and-addlogger">Addinput, Addoutput and Addlogger</a></li>
+<li><a class="reference internal" href="#delinput-deloutput-and-dellogger">Delinput, Deloutput and Dellogger</a></li>
+<li><a class="reference internal" href="#setintput-setoutput-and-setlogger">Setintput, Setoutput and Setlogger</a><ul>
+<li><a class="reference internal" href="#input">input</a></li>
+<li><a class="reference internal" href="#logger">logger</a></li>
+<li><a class="reference internal" href="#output">output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="acl_resource.html"
+                        title="previous chapter">Resource ACL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="commands.html"
+                        title="next chapter">Commands</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/broker_cfg.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="commands.html" title="Commands"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="acl_resource.html" title="Resource ACL"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

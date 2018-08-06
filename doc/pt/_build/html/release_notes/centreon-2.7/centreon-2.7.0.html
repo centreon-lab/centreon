@@ -1,0 +1,239 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Centreon 2.7.0 &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Centreon 2.7.1" href="centreon-2.7.1.html" />
+    <link rel="prev" title="Centreon 2.7" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="centreon-2.7.1.html" title="Centreon 2.7.1"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Centreon 2.7"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Centreon 2.7</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="centreon-2-7-0">
+<h1>Centreon 2.7.0<a class="headerlink" href="#centreon-2-7-0" title="Permalink to this headline">¶</a></h1>
+<p>Released December 17, 2015</p>
+<p>The 2.7.0 release for Centreon Web is now available for <a class="reference external" href="https://download.centreon.com">download</a>. The full release notes for 2.7.0 follow:</p>
+<div class="section" id="features-and-bug-fixes">
+<h2>Features and Bug Fixes<a class="headerlink" href="#features-and-bug-fixes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Changing the graphic charter to be consistent with the new logo Centreon</li>
+<li>Flat design (CSS and icons)</li>
+<li>Custom view improvement</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Adding an editing or visualization mode</li>
+<li>Graphic widgets relief to be able to put more on a page</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>Adding a fullscreen mode</li>
+<li>Menu Review for improved navigation and simplified user actions</li>
+<li>Review og pages dedicated hosts and services pages in monitoring to include more informations.</li>
+<li>Redesign of the reporting page</li>
+<li>Recasting bar searches and filters in each page of Centreon</li>
+<li>Redesign Event Logs page (removing treeview + Added search system + Improved performances)</li>
+<li>Redesign view page (removing treeview + Added search system + Improved performances)</li>
+<li>Merging downtimes pages for hosts and services</li>
+<li>Merging comments pages for hosts and services</li>
+<li>Integration of a graphics module to replace a non-performing component QuickForm (Improved forms on multi element selection)</li>
+<li>Simplifying the configuration of Centreon Broker (Temporary and Failover are automatically configured + enhanced best practices)</li>
+<li>Ergonomic improvement of the configurations objects:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Improved hosts form</li>
+<li>Improved services form</li>
+<li>Improved management macros: dynamic form system that provides the necessary inherited macros templates for proper operation of the configuration</li>
+<li>Added ability to set a description of each macro used in commands</li>
+<li>Review of the pathway for the generation of the configuration</li>
+<li>Automatic creation of a configuration file for the poller when it is created</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>Deleting configuration options in the Administration section, now automatically configured. This simplifies the handling of Centreon</li>
+<li>Improved ACL system (Improved performances)</li>
+<li>Native integration of Centreon CLAPI</li>
+<li>Improved documentation</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Redesign Configuration part</li>
+<li>Redesign Exploitation part</li>
+<li>Integration of the API part</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="changes">
+<h2>Changes<a class="headerlink" href="#changes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Important web design changes can make interface not compatible with older modules. A refactoring work will be needed to ensure optimal operation.</li>
+<li>Changing the timezone system : DST management (may need to check the timezones of each host and contact after the update)</li>
+<li>Changing databases schemes for hostgroups and servicegroups in the real state database (centreon_storage) : added id and deletion of alias, url, url note, icon.</li>
+<li>Changing the path for generating the configuration of Centreon Engine instances : no more specific page to generate the configuration. The action is now available from the pollers list.</li>
+<li>Switching to InnoDB all Centreon tables (except logs and data_bin too big for an automatic update).</li>
+<li>PHP 5.1 no longer supported</li>
+<li>Browser compatibility : IE 11, FF 5 et Chrome 39 at least</li>
+<li>Shared views in custom views are not automaticaly loaded in views of others users. Now views are able to be public and user can load them during the creation step.</li>
+</ul>
+</div>
+<div class="section" id="secutiry-fixes">
+<h2>Secutiry fixes<a class="headerlink" href="#secutiry-fixes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Removing PHP session ID in the URL of the Ajax flow of certain pages.</li>
+<li>Integration of a CSRF token in all forms to prevent “Man in the middle” effect.</li>
+</ul>
+</div>
+<div class="section" id="removed-features">
+<h2>Removed Features<a class="headerlink" href="#removed-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Nagios and NDOutils are no longer compatible with Centreon web. Only Centreon Engine and Centreon Broker are compatible from version 2.7.0</li>
+<li>Removing centstorage and logAnalyser executables.</li>
+<li>Removing the Nagios configurations load module.</li>
+<li>Removing the ability to configure the colors of graphics templates</li>
+<li>Removing color choices for menus</li>
+<li>Removing choosing colors for monitoring status</li>
+<li>Removing the ability to configure Nagios CGI</li>
+<li>Transformation of the tactical overview in widget</li>
+<li>Transformation of the Monitoring Engine statistics Page in widget</li>
+<li>Deleting the Server Status page (phpsysinfo) become incompatible with the PHP version recommended for Centreon</li>
+<li>Remove timeperiod exclusions in the UI. This function don’t work very fine whether with Centreon Engine 1.x or Nagios. We prefer removing the function in order to avoid problems.</li>
+</ul>
+</div>
+<div class="section" id="known-bugs">
+<h2>Known Bugs<a class="headerlink" href="#known-bugs" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>ACL of pages is not fully updated during the upgrade process. So please check all your ACL pages after the migration. You may have problems with the followings pages:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Monitoring &gt; Hosts</li>
+<li>Monitoring &gt; Services</li>
+<li>Monitoring &gt; Performances (new page)</li>
+<li>Monitoring &gt; Downtimes</li>
+<li>Monitoring &gt; Comments</li>
+<li>Monitoring &gt; Eventlogs &gt; System logs</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p class="first">Graph slip not working</p>
+</li>
+<li><p class="first">Pagination is broker when you go on the last page, change the number of line to the Max. Page become empty.</p>
+</li>
+<li><p class="first">If you have timeperiods used in exception or inclusion of timeperiod and now deleted, their ids stays in the database in relation table. During the sql update process, this blocks an addition of constraint on this relation table. To fix it, you have to remove old timeperiod id.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">DELETE</span> <span class="n">FROM</span> <span class="n">timeperiod_exclude_relations</span> <span class="n">WHERE</span> <span class="n">timeperiod_id</span> <span class="n">NOT</span> <span class="n">IN</span> <span class="p">(</span><span class="n">SELECT</span> <span class="n">tp_id</span> <span class="n">FROM</span> <span class="n">timeperiod</span><span class="p">)</span> <span class="n">OR</span> <span class="n">timeperiod_exclude_id</span> <span class="n">NOT</span> <span class="n">IN</span> <span class="p">(</span><span class="n">SELECT</span> <span class="n">tp_id</span> <span class="n">FROM</span> <span class="n">timeperiod</span><span class="p">);</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">DELETE</span> <span class="n">FROM</span> <span class="n">timeperiod_include_relations</span> <span class="n">WHERE</span> <span class="n">timeperiod_id</span> <span class="n">NOT</span> <span class="n">IN</span> <span class="p">(</span><span class="n">SELECT</span> <span class="n">tp_id</span> <span class="n">FROM</span> <span class="n">timeperiod</span><span class="p">)</span> <span class="n">OR</span> <span class="n">timeperiod_exclude_id</span> <span class="n">NOT</span> <span class="n">IN</span> <span class="p">(</span><span class="n">SELECT</span> <span class="n">tp_id</span> <span class="n">FROM</span> <span class="n">timeperiod</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-install">
+<h2>How to Install ?<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h2>
+<p>Now that you are aware about all specificities of this version, you can install it. If you install from zero your system, please follow the <a class="reference internal" href="../../installation/index.html#install"><span class="std std-ref">installation guide</span></a>. Else you can refer to the <a class="reference internal" href="../../upgrade/index.html#upgrade"><span class="std std-ref">upgrade guide</span></a>. Take care about prerequisits and all upgrade steps in order to avoid data loss.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Centreon 2.7.0</a><ul>
+<li><a class="reference internal" href="#features-and-bug-fixes">Features and Bug Fixes</a></li>
+<li><a class="reference internal" href="#changes">Changes</a></li>
+<li><a class="reference internal" href="#secutiry-fixes">Secutiry fixes</a></li>
+<li><a class="reference internal" href="#removed-features">Removed Features</a></li>
+<li><a class="reference internal" href="#known-bugs">Known Bugs</a></li>
+<li><a class="reference internal" href="#how-to-install">How to Install ?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Centreon 2.7</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="centreon-2.7.1.html"
+                        title="next chapter">Centreon 2.7.1</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/release_notes/centreon-2.7/centreon-2.7.0.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="centreon-2.7.1.html" title="Centreon 2.7.1"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Centreon 2.7"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Notas de Lançamento</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Centreon 2.7</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

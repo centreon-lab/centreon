@@ -1,0 +1,293 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Table of network flows &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Downloads" href="../downloads.html" />
+    <link rel="prev" title="Distributed architecture with failover and web GUI for remote server" href="03e.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../downloads.html" title="Downloads"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="03e.html" title="Distributed architecture with failover and web GUI for remote server"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Installation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Examples of architectures</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="table-of-network-flows">
+<h1>Table of network flows<a class="headerlink" href="#table-of-network-flows" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tables-of-network-flows-to-integrate-monitoring-platform-to-it">
+<h2>Tables of network flows to integrate monitoring platform to IT<a class="headerlink" href="#tables-of-network-flows-to-integrate-monitoring-platform-to-it" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="8%" />
+<col width="13%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">From</th>
+<th class="head">To</th>
+<th class="head">Protocol</th>
+<th class="head">Port</th>
+<th class="head">Application</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Central server</td>
+<td>NTP server</td>
+<td>NTP</td>
+<td>UDP 123</td>
+<td>Synchronization of the system clock</td>
+</tr>
+<tr class="row-odd"><td>Central server</td>
+<td>DNS server</td>
+<td>DNS</td>
+<td>UDP 53</td>
+<td>Domain name resolution</td>
+</tr>
+<tr class="row-even"><td>Central server</td>
+<td>SMTP server</td>
+<td>SMTP</td>
+<td>TCP 25</td>
+<td>Notification via email</td>
+</tr>
+<tr class="row-odd"><td>Central server</td>
+<td>LDAP(s) server</td>
+<td>LDAP(s)</td>
+<td>TCP 389 (636)</td>
+<td>Authentication to access the Centreon web interface</td>
+</tr>
+<tr class="row-even"><td>Central server</td>
+<td>DBMS server</td>
+<td>MySQL</td>
+<td>TCP 3306</td>
+<td>Access to Centreon databases</td>
+</tr>
+<tr class="row-odd"><td>Central server</td>
+<td>HTTP Proxy</td>
+<td>HTTP(s)</td>
+<td>TCP 80, 8080 (443)</td>
+<td>If your platform needs to connect to a web proxy to access the Centreon IMP solution</td>
+</tr>
+<tr class="row-even"><td>Central server</td>
+<td>Repository</td>
+<td>HTTP (FTP)</td>
+<td>TCP 80 (FTP 20)</td>
+<td>Repository for system and application packages</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="11%" />
+<col width="8%" />
+<col width="13%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">From</th>
+<th class="head">To</th>
+<th class="head">Protocol</th>
+<th class="head">Port</th>
+<th class="head">Application</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Poller</td>
+<td>NTP server</td>
+<td>NTP</td>
+<td>UDP 123</td>
+<td>Synchronization of the system clock</td>
+</tr>
+<tr class="row-odd"><td>Poller</td>
+<td>DNS server</td>
+<td>DNS</td>
+<td>UDP 53</td>
+<td>Domain name resolution</td>
+</tr>
+<tr class="row-even"><td>Poller</td>
+<td>SMTP server</td>
+<td>SMTP</td>
+<td>TCP 25</td>
+<td>Notification via email</td>
+</tr>
+<tr class="row-odd"><td>Poller</td>
+<td>Repository</td>
+<td>HTTP (FTP)</td>
+<td>TCP 80 (FTP 20,21)</td>
+<td>Repository for system and application packages</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Other flows can be necessary for Centreon web authentication (RADIUS, etc.)
+or notification system defined.</p>
+</div>
+</div>
+<div class="section" id="tables-of-monitoring-flows">
+<h2>Tables of monitoring flows<a class="headerlink" href="#tables-of-monitoring-flows" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="31%" />
+<col width="11%" />
+<col width="10%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">From</th>
+<th class="head">To</th>
+<th class="head">Protocol</th>
+<th class="head">Port</th>
+<th class="head">Application</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Central server</td>
+<td>Poller</td>
+<td>SSH</td>
+<td>TCP 22</td>
+<td>Export of Centreon configuration</td>
+</tr>
+<tr class="row-odd"><td>Poller</td>
+<td>Central server</td>
+<td>BBDO</td>
+<td>TCP 5669</td>
+<td>Transfer of collected data</td>
+</tr>
+<tr class="row-even"><td>Poller</td>
+<td>Network equipment, servers, etc.</td>
+<td>SNMP</td>
+<td>UDP 161</td>
+<td>Monitoring</td>
+</tr>
+<tr class="row-odd"><td>Network equipment</td>
+<td>Poller</td>
+<td>Trap SNMP</td>
+<td>UDP 162</td>
+<td>Monitoring</td>
+</tr>
+<tr class="row-even"><td>Poller</td>
+<td>Servers</td>
+<td>NRPE</td>
+<td>TCP 5666</td>
+<td>Monitoring</td>
+</tr>
+<tr class="row-odd"><td>Poller</td>
+<td>Servers</td>
+<td>NSClient++</td>
+<td>TCP 12489</td>
+<td>Monitoring</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the Centreon server is a poller too, do not forget to open monitoring flows.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Other flows can be necessary to monitor databases, access to API, or
+applicative ports.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Table of network flows</a><ul>
+<li><a class="reference internal" href="#tables-of-network-flows-to-integrate-monitoring-platform-to-it">Tables of network flows to integrate monitoring platform to IT</a></li>
+<li><a class="reference internal" href="#tables-of-monitoring-flows">Tables of monitoring flows</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="03e.html"
+                        title="previous chapter">Distributed architecture with failover and web GUI for remote server</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../downloads.html"
+                        title="next chapter">Downloads</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/installation/architecture/network.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../downloads.html" title="Downloads"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="03e.html" title="Distributed architecture with failover and web GUI for remote server"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Installation</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Examples of architectures</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

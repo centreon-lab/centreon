@@ -1,0 +1,239 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuration of the poller &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Centreon Broker configuration via wizard" href="03wizards.html" />
+    <link rel="prev" title="Remote pollers" href="01installation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="03wizards.html" title="Centreon Broker configuration via wizard"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="01installation.html" title="Remote pollers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Configuration</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Poller</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration-of-the-poller">
+<h1>Configuration of the poller<a class="headerlink" href="#configuration-of-the-poller" title="Permalink to this headline">¶</a></h1>
+<p>Once the installation is completed, it is necessary to integrate this remote poller into the Centreon configuration.</p>
+<ol class="arabic simple">
+<li>Go into the menu: <strong>Configuration &gt; Pollers</strong></li>
+<li>Duplicate the central server and edit it</li>
+<li>Change the following settings, and save:</li>
+</ol>
+<ul class="simple">
+<li>Change the name of the <strong>Poller Name</strong>.</li>
+<li>Enter the IP address of the poller in the <strong>IP Address</strong> field.</li>
+<li>Enable the poller by clicking on <strong>Enabled</strong> in the <strong>Status</strong> field.</li>
+</ul>
+<img alt="../../_images/07addpoller.png" class="align-center" src="../../_images/07addpoller.png" />
+<ol class="arabic simple">
+<li>Go into the <strong>Configuration &gt; Pollers &gt; Engine configuration</strong> menu</li>
+<li>Select your last added configuration.</li>
+<li>Change the following settings, and save:</li>
+</ol>
+<ul class="simple">
+<li>In the <strong>Files</strong> tab:<ul>
+<li>Modify <strong>Configuration Name</strong></li>
+<li>Check that ** Linked poller** is the previously created poller</li>
+<li>Change if necessary the <strong>Timezone / Location</strong></li>
+</ul>
+</li>
+</ul>
+<img alt="../../_images/07addengine.png" class="align-center" src="../../_images/07addengine.png" />
+<ul>
+<li><p class="first">In the <strong>Data</strong> tab - <strong>Multiple Broker Module</strong> fields check / add the following entries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">centreon</span><span class="o">-</span><span class="n">engine</span><span class="o">/</span><span class="n">externalcmd</span><span class="o">.</span><span class="n">so</span>
+
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">nagios</span><span class="o">/</span><span class="n">cbmod</span><span class="o">.</span><span class="n">so</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">centreon</span><span class="o">-</span><span class="n">broker</span><span class="o">/</span><span class="n">poller</span><span class="o">-</span><span class="n">module</span><span class="o">.</span><span class="n">xml</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<img alt="../../_images/07addpoller_neb.png" class="align-center" src="../../_images/07addpoller_neb.png" />
+</div>
+<div class="section" id="centreon-broker-configuration">
+<h1>Centreon Broker configuration<a class="headerlink" href="#centreon-broker-configuration" title="Permalink to this headline">¶</a></h1>
+<p>It is necessary to generate a configuration file for Centreon Broker:</p>
+<ol class="arabic simple">
+<li>Go into the menu: <strong>Configuration &gt; Pollers &gt; Broker configuration</strong></li>
+<li>click on <strong>Add</strong></li>
+</ol>
+<ul class="simple">
+<li>In the <strong>General</strong> tab:<ul>
+<li>Select the <strong>Requester</strong></li>
+<li>Set <strong>Name</strong> of the configuration</li>
+<li>Set <strong>Config file name ** that should be exactly the same as the one defined in Centreon Engine configuration, for example **poller-module.xml</strong></li>
+<li>Check the value <strong>No</strong> for the <strong>Link to cbd service</strong> option</li>
+</ul>
+</li>
+</ul>
+<img alt="../../_images/07_Addbroker.png" class="align-center" src="../../_images/07_Addbroker.png" />
+<ul class="simple">
+<li>In the <strong>Output</strong> tab:<ul>
+<li>Add a new <strong>TCP - IPv4</strong> output</li>
+<li>Set the <strong>Name</strong></li>
+<li>Set the distant TCP port, by default <strong>5669</strong></li>
+<li>Set the IP address of the Centreon central server (<strong>Host to connect to</strong>)</li>
+</ul>
+</li>
+</ul>
+<img alt="../../_images/07_Addbroker_output.png" class="align-center" src="../../_images/07_Addbroker_output.png" />
+<ul class="simple">
+<li>Save the configuration</li>
+</ul>
+</div>
+<div class="section" id="centreontrapd-configuration">
+<h1>Centreontrapd Configuration<a class="headerlink" href="#centreontrapd-configuration" title="Permalink to this headline">¶</a></h1>
+<p>It is necessary to change the configuration files of Centreontrapd so that the service can question the SQLite database (see the chapter: <a class="reference internal" href="../advanced_configuration/traps.html#configuration-advanced-snmptrapds"><span class="std std-ref">SNMP traps</span></a>).</p>
+</div>
+<div class="section" id="plugins-synchronisation">
+<h1>Plugins synchronisation<a class="headerlink" href="#plugins-synchronisation" title="Permalink to this headline">¶</a></h1>
+<p>You can synchronise the plugins between your central server and your remote pollers using <strong>rsync</strong> software.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Don’t perform this action if your plugins depend on third party libraries that need to have been installed previously.</p>
+</div>
+</div>
+<div class="section" id="exchanging-ssh-keys">
+<h1>Exchanging SSH keys<a class="headerlink" href="#exchanging-ssh-keys" title="Permalink to this headline">¶</a></h1>
+<p>For the central server to be able to export the configuration files of the monitoring engine, it is necessary to make a SSH key exchange between the central server and the new remote poller.</p>
+<p>On the remote poller:</p>
+<ol class="arabic">
+<li><p class="first">Log in as a ‘root’</p>
+</li>
+<li><p class="first">Change the Centreon user password:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># passwd centreon</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>On the central server:</p>
+<ol class="arabic">
+<li><p class="first">Log in as ‘Centreon’:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># su - centreon</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If you have not already generated a public / private key pair, enter the following command (leave the default options):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ssh-keygen
+</pre></div>
+</div>
+</li>
+<li><p class="first">Then export your SSH key to the remote poller:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ssh-copy-id -i /var/spool/centreon/.ssh/id_rsa.pub centreon@[POLLER_IP]
+</pre></div>
+</div>
+</li>
+<li><p class="first">Check that you can log in from the central server to the remote poller as a Centreon user. You can you use the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ssh centreon@[POLLER_IP]
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="export-the-configuration">
+<h1>Export the configuration<a class="headerlink" href="#export-the-configuration" title="Permalink to this headline">¶</a></h1>
+<p>The final step is to export the configuration to verify that the installation of the remote poller has been executed correctly.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Refer to the documentation: <a class="reference internal" href="../deploy.html#deployconfiguration"><span class="std std-ref">Export configuration</span></a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration of the poller</a></li>
+<li><a class="reference internal" href="#centreon-broker-configuration">Centreon Broker configuration</a></li>
+<li><a class="reference internal" href="#centreontrapd-configuration">Centreontrapd Configuration</a></li>
+<li><a class="reference internal" href="#plugins-synchronisation">Plugins synchronisation</a></li>
+<li><a class="reference internal" href="#exchanging-ssh-keys">Exchanging SSH keys</a></li>
+<li><a class="reference internal" href="#export-the-configuration">Export the configuration</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="01installation.html"
+                        title="previous chapter">Remote pollers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="03wizards.html"
+                        title="next chapter">Centreon Broker configuration via wizard</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/configuration_guide/poller/02configuration.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="03wizards.html" title="Centreon Broker configuration via wizard"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="01installation.html" title="Remote pollers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Configuration</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Poller</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

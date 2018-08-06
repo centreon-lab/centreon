@@ -1,0 +1,403 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Resource ACL &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Centreon broker" href="broker_cfg.html" />
+    <link rel="prev" title="Menu ACL" href="acl_menu.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="broker_cfg.html" title="Centreon broker"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="acl_menu.html" title="Menu ACL"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="resource-acl">
+<h1>Resource ACL<a class="headerlink" href="#resource-acl" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>ACLRESOURCE</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available ACL Resources, use the <strong>SHOW</strong> action::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ACLRESOURCE -a show</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span><span class="p">;</span><span class="n">alias</span><span class="p">;</span><span class="n">comment</span><span class="p">;</span><span class="n">activate</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">All</span> <span class="n">Resources</span><span class="p">;</span><span class="n">All</span> <span class="n">Resources</span><span class="p">;;</span><span class="mi">1</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Columns are the following :</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ID</td>
+<td>ID</td>
+</tr>
+<tr class="row-odd"><td>Name</td>
+<td>Name</td>
+</tr>
+<tr class="row-even"><td>Alias</td>
+<td>Alias</td>
+</tr>
+<tr class="row-odd"><td>Comment</td>
+<td>Comment</td>
+</tr>
+<tr class="row-even"><td>Activate</td>
+<td>1 when ACL Resource is enabled, 0 otherwise</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="add">
+<h2>Add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h2>
+<p>In order to add an ACL Resource, use the <strong>ADD</strong> action::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ACLRESOURCE -a add -v &quot;ACL Resource test;my alias&quot;</span>
+</pre></div>
+</div>
+<p>Required fields are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Name</td>
+<td>Name</td>
+</tr>
+<tr class="row-odd"><td>Alias</td>
+<td>Alias</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="del">
+<h2>Del<a class="headerlink" href="#del" title="Permalink to this headline">¶</a></h2>
+<p>If you want to remove an ACL Resource, use the <strong>DEL</strong> action. The Name is used for identifying the ACL Resource to delete::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ACLRESOURCE -a del -v &quot;ACL Resource test&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameter of an ACL Resource, use the <strong>SETPARAM</strong> action. The Name is used for identifying the ACL Resource to update::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ACLRESOURCE -a setparam -v &quot;ACL Resource test;alias;my new alias&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of ACL resource rule</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Parameter value</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters that you may change are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>name</td>
+<td>Name</td>
+</tr>
+<tr class="row-odd"><td>alias</td>
+<td>Alias</td>
+</tr>
+<tr class="row-even"><td>activate</td>
+<td>1 when ACL Resource is enabled, 0 otherwise</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="getaclgroup">
+<h2>Getaclgroup<a class="headerlink" href="#getaclgroup" title="Permalink to this headline">¶</a></h2>
+<p>If you want to retrieve the ACL Groups that are linked to a specific ACL Resource, use the <strong>GETACLGROUP</strong> action::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o ACLRESOURCE -a getaclgroup -v &quot;ACL Resource test&quot;</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">ALL</span>
+<span class="mi">3</span><span class="p">;</span><span class="n">Operators</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of ACL group</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="grant-and-revoke">
+<h2>Grant and revoke<a class="headerlink" href="#grant-and-revoke" title="Permalink to this headline">¶</a></h2>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of ACL group</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Name of resource</td>
+</tr>
+</tbody>
+</table>
+<p>If you want to grant or revoke resources in an ACL Resource rule definition, use the following commands:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="22%" />
+<col width="44%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+<th class="head">Example</th>
+<th class="head">Wildcard ‘*’ supported</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>grant_host</td>
+<td>Put host name(s)</td>
+<td>[…] -a grant_host -v “ACL Resource Test;srv-esx”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>grant_hostgroup</td>
+<td>Put hostgroup name(s)</td>
+<td>[…] -a grant_hostgroup -v “ACL Resource Test;Linux servers”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>grant_servicegroup</td>
+<td>Put servicegroup name(s)</td>
+<td>[…] -a grant_servicegruop -v “ACL Resource Test;Ping”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>grant_metaservice</td>
+<td>Put metaservice name(s)</td>
+<td>[…] -a grant_metaservice -v “ACL Resource Test;Traffic Average”</td>
+<td>No</td>
+</tr>
+<tr class="row-even"><td>addhostexclusion</td>
+<td>Put host name(s)</td>
+<td>[…] -a addhostexclusion -v “ACL Resource Test;srv-test|srv-test2”</td>
+<td>No</td>
+</tr>
+<tr class="row-odd"><td>revoke_host</td>
+<td>Put host name(s)</td>
+<td>[…] -a revoke_host -v “ACL Resource Test;srv-esx”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>revoke_hostgroup</td>
+<td>Put hostgroup name(s)</td>
+<td>[…] -a revoke_hostgroup -v “ACL Resource Test;Linux servers”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>revoke_servicegroup</td>
+<td>Put servicegroup name(s)</td>
+<td>[…] -a revoke_servicegroup -v “ACL Resource Test;Ping”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>revoke_metaservice</td>
+<td>Put metaservice name(s)</td>
+<td>[…] -a revoke_metaservice -v “ACL Resource Test;Traffic Average”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>delhostexclusion</td>
+<td>Put host name(s)</td>
+<td>[…] -a delhostexclusion -v “ACL Resource Test;srv-test|srv-test2”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>addfilter_instance</td>
+<td>Put instance name(s)</td>
+<td>[…] -a addfilter_instance -v “ACL Resource Test;Monitoring-2”</td>
+<td>No</td>
+</tr>
+<tr class="row-odd"><td>addfilter_hostcategory</td>
+<td>Put host category name(s)</td>
+<td>[…] -a addfilter_hostcategory -v “ACL Resource Test;Customer-1”</td>
+<td>No</td>
+</tr>
+<tr class="row-even"><td>addfilter_servicecategory</td>
+<td>Put service category name(s)</td>
+<td>[…] -a addfilter_servicecategory -v “ACL Resource Test;System”</td>
+<td>No</td>
+</tr>
+<tr class="row-odd"><td>delfilter_instance</td>
+<td>Put instance name(s)</td>
+<td>[…] -a delfilter_instance -v “ACL Resource Test;Monitoring-2”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>delfilter_hostcategory</td>
+<td>Put host category name(s)</td>
+<td>[…] -a delfilter_hostcategory -v “ACL Resource Test;Customer-1”</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>delfilter_servicecategory</td>
+<td>Put service category name(s)</td>
+<td>[…] -a delfilter_servicecategory -v “ACL Resource Test;System”</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use delimiter “|” for defining multiple resources.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Resource ACL</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#add">Add</a></li>
+<li><a class="reference internal" href="#del">Del</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+<li><a class="reference internal" href="#getaclgroup">Getaclgroup</a></li>
+<li><a class="reference internal" href="#grant-and-revoke">Grant and revoke</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="acl_menu.html"
+                        title="previous chapter">Menu ACL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="broker_cfg.html"
+                        title="next chapter">Centreon broker</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/acl_resource.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="broker_cfg.html" title="Centreon broker"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="acl_menu.html" title="Menu ACL"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

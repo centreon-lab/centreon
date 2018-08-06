@@ -1,0 +1,2600 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>API Rest &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Command Line API" href="../clapi/index.html" />
+    <link rel="prev" title="API" href="../index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../clapi/index.html" title="Command Line API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="API"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">API</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="api-rest">
+<h1>API Rest<a class="headerlink" href="#api-rest" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Welcome to the Centreon API rest documentation. This documentation is for developers familiar with HTTP requests and JSON. It explains various API operations, related request and response structure, and error codes.
+If you are not familiar with the JSON API, we recommend you to use the Centreon command line API documentation.</p>
+<p>This documentation is available in english only.</p>
+</div>
+<div class="section" id="permissions">
+<h2>Permissions<a class="headerlink" href="#permissions" title="Permalink to this headline">¶</a></h2>
+<p>To perform API calls using a specific Centreon user, you need permissions to do so.</p>
+<p>There are two types of permission:</p>
+<p>You can give access to the configuration for a specific Centreon user. To do so you have
+to edit user settings on the menu <strong>Configuration &gt; Users &gt; Contacts/Users</strong>,
+edit user and on second tab check box <strong>Reach API Configuration</strong>.</p>
+<p>You can give access to the realtime for a specific Centreon user. To do so you have
+to edit user settings on the menu <strong>Configuration &gt; Users &gt; Contacts/Users</strong>,
+edit user and on second tab check box <strong>Reach API Realtime</strong>.</p>
+<p>If you want both then check <strong>both</strong> checkboxes</p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>Using POST method and the URL below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=authenticate
+</pre></div>
+</div>
+<p>Body form-data:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="32%" />
+<col width="38%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Parameter</td>
+<td>Type</td>
+<td>Value</td>
+</tr>
+<tr class="row-even"><td>username</td>
+<td>Text</td>
+<td>The user name you
+use to login on
+Centreon</td>
+</tr>
+<tr class="row-odd"><td>password</td>
+<td>Text</td>
+<td>Your Centreon
+password</td>
+</tr>
+</tbody>
+</table>
+<p>The response is a json flow getting back the authentication token</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;authToken&quot;</span><span class="p">:</span> <span class="s2">&quot;NTc1MDU3MGE3M2JiODIuMjA4OTA2OTc=&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This token will be used later on the other API actions.</p>
+<div class="section" id="realtime-information">
+<h3>Realtime information<a class="headerlink" href="#realtime-information" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="host-status">
+<h2>Host Status<a class="headerlink" href="#host-status" title="Permalink to this headline">¶</a></h2>
+<p>All monitoring information regarding hosts are available in throw the Centreon API.</p>
+<p>Using GET method and the URL below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?object=centreon_realtime_hosts&amp;action=list
+</pre></div>
+</div>
+<p><strong>Header:</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">key</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon-auth-token</td>
+<td>the value of authToken you got
+on the authentication response</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<p>You can pass a list of parameters in order to select the data you want.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>viewType</td>
+<td>select the predefined filter like in the
+monitoring view: all, unhandled, problems</td>
+</tr>
+<tr class="row-odd"><td>fields</td>
+<td>the fields list that you want to get
+separated by a “,”</td>
+</tr>
+<tr class="row-even"><td>status</td>
+<td>the status of hosts that you want to get
+(up, down, unreachable, pending, all)</td>
+</tr>
+<tr class="row-odd"><td>hostgroup</td>
+<td>hostgroup id filter</td>
+</tr>
+<tr class="row-even"><td>instance</td>
+<td>instance id filter</td>
+</tr>
+<tr class="row-odd"><td>search</td>
+<td>search pattern applyed on host name</td>
+</tr>
+<tr class="row-even"><td>criticality</td>
+<td>a specific criticity</td>
+</tr>
+<tr class="row-odd"><td>sortType</td>
+<td>ASC ou DESC</td>
+</tr>
+<tr class="row-even"><td>limit</td>
+<td>number of line you want</td>
+</tr>
+<tr class="row-odd"><td>number</td>
+<td>page number</td>
+</tr>
+<tr class="row-even"><td>order</td>
+<td>the order type (selected in the field list)</td>
+</tr>
+</tbody>
+</table>
+<p>Field list :</p>
+<p>Using GET method and the URL below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?object=centreon_realtime_hosts&amp;action=list&amp;limit=60&amp;viewType=all&amp;sortType=name&amp;order=desc&amp;fields=id,name,alias,address,state,output,next_check
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-status">
+<h2>Service Status<a class="headerlink" href="#service-status" title="Permalink to this headline">¶</a></h2>
+<p>All monitoring information regarding services are available in throw the Centreon API. With this call, you can also get host informations in the same time that service information. This web service provide the same possibility that the service monitoring view.</p>
+<p>Using GET method and the URL below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?object=centreon_realtime_services&amp;action=list
+</pre></div>
+</div>
+<p><strong>Header:</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">key</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon-auth-token</td>
+<td>the value of authToken you got
+on the authentication response</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<p>You can pass a list of parameters in order to select the data you want.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">values</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>viewType</td>
+<td>select the predefined filter like in the
+monitoring view: all, unhandled, problems</td>
+</tr>
+<tr class="row-odd"><td>fields</td>
+<td>the fields list that you want to get
+separated by a “,”</td>
+</tr>
+<tr class="row-even"><td>status</td>
+<td>the status of services that you want to
+get (ok, warning, critical, unknown,
+pending, all)</td>
+</tr>
+<tr class="row-odd"><td>hostgroup</td>
+<td>hostgroup id filter</td>
+</tr>
+<tr class="row-even"><td>servicegroup</td>
+<td>servicegroup id filter</td>
+</tr>
+<tr class="row-odd"><td>instance</td>
+<td>instance id filter</td>
+</tr>
+<tr class="row-even"><td>search</td>
+<td>search pattern applyed on service</td>
+</tr>
+<tr class="row-odd"><td>searchHost</td>
+<td>search pattern applyed on host</td>
+</tr>
+<tr class="row-even"><td>searchOutput</td>
+<td>search pattern applyed on output</td>
+</tr>
+<tr class="row-odd"><td>criticality</td>
+<td>a specific criticity</td>
+</tr>
+<tr class="row-even"><td>sortType</td>
+<td>ASC ou DESC</td>
+</tr>
+<tr class="row-odd"><td>limit</td>
+<td>number of line you want</td>
+</tr>
+<tr class="row-even"><td>number</td>
+<td>page number</td>
+</tr>
+<tr class="row-odd"><td>order</td>
+<td>the order type (selected in the field list)</td>
+</tr>
+</tbody>
+</table>
+<p>Field list :</p>
+<div class="line-block">
+<div class="line">host_max_check_attempts  | maximum check attempts for host          |</div>
+</div>
+<p>Example:</p>
+<p>Using GET method and the URL below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=list&amp;object=centreon_realtime_services&amp;limit=60&amp;viewType=all&amp;sortType=name&amp;order=desc&amp;fields=id,description,host_id,host_name,state,output
+</pre></div>
+</div>
+</div>
+<div class="section" id="submit-results">
+<h2>Submit results<a class="headerlink" href="#submit-results" title="Permalink to this headline">¶</a></h2>
+<p>You can use the centreon API to submit information to the monitoring engine. All information that you submit will be forwarded to the centreon engine poller that host the configuration.</p>
+<p>To provide information, Centreon need to have specific and mandatory information.</p>
+<p>The user must be admin or have access to “Reach API Configuration”.</p>
+<p>For the service submission please provide the following information :</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Fields</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>host</td>
+<td>host name</td>
+</tr>
+<tr class="row-odd"><td>service</td>
+<td>service description</td>
+</tr>
+<tr class="row-even"><td>status</td>
+<td>status id (0, 1, 2, 3)
+or ok, warning, critical, unknown</td>
+</tr>
+<tr class="row-odd"><td>output</td>
+<td>a specific message</td>
+</tr>
+<tr class="row-even"><td>perfdata
+(optional)</td>
+<td>all performance metric following the
+nagios plugin API</td>
+</tr>
+<tr class="row-odd"><td>updatetime</td>
+<td>the check time (timestamp)</td>
+</tr>
+</tbody>
+</table>
+<p>For the host submission please provide the following information :</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Fields</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>host</td>
+<td>host name</td>
+</tr>
+<tr class="row-odd"><td>status</td>
+<td>status id (0, 1, 2, 3)</td>
+</tr>
+<tr class="row-even"><td>output</td>
+<td>a specific message</td>
+</tr>
+<tr class="row-odd"><td>updatetime</td>
+<td>the check time (timestamp)</td>
+</tr>
+</tbody>
+</table>
+<p>To send status, please use the following URL using POST method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=submit&amp;object=centreon_submit_results
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon-auth-token</td>
+<td>the value of authToken you got
+on the authentication response</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example of service body submit:</strong>
+The body is a json with the parameters provided above formated as below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;updatetime&quot;</span><span class="p">:</span> <span class="s2">&quot;1528884076&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;Centreon-Central&quot;</span>
+      <span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;Memory&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span>
+      <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;The service is in CRITICAL state&quot;</span>
+      <span class="s2">&quot;perfdata&quot;</span><span class="p">:</span> <span class="s2">&quot;perf=20&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;updatetime&quot;</span><span class="p">:</span> <span class="s2">&quot;1528884076&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;Centreon-Central&quot;</span>
+      <span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;fake-service&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+      <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;The service is in WARNING state&quot;</span>
+      <span class="s2">&quot;perfdata&quot;</span><span class="p">:</span> <span class="s2">&quot;perf=10&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example of body response:</strong> ::
+The response body is a json with the HTTP return code and a message for each submit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="mi">202</span><span class="p">,</span>
+      <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;The status send to the engine&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+      <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;The service is not present.&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Most of the actions available (about 95%) in the command line API is available in the rest API.</p>
+<p>Here is an example for listing hosts using rest API.</p>
+<p>Using POST method and the URL below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header:</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon-auth-token</td>
+<td>the value of authToken you got
+on the authentication response</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;HOST&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>The key <strong>action</strong> corresponds to the option <strong>-a</strong> in Centreon CLAPI, the value <strong>show</strong> corresponds to the <strong>-a</strong> option value.</li>
+<li>The key <strong>object</strong> corresponds to the option <strong>-o</strong> in Centreon CLAPI, the value <strong>HOST</strong> corresponds to the <strong>-o</strong> option value.</li>
+</ul>
+<p>The equivalent action using Centreon CLAPI is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o HOST -a show</span>
+</pre></div>
+</div>
+<p><strong>Response:</strong>
+The response is a json flow listing all hosts and formated as below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;13&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-neptune-frontend&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-neptune-frontend&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-neptune-frontend&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;14&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;srvi-mysql01&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;srvi-mysql01&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;srvi-mysql01&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+   <span class="p">}</span>
+ <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some actions need the values key ( the option <strong>-v</strong> in Centreon CLAPI ). Depending on the called action, the body can contain <strong>values</strong> key. We will see that in detail later.</p>
+</div>
+</div>
+<div class="section" id="api-calls">
+<h2>API Calls<a class="headerlink" href="#api-calls" title="Permalink to this headline">¶</a></h2>
+<p>All API calls you can do on objects are described below. Note that you need to be authenticate before each call.</p>
+<p>API calls on the Host object are fully-detailed below. For the next objects, only the actions available are listed, so just follow the same approach as for the host object for an API call.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+ <span class="p">{</span>
+   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;79&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+ <span class="p">},</span>
+ <span class="p">{</span>
+   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;80&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-neptune-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-neptune-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-neptune-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+ <span class="p">},</span>
+ <span class="p">{</span>
+   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;81&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-earth-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-earth-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-earth-frontend&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+ <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;test;Test host;127.0.0.1;generic-host;central;Linux-SerVers&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;del&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;setparam&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;test;ParameterToSet;NewParameter&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Available parameters</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>geo_coords</td>
+<td>Geo coordinates</td>
+</tr>
+<tr class="row-odd"><td>2d_coords</td>
+<td>2D coordinates (used by statusmap)</td>
+</tr>
+<tr class="row-even"><td>3d_coords</td>
+<td>3D coordinates (used by statusmap)</td>
+</tr>
+<tr class="row-odd"><td>action_url</td>
+<td>Action URL</td>
+</tr>
+<tr class="row-even"><td>activate</td>
+<td>Whether or not host is enabled</td>
+</tr>
+<tr class="row-odd"><td>active_checks_enabled</td>
+<td>Whether or not active checks are enabled</td>
+</tr>
+<tr class="row-even"><td>address</td>
+<td>Host IP Address</td>
+</tr>
+<tr class="row-odd"><td>alias</td>
+<td>Alias</td>
+</tr>
+<tr class="row-even"><td>check_command</td>
+<td>Check command</td>
+</tr>
+<tr class="row-odd"><td>check_command_arguments</td>
+<td>Check command arguments</td>
+</tr>
+<tr class="row-even"><td>check_interval</td>
+<td>Normal check interval</td>
+</tr>
+<tr class="row-odd"><td>check_freshness</td>
+<td>Check freshness (in seconds)</td>
+</tr>
+<tr class="row-even"><td>check_period</td>
+<td>Check period</td>
+</tr>
+<tr class="row-odd"><td>checks_enabled</td>
+<td>Whether or not checks are enabled</td>
+</tr>
+<tr class="row-even"><td>contact_additive_inheritance</td>
+<td>Enables contact additive inheritance</td>
+</tr>
+<tr class="row-odd"><td>cg_additive_inheritance</td>
+<td>Enables contactgroup additive inheritance</td>
+</tr>
+<tr class="row-even"><td>event_handler</td>
+<td>Event handler command</td>
+</tr>
+<tr class="row-odd"><td>event_handler_arguments</td>
+<td>Event handler command arguments</td>
+</tr>
+<tr class="row-even"><td>event_handler_enabled</td>
+<td>Whether or not event handler is enabled</td>
+</tr>
+<tr class="row-odd"><td>first_notification_delay</td>
+<td>First notification delay (in seconds)</td>
+</tr>
+<tr class="row-even"><td>flap_detection_enabled</td>
+<td>Whether or not flap detection is enabled</td>
+</tr>
+<tr class="row-odd"><td>flap_detection_options</td>
+<td>Flap detection options</td>
+</tr>
+<tr class="row-even"><td>icon_image</td>
+<td>Icon image</td>
+</tr>
+<tr class="row-odd"><td>icon_image_alt</td>
+<td>Icon image text</td>
+</tr>
+<tr class="row-even"><td>max_check_attempts</td>
+<td>Maximum number of attempt before a HARD state is declared</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>Host name</td>
+</tr>
+<tr class="row-even"><td>normal_check_interval</td>
+<td>value in minutes</td>
+</tr>
+<tr class="row-odd"><td>notes</td>
+<td>Notes</td>
+</tr>
+<tr class="row-even"><td>notes_url</td>
+<td>Notes URL</td>
+</tr>
+<tr class="row-odd"><td>notifications_enabled</td>
+<td>Whether or not notification is enabled</td>
+</tr>
+<tr class="row-even"><td>notification_interval</td>
+<td>Notification interval</td>
+</tr>
+<tr class="row-odd"><td>notification_options</td>
+<td>Notification options</td>
+</tr>
+<tr class="row-even"><td>notification_period</td>
+<td>Notification period</td>
+</tr>
+<tr class="row-odd"><td>obsess_over_host</td>
+<td>Whether or not obsess over host option is enabled</td>
+</tr>
+<tr class="row-even"><td>passive_checks_enabled</td>
+<td>Whether or not passive checks are enabled</td>
+</tr>
+<tr class="row-odd"><td>process_perf_data</td>
+<td>Process performance data command</td>
+</tr>
+<tr class="row-even"><td>retain_nonstatus_information</td>
+<td>Whether or not there is non-status retention</td>
+</tr>
+<tr class="row-odd"><td>retain_status_information</td>
+<td>Whether or not there is status retention</td>
+</tr>
+<tr class="row-even"><td>retry_check_interval</td>
+<td>Retry check interval</td>
+</tr>
+<tr class="row-odd"><td>snmp_community</td>
+<td>Snmp Community</td>
+</tr>
+<tr class="row-even"><td>snmp_version</td>
+<td>Snmp version</td>
+</tr>
+<tr class="row-odd"><td>stalking_options</td>
+<td>Comma separated options: ‘o’ for OK, ‘d’ for Down, ‘u’ for Unreachable</td>
+</tr>
+<tr class="row-even"><td>statusmap_image</td>
+<td>Status map image (used by statusmap</td>
+</tr>
+<tr class="row-odd"><td>host_notification_options</td>
+<td>Notification options (d,u,r,f,s)</td>
+</tr>
+<tr class="row-even"><td>timezone</td>
+<td>Timezone</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;setinstance&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;test;Poller-2&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;getmacro&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>
+Here is a response example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+ <span class="p">{</span>
+   <span class="s2">&quot;macro name&quot;</span><span class="p">:</span> <span class="s2">&quot;ALIVENUM&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;macro value&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;is_password&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;generic-host-bench&quot;</span>
+ <span class="p">},</span>
+ <span class="p">{</span>
+   <span class="s2">&quot;macro name&quot;</span><span class="p">:</span> <span class="s2">&quot;ALIVEWARNING&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;macro value&quot;</span><span class="p">:</span> <span class="s2">&quot;3000,80&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;is_password&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;generic-host-bench&quot;</span>
+ <span class="p">},</span>
+ <span class="p">{</span>
+   <span class="s2">&quot;macro name&quot;</span><span class="p">:</span> <span class="s2">&quot;ALIVECRITICAL&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;macro value&quot;</span><span class="p">:</span> <span class="s2">&quot;5000,100&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;is_password&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;generic-host-bench&quot;</span>
+ <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;setmacro&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;MacroName;NewValue&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To edit an existing custom marco, The MacroName used on the body should be defined on the Custom Marco of the choosen host. If the marco doesn’t exist, it will be created.</p>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;delmacro&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;MacroName&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The MacroName used on the body is the macro to delete. It should be defined on the Custom Marco of the choosen host.</p>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;gettemplate&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong>
+Here is a response example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Servers-Linux&quot;</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;62&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Postfix-frontend&quot;</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;59&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Cyrus-murder-frontend&quot;</span>
+   <span class="p">}</span>
+ <span class="p">]</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;settemplate&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;MyHostTemplate&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The MyHostTemplate used on the body should exist as a host template. The new template erase templates already exist.</p>
+<dl class="docutils">
+<dt><strong>Response</strong> ::</dt>
+<dd>{
+“result”: []
+}</dd>
+</dl>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;addtemplate&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;MyHostTemplate&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The MyHostTemplate used on the body should exist as a host template. The new template is added without erasing template already linked</p>
+<dl class="docutils">
+<dt><strong>Response</strong> ::</dt>
+<dd>{
+“result”: []
+}</dd>
+</dl>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;deltemplate&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;MyHostTemplate&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The MyHostTemplate used on the body should exist as a host template.</p>
+<dl class="docutils">
+<dt><strong>Response</strong> ::</dt>
+<dd>{
+“result”: []
+}</dd>
+</dl>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;applytpl&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><strong>Response</strong> ::</dt>
+<dd>{
+“result”: []
+}</dd>
+</dl>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;getparent&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;219&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontdad&quot;</span>
+   <span class="p">}</span>
+ <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;addparent&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;fw-berlin&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To add more than one parent to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;fw-berlin|fw-dublin&quot;</span>
+</pre></div>
+</div>
+<p>The add action add the parent without overwriting he previous configuration.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;setparent&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;fw-berlin&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To set more than one parent to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;fw-berlin|fw-dublin&quot;</span>
+</pre></div>
+</div>
+<p>The set action overwrite the previous configuration before setting the new parent.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;delparent&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;fw-berlin&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To delete more than one parent, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;fw-berlin|fw-dublin&quot;</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;getcontactgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;6&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mail-Operators&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;addcontactgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Supervisors&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To add more than one contactgroup to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Supervisors|Guest&quot;</span>
+</pre></div>
+</div>
+<p>The add action add the contact without overwriting he previous configuration.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;setcontactgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Supervisors&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To set more than one contactgroup to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Supervisors|Guest&quot;</span>
+</pre></div>
+</div>
+<p>The set action overwrite the previous configuration before setting the new contactgroup.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;delcontactgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Guest&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To delete more than one contactgroup, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Guest|Supervisors&quot;</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;getcontact&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;20&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;user-mail&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;addcontact&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;admin&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To add more than one contact to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;admin|SuperAdmin&quot;</span>
+</pre></div>
+</div>
+<p>The add action add the contact without overwriting he previous configuration.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;setcontact&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;admin&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To set more than one contact to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;admin|SuperAdmin&quot;</span>
+</pre></div>
+</div>
+<p>The set action overwrite the previous configuration before setting the new contact.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;delcontact&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Guest&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To delete more than one contact, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;admin|SuperAdmin&quot;</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;gethostgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;53&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Linux-Servers&quot;</span>
+   <span class="p">},</span>
+   <span class="p">{</span>
+     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;63&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mail-Cyrus-Frontend&quot;</span>
+   <span class="p">}</span>
+ <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;addhostgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Mail-Postfix-Frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To add more than one hostgroup to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Mail-Postfix-Frontend|Linux-Servers&quot;</span>
+</pre></div>
+</div>
+<p>The add action add the hostgroup without overwriting he previous configuration.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;sethostgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Linux-Servers&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To set more than one hostgroup to a host, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Linux-Servers|Mail-Postfix-Frontend&quot;</span>
+</pre></div>
+</div>
+<p>The set action overwrite the previous configuration before setting the new hostgroup.</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;delhostgroup&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Linux-Servers&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To delete more than one hostgroup, use the character ‘|’. Ex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend;Linux-Servers|Mail-Postfix-Frontend&quot;</span>
+</pre></div>
+</div>
+<p>Coming soon</p>
+<p>Coming soon</p>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;enable&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>POST</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>api.domain.tld/centreon/api/index.php?action=action&amp;object=centreon_clapi
+</pre></div>
+</div>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>key</td>
+<td>value</td>
+</tr>
+<tr class="row-even"><td>Content-Type</td>
+<td>application/json</td>
+</tr>
+<tr class="row-odd"><td>centreon_auth_token</td>
+<td>the value of authToken you got
+on the response of the authentication part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;disable&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="s2">&quot;mail-uranus-frontend&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>ACL</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>reload</li>
+<li>lastreload</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>ACLACTION</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getaclgroup</li>
+<li>grant</li>
+<li>revoke</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>ACLGROUP</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getmenu</li>
+<li>getaction</li>
+<li>getresource</li>
+<li>getcontact</li>
+<li>getcontactgroup</li>
+<li>setmenu</li>
+<li>setaction</li>
+<li>setresource</li>
+<li>addmenu</li>
+<li>addaction</li>
+<li>addresource</li>
+<li>delmenu</li>
+<li>delaction</li>
+<li>delresource</li>
+<li>setcontact</li>
+<li>setcontactgroup</li>
+<li>addcontact</li>
+<li>addcontactgroup</li>
+<li>delcontact</li>
+<li>delcontactgroup</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>ACLMENU</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getaclgroup</li>
+<li>grant</li>
+<li>revoke</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>ACLRESOURCE</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getaclgroup</li>
+<li>grant</li>
+<li>revoke</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>CENTBROKERCFG</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>listinput, listoutput, listlogger, listcorrelation, listtemporary, liststats</li>
+<li>getinput , getoutput, getlogger, getcorrelation, gettemporary, getstats</li>
+<li>addinput, addoutput, addlogger, addcorrelation, addtemporary, addstats</li>
+<li>delinput, deloutput, dellogger, delcorrelation, deltemporary, delstats</li>
+<li>setinput, setoutput, setlogger, setcorrelation, settemporary, setstats</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>CGICFG</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>CMD</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>CONTACT</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>enable</li>
+<li>disable</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>CONTACTTPL</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>enable</li>
+<li>disable</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>CG</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>enable</li>
+<li>disable</li>
+<li>getcontact</li>
+<li>addcontact</li>
+<li>setcontact</li>
+<li>delcontact</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>DEP</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>listdep</li>
+<li>addparent</li>
+<li>addchild</li>
+<li>delparent</li>
+<li>delchild</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>DOWNTIME</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>listperiods</li>
+<li>addweeklyperiod</li>
+<li>addmonthlyperiod</li>
+<li>addspecificperiod</li>
+<li>addhost, addhostgroup, addservice, addservicegroup</li>
+<li>delhost, delhostgroup, delservice, delservicegroup</li>
+<li>sethost, sethostgroup, setservice, setservicegroup</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>HTPL</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong>
+APPLYTPL and SETINSTANCE actions on HTPL</p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getmacro</li>
+<li>setmacro</li>
+<li>delmacro</li>
+<li>getparent</li>
+<li>addparent</li>
+<li>setparent</li>
+<li>delparent</li>
+<li>getcontactgroup</li>
+<li>addcontactgroup</li>
+<li>setcontactgroup</li>
+<li>delcontactgroup</li>
+<li>getcontact</li>
+<li>addcontact</li>
+<li>setcontact</li>
+<li>delcontact</li>
+<li>gethostgroup</li>
+<li>addhostgroup</li>
+<li>sethostgroup</li>
+<li>delhostgroup</li>
+<li>setseverity</li>
+<li>unsetseverity</li>
+<li>enable</li>
+<li>disable</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>HC</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>getmember</li>
+<li>addmember</li>
+<li>setmember</li>
+<li>setseverity</li>
+<li>unsetseverity</li>
+<li>delmember</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>HG</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getmember</li>
+<li>addmember</li>
+<li>setmember</li>
+<li>delmember</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>INSTANCE</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>gethosts</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>STPL</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>addhosttemplate</li>
+<li>sethosttemplate</li>
+<li>delhosttemplate</li>
+<li>getmacro</li>
+<li>setmacro</li>
+<li>delmacro</li>
+<li>getcontact</li>
+<li>addcontact</li>
+<li>setcontact</li>
+<li>delcontact</li>
+<li>getcontactgroup</li>
+<li>setcontactgroup</li>
+<li>delcontactgroup</li>
+<li>gettrap</li>
+<li>settrap</li>
+<li>deltrap</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>SERVICE</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>addhost</li>
+<li>sethost</li>
+<li>delhost</li>
+<li>getmacro</li>
+<li>setmacro</li>
+<li>delmacro</li>
+<li>setseverity</li>
+<li>unsetseverity</li>
+<li>getcontact</li>
+<li>addcontact</li>
+<li>setcontact</li>
+<li>delcontact</li>
+<li>getcontactgroup</li>
+<li>setcontactgroup</li>
+<li>delcontactgroup</li>
+<li>gettrap</li>
+<li>settrap</li>
+<li>deltrap</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>SG</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getservice</li>
+<li>gethostgroupservice</li>
+<li>addservice</li>
+<li>setservice</li>
+<li>addhostgroupservice</li>
+<li>sethostgroupservice</li>
+<li>delservice</li>
+<li>delhostgroupservice</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>SC</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getservice</li>
+<li>getservicetemplate</li>
+<li>addservice</li>
+<li>setservice</li>
+<li>addservicetemplate</li>
+<li>setservicetemplate</li>
+<li>delservice</li>
+<li>delservicetemplate</li>
+<li>setseverity</li>
+<li>unsetseverity</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>TIMEPERIOD</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getexception</li>
+<li>setexception</li>
+<li>delexception</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>TRAP</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>getmatching</li>
+<li>addmatching</li>
+<li>delmatching</li>
+<li>updatematching</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Object</strong></dt>
+<dd><ul class="first last simple">
+<li>VENDOR</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Actions</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>show</li>
+<li>add</li>
+<li>del</li>
+<li>setparam</li>
+<li>generatetraps</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="code-errors">
+<h2>Code errors<a class="headerlink" href="#code-errors" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Code</strong></td>
+<td><strong>Messages</strong></td>
+</tr>
+<tr class="row-even"><td>200</td>
+<td>Successful</td>
+</tr>
+<tr class="row-odd"><td>400</td>
+<td><ul class="first last simple">
+<li>Missing parameter</li>
+<li>Missing name parameter</li>
+<li>Unknown parameter</li>
+<li>Objects are not linked</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>401</td>
+<td>Unauthorized</td>
+</tr>
+<tr class="row-odd"><td>404</td>
+<td><ul class="first last simple">
+<li>Object not found</li>
+<li>Method not implemented into Centreon API</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>409</td>
+<td><ul class="first last simple">
+<li>Object already exists</li>
+<li>Name is already in use</li>
+<li>Objects already linked</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>500</td>
+<td>Internal server error (custom message)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API Rest</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#permissions">Permissions</a></li>
+<li><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li><a class="reference internal" href="#realtime-information">Realtime information</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#host-status">Host Status</a></li>
+<li><a class="reference internal" href="#service-status">Service Status</a></li>
+<li><a class="reference internal" href="#submit-results">Submit results</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li><a class="reference internal" href="#api-calls">API Calls</a></li>
+<li><a class="reference internal" href="#code-errors">Code errors</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../clapi/index.html"
+                        title="next chapter">Command Line API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/api_rest/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../clapi/index.html" title="Command Line API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="API"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

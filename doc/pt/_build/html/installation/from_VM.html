@@ -1,0 +1,162 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using VM &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using sources" href="from_sources.html" />
+    <link rel="prev" title="Using packages" href="from_packages.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="from_sources.html" title="Using sources"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="from_packages.html" title="Using packages"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Installation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-vm">
+<span id="install-from-vm"></span><h1>Using VM<a class="headerlink" href="#using-vm" title="Permalink to this headline">¶</a></h1>
+<p>You can download in Centreon web site, VM already installed.</p>
+<p>These VMs are in OVF format and have been tested for VMWare infrastructure. The following procedure have been done for VSphere Client in 5.1 version and VirtualBox 5.1</p>
+<div class="section" id="import">
+<h2>Import<a class="headerlink" href="#import" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to import the OVF FIle. To do that go in <strong>File &gt; Deploy OVF Template</strong> and choose your file.
+You can then follow diffrents menus. Choices you made are linked to your VMWare configuration so it’s difficult to be more specific.
+Just be noticed that best practice are to used <strong>Thin Provision</strong> to keep some spaces in disk.</p>
+</div>
+<div class="section" id="connection">
+<h2>Connection<a class="headerlink" href="#connection" title="Permalink to this headline">¶</a></h2>
+<p>The server has default password.</p>
+<p>To connect to the web UI use : <strong>admin/centreon</strong>. You can also connect to the server using SSH with the account : <strong>root/centreon</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For security reasons, we highly recommand you to change this passwords after installation.</p>
+</div>
+</div>
+<div class="section" id="poller">
+<h2>Poller<a class="headerlink" href="#poller" title="Permalink to this headline">¶</a></h2>
+<p>Using Poller VM is nearly the same as central. You just have to exchange SSH keys and configure it on web interface.</p>
+<div class="section" id="exchange-ssh-keys">
+<h3>Exchange SSH keys<a class="headerlink" href="#exchange-ssh-keys" title="Permalink to this headline">¶</a></h3>
+<p>On your central server:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">su</span> <span class="o">-</span> <span class="n">centreon</span>
+<span class="n">ssh</span><span class="o">-</span><span class="n">copy</span><span class="o">-</span><span class="nb">id</span> <span class="o">-</span><span class="n">i</span> <span class="o">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span><span class="n">pub</span> <span class="n">centreon</span><span class="nd">@IP_POLLER</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The password of the centreon user is <strong>centreon</strong>. It can be easyly changed using <strong>passwd</strong> command.</p>
+</div>
+<div class="section" id="on-web-interface">
+<h3>On Web interface<a class="headerlink" href="#on-web-interface" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>In <strong>Configuration &gt; Poller &gt; Pollers</strong>, Activate Poller Template and replace IP_POLLER by the poller IP address.</li>
+<li>In <strong>Configuration &gt; Poller &gt; Engine configuration</strong>, Activate Poller-template</li>
+<li>In <strong>Configuration &gt; Poller &gt; Broker configuration</strong>, Activate Poller-template-module and in <strong>Output</strong> tab, replace IP_CENTRAL by the central IP address.</li>
+</ol>
+<p>Then you can configure and add ressources on your poller. The poller is operational !</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">When you export your configuration for the first time, you have to choose “restart”.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using VM</a><ul>
+<li><a class="reference internal" href="#import">Import</a></li>
+<li><a class="reference internal" href="#connection">Connection</a></li>
+<li><a class="reference internal" href="#poller">Poller</a><ul>
+<li><a class="reference internal" href="#exchange-ssh-keys">Exchange SSH keys</a></li>
+<li><a class="reference internal" href="#on-web-interface">On Web interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="from_packages.html"
+                        title="previous chapter">Using packages</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="from_sources.html"
+                        title="next chapter">Using sources</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/installation/from_VM.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="from_sources.html" title="Using sources"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="from_packages.html" title="Using packages"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Installation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

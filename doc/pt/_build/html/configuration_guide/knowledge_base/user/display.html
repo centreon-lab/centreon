@@ -1,0 +1,121 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Displayed procedure: template and overload &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Create / Update / Delete a procedure" href="cud.html" />
+    <link rel="prev" title="Definition" href="definition.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="cud.html" title="Create / Update / Delete a procedure"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="definition.html" title="Definition"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Configuration</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Knowledge Base</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">User Guide</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="displayed-procedure-template-and-overload">
+<h1>Displayed procedure: template and overload<a class="headerlink" href="#displayed-procedure-template-and-overload" title="Permalink to this headline">¶</a></h1>
+<p>To avoid too much workload on the procedure deployment, the functionality
+allows administrator to setup a single procedure for hosts/services.</p>
+<p>So a procedure can be specified for a given host/service but can be specified as well for a host/service template.</p>
+<p>If a procedure is defined at template level, all children of the template will have the procedure attached as well unless overloaded by a specific one. The mechanism is identical to template
+system in Centreon with inheritance.</p>
+<p><strong>Centreon Knowledge Base</strong> function is designed to avoid adding or updating manualy several times the same procedure in knowledge base.</p>
+<p>When a user clicks on a host procedure:</p>
+<ul class="simple">
+<li>if a specific procedure  is defined for this host, its wiki page is displayed</li>
+<li>if no specific procedure is defined bu the host template has a procedure, the host template wiki page is displayed</li>
+<li>if host template has no procedure defined, parents template will be checked for a defined procedure</li>
+<li>finally if no procedure is defined in the template tree, a message will warn that there is no procedure defined for this host</li>
+</ul>
+<p>It’s the same for services.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="definition.html"
+                        title="previous chapter">Definition</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cud.html"
+                        title="next chapter">Create / Update / Delete a procedure</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/configuration_guide/knowledge_base/user/display.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="cud.html" title="Create / Update / Delete a procedure"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="definition.html" title="Definition"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Configuration</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Knowledge Base</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >User Guide</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

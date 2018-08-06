@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using packages &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using VM" href="from_VM.html" />
+    <link rel="prev" title="Using Centreon ISO el7" href="from_iso.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="from_VM.html" title="Using VM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="from_iso.html" title="Using Centreon ISO el7"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Installation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-packages">
+<span id="install-from-packages"></span><h1>Using packages<a class="headerlink" href="#using-packages" title="Permalink to this headline">¶</a></h1>
+<p>Centreon supplies RPM for its products via the Centreon Open Sources version available free of charge on our repository (ex CES).</p>
+<p>These packages have been successfully tested on CentOS and Red Hat environments in 6.x and 7.x versions.</p>
+<div class="section" id="pre-install-steps">
+<h2>Pre-install steps<a class="headerlink" href="#pre-install-steps" title="Permalink to this headline">¶</a></h2>
+<p>SELinux should be disabled; for this, you have to modify the file <em>/etc/selinux/config</em> and replace “enforcing” by “disabled”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELINUX</span><span class="o">=</span><span class="n">disabled</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">After saving the file, please reboot your operating system to apply the changes.</p>
+</div>
+</div>
+<div class="section" id="repository-install">
+<h2>Repository install<a class="headerlink" href="#repository-install" title="Permalink to this headline">¶</a></h2>
+<p>To install Centreon software from the repository, you should first install the file linked to the repository.</p>
+<p>Perform the following command from a user with sufficient rights.</p>
+<p>For CentOS 6.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://yum.centreon.com/standard/3.4/el6/stable/noarch/RPMS/centreon-release-3.4-4.el6.noarch.rpm
+$ yum install --nogpgcheck centreon-release-3.4-4.el6.noarch.rpm
+</pre></div>
+</div>
+<p>For CentOS 7.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://yum.centreon.com/standard/3.4/el7/stable/noarch/RPMS/centreon-release-3.4-4.el7.centos.noarch.rpm
+$ yum install --nogpgcheck centreon-release-3.4-4.el7.centos.noarch.rpm
+</pre></div>
+</div>
+<p>The repository is now installed.</p>
+</div>
+<div class="section" id="install-a-central-server">
+<h2>Install a central server<a class="headerlink" href="#install-a-central-server" title="Permalink to this headline">¶</a></h2>
+<p>The chapter describes the installation of a Centreon central server.</p>
+<p>Perform the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ yum install centreon-base-config-centreon-engine centreon
+</pre></div>
+</div>
+<div class="section" id="installing-mysql-on-the-same-server">
+<h3>Installing MySQL on the same server<a class="headerlink" href="#installing-mysql-on-the-same-server" title="Permalink to this headline">¶</a></h3>
+<p>This chapter describes the installation of MySQL on a server including Centreon.</p>
+<p>Perform the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ yum install MariaDB-server
+$ service mysql restart
+</pre></div>
+</div>
+</div>
+<div class="section" id="php-timezone">
+<h3>PHP timezone<a class="headerlink" href="#php-timezone" title="Permalink to this headline">¶</a></h3>
+<p>PHP timezone should be set, go to <cite>/etc/php.d</cite> directory and create a file named <cite>php-timezone.ini</cite> which contains the following line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date</span><span class="o">.</span><span class="n">timezone</span> <span class="o">=</span> <span class="n">Europe</span><span class="o">/</span><span class="n">Paris</span>
+</pre></div>
+</div>
+<p>After saving the file, please don’t forget to restart apache server.</p>
+</div>
+<div class="section" id="firewall">
+<h3>Firewall<a class="headerlink" href="#firewall" title="Permalink to this headline">¶</a></h3>
+<p>Add firewall rules or disable it. To disable it execute following commands:</p>
+<ul>
+<li><p class="first"><strong>iptables</strong> (CentOS v6)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/init.d/iptables save</span>
+<span class="c1"># /etc/init.d/iptables stop</span>
+<span class="c1"># chkconfig iptables off</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>firewalld</strong> (CentOS v7)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemctl stop firewalld</span>
+<span class="c1"># systemctl disable firewalld</span>
+<span class="c1"># systemctl status firewalld</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="database-management-system">
+<h3>DataBase Management System<a class="headerlink" href="#database-management-system" title="Permalink to this headline">¶</a></h3>
+<p>The MySQL database server should be available to complete installation (locally or not). MariaDB is recommended.</p>
+<p>For CentOS / RHEL in version 7, it is necessary to modify <strong>LimitNOFILE</strong> limitation.
+Setting this option into /etc/my.cnf will NOT work.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># mkdir -p  /etc/systemd/system/mariadb.service.d/</span>
+<span class="c1"># echo -ne &quot;[Service]\nLimitNOFILE=32000\n&quot; | tee /etc/systemd/system/mariadb.service.d/limits.conf</span>
+<span class="c1"># systemctl daemon-reload</span>
+<span class="c1"># service mysql restart</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="launch-services-during-the-system-startup">
+<h3>Launch services during the system startup<a class="headerlink" href="#launch-services-during-the-system-startup" title="Permalink to this headline">¶</a></h3>
+<p>Enable the automatically start of services during the system startup.</p>
+<p>Execute these commands on central server.</p>
+<ul>
+<li><p class="first"><strong>CentOS v6</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># chkconfig httpd on</span>
+<span class="c1"># chkconfig snmpd on</span>
+<span class="c1"># chkconfig mysql on</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>CentOS v7</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemctl enable httpd.service</span>
+<span class="c1"># systemctl enable snmpd.service</span>
+<span class="c1"># systemctl enable mysql.service</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If MySQL database is on a dedicated server, execute the enable command of mysql on DB server.</p>
+</div>
+</div>
+<div class="section" id="conclude-installation">
+<h3>Conclude installation<a class="headerlink" href="#conclude-installation" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="from_iso.html#installation-web-ces"><span class="std std-ref">click here to finalise the installation process</span></a>.</p>
+</div>
+</div>
+<div class="section" id="installing-a-poller">
+<h2>Installing a poller<a class="headerlink" href="#installing-a-poller" title="Permalink to this headline">¶</a></h2>
+<p>This chapter describes the installation of a collector.</p>
+<p>Perform the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ yum install centreon-poller-centreon-engine
+</pre></div>
+</div>
+<p>The communication between a central server and a poller server is by SSH.</p>
+<p>You should exchange the SSH keys between the servers.</p>
+<p>If you don’t have any private SSH keys on the central server for the Centreon user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ su - centreon
+$ ssh-keygen -t rsa
+</pre></div>
+</div>
+<p>Copy this key on the collector:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ssh-copy-id centreon@your_poller_ip
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using packages</a><ul>
+<li><a class="reference internal" href="#pre-install-steps">Pre-install steps</a></li>
+<li><a class="reference internal" href="#repository-install">Repository install</a></li>
+<li><a class="reference internal" href="#install-a-central-server">Install a central server</a><ul>
+<li><a class="reference internal" href="#installing-mysql-on-the-same-server">Installing MySQL on the same server</a></li>
+<li><a class="reference internal" href="#php-timezone">PHP timezone</a></li>
+<li><a class="reference internal" href="#firewall">Firewall</a></li>
+<li><a class="reference internal" href="#database-management-system">DataBase Management System</a></li>
+<li><a class="reference internal" href="#launch-services-during-the-system-startup">Launch services during the system startup</a></li>
+<li><a class="reference internal" href="#conclude-installation">Conclude installation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installing-a-poller">Installing a poller</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="from_iso.html"
+                        title="previous chapter">Using Centreon ISO el7</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="from_VM.html"
+                        title="next chapter">Using VM</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/installation/from_packages.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="from_VM.html" title="Using VM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="from_iso.html" title="Using Centreon ISO el7"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Installation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

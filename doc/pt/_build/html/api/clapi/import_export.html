@@ -1,0 +1,175 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Import/Export &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Centreon Plugin API" href="../plugin-api.html" />
+    <link rel="prev" title="Vendors" href="objects/vendors.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../plugin-api.html" title="Centreon Plugin API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="objects/vendors.html" title="Vendors"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Command Line API</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="import-export">
+<h1>Import/Export<a class="headerlink" href="#import-export" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="export">
+<h2>Export<a class="headerlink" href="#export" title="Permalink to this headline">¶</a></h2>
+<p>At some point, you might need to export all of the object configuration parameters
+into a plain text file, either for synchronizing or backuping purpose.</p>
+<p>The following items will not be exported:</p>
+<ul class="simple">
+<li>Escalation</li>
+<li>ACL (ACL Groups, ACL Resources, ACL actions)</li>
+<li>LDAP settings</li>
+<li>Global Centreon settings</li>
+</ul>
+<p>This export feature is ran like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -e &gt; /tmp/clapi-export.txt</span>
+</pre></div>
+</div>
+<p>This will generate CLAPI commands and redirect them to the <em>/tmp/clapi-export.txt</em> file.</p>
+<p>This file can now be read by the import command.</p>
+<p>With this, you can also build your own CLAPI command file if you know the straight forward syntax.</p>
+<p>For instance::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HOST</span><span class="p">;</span><span class="n">ADD</span><span class="p">;</span><span class="n">Host</span><span class="o">-</span><span class="n">Test1</span><span class="p">;</span><span class="n">Test</span> <span class="n">host</span><span class="p">;</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">;</span><span class="n">generic</span><span class="o">-</span><span class="n">host</span><span class="p">;</span><span class="n">Local</span> <span class="n">Poller</span><span class="p">;</span><span class="n">Linux</span>
+<span class="n">HOST</span><span class="p">;</span><span class="n">ADD</span><span class="p">;</span><span class="n">Host</span><span class="o">-</span><span class="n">Test2</span><span class="p">;</span><span class="n">Test</span> <span class="n">host</span><span class="p">;</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">;</span><span class="n">generic</span><span class="o">-</span><span class="n">host</span><span class="p">;</span><span class="n">Local</span> <span class="n">Poller</span><span class="p">;</span><span class="n">Linux</span>
+<span class="n">HOST</span><span class="p">;</span><span class="n">ADD</span><span class="p">;</span><span class="n">Host</span><span class="o">-</span><span class="n">Test3</span><span class="p">;</span><span class="n">Test</span> <span class="n">host</span><span class="p">;</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">;</span><span class="n">generic</span><span class="o">-</span><span class="n">host</span><span class="p">;</span><span class="n">Local</span> <span class="n">Poller</span><span class="p">;</span><span class="n">Linux</span>
+<span class="n">HOST</span><span class="p">;</span><span class="n">ADD</span><span class="p">;</span><span class="n">Host</span><span class="o">-</span><span class="n">Test4</span><span class="p">;</span><span class="n">Test</span> <span class="n">host</span><span class="p">;</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">;</span><span class="n">generic</span><span class="o">-</span><span class="n">host</span><span class="p">;</span><span class="n">Local</span> <span class="n">Poller</span><span class="p">;</span><span class="n">Linux</span>
+<span class="n">HOST</span><span class="p">;</span><span class="n">ADD</span><span class="p">;</span><span class="n">Host</span><span class="o">-</span><span class="n">Test5</span><span class="p">;</span><span class="n">Test</span> <span class="n">host</span><span class="p">;</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">;</span><span class="n">generic</span><span class="o">-</span><span class="n">host</span><span class="p">;</span><span class="n">Local</span> <span class="n">Poller</span><span class="p">;</span><span class="n">Linux</span>
+</pre></div>
+</div>
+<div class="section" id="export-of-a-subset-of-objects">
+<h3>Export of a subset of objects<a class="headerlink" href="#export-of-a-subset-of-objects" title="Permalink to this headline">¶</a></h3>
+<p>Compatibility: Centreon Web &gt;= 2.7.7</p>
+<p>You can choose to export only predefined hosts or services.</p>
+<p>For example, to export all services linked to “srv-mssql-01” host you have to execute following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -e --select=&#39;HOST;srv-mssql-01&#39; --filter-type=&#39;^(HOST|SERVICE)$&#39;</span>
+</pre></div>
+</div>
+<p>To export “memory” and “mssql-listener” services execute following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -e --select=&#39;SERVICE;memory&#39; --select=&#39;SERVICE;mssql-listener&#39; --filter-type=&#39;^SERVICE$&#39;</span>
+</pre></div>
+</div>
+<p>To export all commands run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o CMD -a show | awk -F\; &#39;NR &gt; 2 { print &quot;--select=\&quot;CMD;&quot; $2 &quot;\&quot;&quot; }&#39; | xargs --verbose php ./centreon -u admin -p centreon -e</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="import">
+<h2>Import<a class="headerlink" href="#import" title="Permalink to this headline">¶</a></h2>
+<p>You can import configuration from the exported file <em>/tmp/clapi-export</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -i /tmp/clapi-export.txt</span>
+</pre></div>
+</div>
+<p>In case you have a very large export file, it is advised to redirect the output of the above command to a file.
+Indeed, when errors occur during the import process, CLAPI will print out an error message along with the line number of the file, you might need to store those output message for troubleshooting later on.</p>
+<p>You can build your own CLAPI command file if you know the straight forward syntax.
+You can use parameter described in Object Management with the syntax you can see in export files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OBJECT</span><span class="p">;</span><span class="n">AACTION</span><span class="p">;</span><span class="n">Parameter1</span><span class="p">;</span><span class="n">Parameter2</span><span class="p">;</span><span class="n">Parameter3</span><span class="p">;</span><span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Import/Export</a><ul>
+<li><a class="reference internal" href="#export">Export</a><ul>
+<li><a class="reference internal" href="#export-of-a-subset-of-objects">Export of a subset of objects</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#import">Import</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="objects/vendors.html"
+                        title="previous chapter">Vendors</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../plugin-api.html"
+                        title="next chapter">Centreon Plugin API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/clapi/import_export.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../plugin-api.html" title="Centreon Plugin API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="objects/vendors.html" title="Vendors"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Command Line API</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

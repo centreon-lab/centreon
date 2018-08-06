@@ -1,0 +1,224 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>How to translate Centreon &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API" href="../api/index.html" />
+    <link rel="prev" title="How to write a Stream Connector" href="writestreamconnector.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../api/index.html" title="API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="writestreamconnector.html" title="How to write a Stream Connector"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-translate-centreon">
+<h1>How to translate Centreon<a class="headerlink" href="#how-to-translate-centreon" title="Permalink to this headline">¶</a></h1>
+<p>If you want to contribute to translate Centreon, this new tutorial is for you!
+Discover how to translate Centreon web interface and how to help us to add new
+language in Centreon.</p>
+<div class="section" id="install-translation-environment">
+<h2>Install translation environment<a class="headerlink" href="#install-translation-environment" title="Permalink to this headline">¶</a></h2>
+<p>Download the following <a class="reference external" href="http://blog.centreon.com/wp-content/uploads/2017/05/centreon-translation.zip">archive</a> and copy it on a Linux server.</p>
+<p>Execute the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ unzip centreon-translation.zip
+$ cd centreon-translation
+</pre></div>
+</div>
+<p>Your environment to translate Centreon is now ready.</p>
+</div>
+<div class="section" id="first-generation">
+<h2>First generation<a class="headerlink" href="#first-generation" title="Permalink to this headline">¶</a></h2>
+<p>During the first generation, the script will clone Centreon sources from GitHub
+on your server.</p>
+<p>Execute the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bash make-translation.sh
+</pre></div>
+</div>
+<p>At the end of execution, two files are available:</p>
+<ul class="simple">
+<li>messages.pot to translate Centreon web interface menu and forms</li>
+<li>help.pot to translate help tooltips in configuration forms</li>
+</ul>
+<p>Rename messages.pot to messages.po and help.po to help.po</p>
+<p>You can now start translation of Centreon by editing files with a PO file editor like poedit.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Keep always your *.po files for next translation.</p>
+</div>
+</div>
+<div class="section" id="use-your-translation">
+<h2>Use your translation<a class="headerlink" href="#use-your-translation" title="Permalink to this headline">¶</a></h2>
+<p>On your Centreon server, install gettext:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo yum install gettext
+</pre></div>
+</div>
+<p>Create the locale directory for your Centreon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo mkdir -p /usr/share/centreon/www/locale/`locale | grep LC_MESSAGES | cut -d \&quot; -f 2`/LC_MESSAGES
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>/usr/share/centreon</strong> is the Centreon installed directory.</p>
+</div>
+<p>If you want to translate Centreon in other language than use by your Centreon
+server, you have to define manually the locale.</p>
+<p>For example, for Brazilian users, execute the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo mkdir -p /usr/share/centreon/www/locale/pt_BR/LC_MESSAGES
+</pre></div>
+</div>
+<p>Compile translated files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ msgfmt messages.po -o messages.mo
+$ msgfmt help.pot -o help.mo
+</pre></div>
+</div>
+<p>Copy compiled translated files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo cp *.mo /usr/share/centreon/www/locale/`locale | grep LC_MESSAGES | cut -d \&quot; -f 2`/LC_MESSAGES
+</pre></div>
+</div>
+<p>Change rights on directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo chown -R apache.apache /usr/share/centreon/www/locale/`locale | grep LC_MESSAGES | cut -d \&quot; -f 2`
+</pre></div>
+</div>
+<p>Restart Apache:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo service httpd restart
+</pre></div>
+</div>
+<p>Connect to your Centreon web interface, edit your profil and select new language:</p>
+<a class="reference internal image-reference" href="../_images/change_language.png"><img alt="../_images/change_language.png" class="align-center" src="../_images/change_language.png" style="width: 638.3000000000001px; height: 357.5px;" /></a>
+<p>Save the form and access to another menu, your interface will be translated.</p>
+</div>
+<div class="section" id="upgrade-translation">
+<h2>Upgrade translation<a class="headerlink" href="#upgrade-translation" title="Permalink to this headline">¶</a></h2>
+<p>Centreon developers released every month a new version of Centreon Web.
+So translation could be modified with every new release.</p>
+<p>To maintain translation up-to-date follow this steps:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bash make-translation.sh
+</pre></div>
+</div>
+<p>At the end of execution, two files up-to-date are available:</p>
+<ul class="simple">
+<li>messages.pot to translate Centreon Web interface menu and forms</li>
+<li>help.pot to translate help tooltips in configuration forms</li>
+</ul>
+<p>Merge this files with previous translation (messages.po and help.po):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ msgmerge help.po help.pot -o new_help.po
+$ msgmerge messages.po messages.pot -o new_messages.po
+</pre></div>
+</div>
+<p>Follow chapter “Use your translation” to upgrade translation for Centreon.</p>
+</div>
+<div class="section" id="participate-to-centreon-project">
+<h2>Participate to Centreon project<a class="headerlink" href="#participate-to-centreon-project" title="Permalink to this headline">¶</a></h2>
+<p>Once your translation is up-to-date, you can ask to the Centreon team to add
+your translation to Centreon project. This will allow for all person using
+Centreon to have access to your translation on their Centreon platform.</p>
+<ul class="simple">
+<li>Create an account on GitHub</li>
+<li>Fork centreon/centreon project on GitHub</li>
+<li>Add your translated *.mo and *.po files to lang/&lt;your_lang&gt;/LC_MESSAGES directory</li>
+<li>Commit your change on your project</li>
+<li>Create a pull request on centreon/centreon project</li>
+<li>We will add your translation to Centreon.</li>
+</ul>
+<p>Thank you for your help!</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to translate Centreon</a><ul>
+<li><a class="reference internal" href="#install-translation-environment">Install translation environment</a></li>
+<li><a class="reference internal" href="#first-generation">First generation</a></li>
+<li><a class="reference internal" href="#use-your-translation">Use your translation</a></li>
+<li><a class="reference internal" href="#upgrade-translation">Upgrade translation</a></li>
+<li><a class="reference internal" href="#participate-to-centreon-project">Participate to Centreon project</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="writestreamconnector.html"
+                        title="previous chapter">How to write a Stream Connector</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../api/index.html"
+                        title="next chapter">API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/translatecentreon.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../api/index.html" title="API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="writestreamconnector.html" title="How to write a Stream Connector"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Developer</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

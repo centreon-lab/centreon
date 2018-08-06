@@ -1,0 +1,908 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>How to write a Stream Connector &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to translate Centreon" href="translatecentreon.html" />
+    <link rel="prev" title="How to write a widget" href="writewidget.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="translatecentreon.html" title="How to translate Centreon"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="writewidget.html" title="How to write a widget"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-write-a-stream-connector">
+<h1>How to write a Stream Connector<a class="headerlink" href="#how-to-write-a-stream-connector" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Centreon Stream Connector is a feature introduced in Centreon 3.4.6. It allows
+one to export Centreon data (events and metrics) to an external storage or
+application such as ElasticSearch, Splunk, InfluxDB, files, etc.</p>
+<p>In a Centreon platform, the component that carries information between the
+remote pollers and the Centreon central server is called Centreon Broker. This
+broker stores received data into the Centreon local storage: MariaDB and
+RRDtool.</p>
+<p>The following diagram explains the transfer of collected data and insertion into
+storages:</p>
+<a class="reference internal image-reference" href="../_images/archi_broker_regular.png"><img alt="../_images/archi_broker_regular.png" class="align-center" src="../_images/archi_broker_regular.png" style="width: 798.85px; height: 271.05px;" /></a>
+<p>The Stream Connector functionality is a new Centreon Broker output getting data
+from Centreon Broker Master (also known as Centreon Broker SQL) to aggregate and
+forward it to external storage:</p>
+<a class="reference internal image-reference" href="../_images/archi_broker_stream.png"><img alt="../_images/archi_broker_stream.png" class="align-center" src="../_images/archi_broker_stream.png" style="width: 800.15px; height: 377.0px;" /></a>
+<p>This output loads a Lua script called a Stream Connector, which job is to
+handle, aggregate and enrich the data before forwarding it to the defined
+protocol:</p>
+<a class="reference internal image-reference" href="../_images/archi_broker_lua_script.png"><img alt="../_images/archi_broker_lua_script.png" class="align-center" src="../_images/archi_broker_lua_script.png" style="width: 465.40000000000003px; height: 264.55px;" /></a>
+<p>Because it is an output of Centreon Broker, the principle of creating retention
+files upon interrupting external storage access is retained. In the same way,
+it is possible to filter input on the categories of flow to handle.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>To use the Centreon Stream connector functionality you need to update your Centreon
+platform to Centreon 3.4.6:</p>
+<ul class="simple">
+<li>Centreon Web &gt;= 2.8.18</li>
+<li>Centreon Broker &gt;= 3.0.13</li>
+<li>Lua &gt;= 5.1.x</li>
+</ul>
+</div>
+<div class="section" id="creating-a-new-lua-script">
+<h2>Creating a new Lua script<a class="headerlink" href="#creating-a-new-lua-script" title="Permalink to this headline">¶</a></h2>
+<p>The complete technical documentation is available <a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/latest/exploit/stream_connectors.html">here</a>.
+In this how-to, we will write two scripts:</p>
+<ul class="simple">
+<li>The first one, easy, that explains the basics of Stream Connectors. Its goal
+is to export data to a log file.</li>
+<li>The second one is more exigent for the reader, it exports performance data
+to the TSDB InfluxDB but is easily adaptable to export to another TSDB.</li>
+</ul>
+<div class="section" id="programming-language">
+<h3>Programming language<a class="headerlink" href="#programming-language" title="Permalink to this headline">¶</a></h3>
+<p>Centreon chose the Lua programming language to let you handle, aggregate and
+transfer data. Lua is a programming language that is easy to use. You can find
+more information with the <a class="reference external" href="https://www.lua.org/docs.html">Lua official documentation</a></p>
+</div>
+<div class="section" id="storage-of-lua-scripts">
+<h3>Storage of Lua scripts<a class="headerlink" href="#storage-of-lua-scripts" title="Permalink to this headline">¶</a></h3>
+<p>Broker’s Lua scripts can be stored in any directory readable by the
+<strong>centreon-broker</strong> user.</p>
+<p>We recommend to store them in <strong>/usr/share/centreon-broker/lua</strong>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In a near future, this directory will be in the <em>default path</em> of the Lua
+scripts launched by broker. It will then be easier to use user defined
+Lua libraries because you will just have to add your libraries there like
+stream connectors.</p>
+</div>
+</div>
+<div class="section" id="write-all-information-into-a-file">
+<h3>Write all information into a file<a class="headerlink" href="#write-all-information-into-a-file" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="store-raw-data">
+<h4>Store raw data<a class="headerlink" href="#store-raw-data" title="Permalink to this headline">¶</a></h4>
+<p>Let’s start with the first script. Our goal is to store all events
+given by Broker in a log file. We will call our stream connector
+<strong>bbdo2file.lua</strong>.</p>
+<p>As we said previously, we will store this file into the
+<strong>/usr/share/centreon-broker/lua</strong> directory on the Centreon central server.</p>
+<p>If the directory does not exist, as root, we can create it with the following
+command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir -p /usr/share/centreon-broker/lua
+</pre></div>
+</div>
+<p>Centreon Broker provides several log functions to write logs, warnings or errors
+into a file. We will use one of these functions <em>info()</em> to write Broker events.
+<a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/latest/exploit/stream_connectors.html#the-broker-log-object">See technical documentation for more information</a>.</p>
+<p>The function <em>info()</em> makes part of the <em>broker_log</em> object. To call it, the
+syntax is the following:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>level</em> is an integer from 1 (most important) to 3 (least important).</li>
+<li><em>text</em> is the text to write as log.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Did you notice the separator between <strong>broker_log</strong> and <strong>info</strong>, yes it is a
+colon! Objects functions, also called <em>methods</em> are called like this in Lua.</p>
+</div>
+<p>Let’s start our script. The more important function in a stream connector is
+the <strong>write()</strong> function. Each time an event is received from a poller through
+Broker, this function is called with the event as an argument.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will never have to call the <strong>write()</strong> function by yourself, it is always
+Broker’s work to do so. And it would be a fault to make such a call. In other
+words, there should not be any call to the <strong>write()</strong> function in your script.</p>
+</div>
+<p><a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/latest/exploit/stream_connectors.html#the-write-function">See technical documentation for more information</a>.</p>
+<p>Here is the <strong>bbdo2file.lua</strong> first version:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">init</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">set_parameters</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;/var/log/centreon-broker/bbdo2file.log&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nf">write</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+  <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span> <span class="o">..</span> <span class="s2">&quot; =&gt; &quot;</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+  <span class="kr">end</span>
+  <span class="kr">return</span> <span class="kc">true</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Information about the initialization of the Broker’s log function
+and its parameters are given here <a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/latest/exploit/stream_connectors.html#the-broker-log-object">see technical documentation</a>.</p>
+</div>
+<p>Let’s explain what we are doing in this script.</p>
+<p>We must provide an <strong>init()</strong> function, it is described in the <a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/latest/exploit/stream_connectors.html#the-init-function">technical documentation</a>.</p>
+<p>This function is called during the stream connector initialization.
+Here, we use it to initialize the <strong>broker_log</strong> object. To achieve this,
+we call the <strong>broker_log::set_parameters()</strong> method that needs two parameters :</p>
+<ul class="simple">
+<li>A max level (from 1 to 3). If you give 2 here, only logs of levels 1 and 2
+will be returned.</li>
+<li>A file to write the logs in. This file must be in a writable directory for
+the <strong>centreon-broker</strong> user.</li>
+</ul>
+<p>The second function is the <strong>write()</strong> function. We already said its argument
+is a Broker event. This type of object is a collection of keys/values. For example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;check_hosts_freshness&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;active_host_checks&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;category&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;event_handlers&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;instance_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;last_command_check&quot;</span><span class="p">:</span> <span class="mi">1522836592</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="mi">65552</span><span class="p">,</span>
+  <span class="nt">&quot;global_service_event_handler&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;obsess_over_services&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;passive_service_checks&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;last_alive&quot;</span><span class="p">:</span> <span class="mi">1522836593</span><span class="p">,</span>
+  <span class="nt">&quot;active_service_checks&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;check_services_freshness&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;flap_detection&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;global_host_event_handler&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;notifications&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;obsess_over_hosts&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;passive_host_checks&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;element&quot;</span><span class="p">:</span> <span class="mi">16</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In all events, you will find <em>category</em>, <em>element</em> and <em>type</em>.</p>
+<ul class="simple">
+<li>Information about the <em>category</em> can be found <a class="reference external" href="https://documentation.centreon.com/docs/centreon-broker/en/latest/dev/bbdo.html#event-categories">here in the bbdo documentation</a></li>
+<li>The <em>element</em> is the <em>sub-category</em> (also called <em>type</em> in the bbdo
+documentation).</li>
+<li>The <em>type</em> is a number built from the <em>category</em> and the <em>element</em> (binary
+concatenation).</li>
+</ul>
+<p>In this example, the <em>category</em> is 1 and the <em>element</em> is 16. So, by reading
+the documentation, we can say this event is a NEB event with sub-category
+<em>instance-status</em>.</p>
+<p>To finish with the <strong>write()</strong> function, we make a loop on the <strong>d</strong> event
+parameters. For each step, <em>k</em> is a key and <em>v</em> is the corresponding value.
+And we send to the log file a string <cite>k .. ” =&gt; ” .. tostring(v)</cite> that means
+the <em>concatenation</em> of <em>k</em>, <em>=&gt;</em> and <em>v</em> converted into a string. You will see
+an example of the result below.</p>
+<p>Another possibility would be to use the <strong>broker.json_encode(d)</strong> function that
+converts any Lua object to a <em>json</em> string representation of it. So, we could
+write the function like this:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">write</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">broker</span><span class="p">.</span><span class="n">json_encode</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+  <span class="kr">return</span> <span class="kc">true</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can notice that <strong>broker.json_encode(d)</strong> is made of <strong>broker</strong> and
+<strong>json_encode(d)</strong> separated by a <em>dot</em> and not a <em>colon</em>. This is because
+<strong>broker</strong> is not a Lua object. In fact, you can see it as a functions set
+provided by <em>Centreon Broker</em>.</p>
+</div>
+<p>Once your file <strong>/usr/share/centreon-broker/lua/bbdo2file.lua</strong> is ready, verify
+it is readable by the <strong>centreon-broker</strong> user (or the <strong>centreon-engine</strong>
+user who is the owner of the <strong>centreon-broker</strong> group), if it is not the case,
+as root you can enter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># chown centreon-engine:centreon-engine /usr/share/centreon-broker/lua/bbdo2file.lua</span>
+</pre></div>
+</div>
+<p>Then configure the new output into Centreon Web interface in
+<strong>Configuration &gt; Pollers &gt; Broker configuration &gt; Central Broker</strong>. In <strong>Output</strong>
+tab select <strong>Generic – Stream connector</strong> and click <strong>Add</strong>:</p>
+<img alt="../_images/add_stream_connector.png" class="align-center" src="../_images/add_stream_connector.png" />
+<p>Define the name of this output and the path to the Lua connector:</p>
+<img alt="../_images/describe_output.png" class="align-center" src="../_images/describe_output.png" />
+<p>Then click <strong>Save</strong> and go to generate the configuration and restart <strong>cbd</strong>.</p>
+<p>Once the Centreon Broker will be restarted on your Centreon central server, data
+will appear in your <strong>/var/log/centreon-broker/bbdo2file.log</strong> log file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">flap_detection</span> <span class="o">=&gt;</span> <span class="n">true</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">enabled</span> <span class="o">=&gt;</span> <span class="n">true</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">host_id</span> <span class="o">=&gt;</span> <span class="mi">102</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">last_time_ok</span> <span class="o">=&gt;</span> <span class="mi">1522240053</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">state</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">last_update</span> <span class="o">=&gt;</span> <span class="mi">1522240054</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">last_check</span> <span class="o">=&gt;</span> <span class="mi">1522240053</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">execution_time</span> <span class="o">=&gt;</span> <span class="mf">0.005025</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">acknowledged</span> <span class="o">=&gt;</span> <span class="n">false</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">service_id</span> <span class="o">=&gt;</span> <span class="mi">778</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">active_checks</span> <span class="o">=&gt;</span> <span class="n">true</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">notify</span> <span class="o">=&gt;</span> <span class="n">false</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">max_check_attempts</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">obsess_over_service</span> <span class="o">=&gt;</span> <span class="n">true</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">check_type</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">last_hard_state_change</span> <span class="o">=&gt;</span> <span class="mi">1522165654</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">category</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">perfdata</span> <span class="o">=&gt;</span> <span class="n">used</span><span class="o">=</span><span class="mi">41986296644</span><span class="n">o</span><span class="p">;</span><span class="mi">48103633715</span><span class="p">;</span><span class="mi">54116587930</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">60129542144</span> <span class="n">size</span><span class="o">=</span><span class="mi">60129542144</span><span class="n">o</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">check_interval</span> <span class="o">=&gt;</span> <span class="mi">5</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">output</span> <span class="o">=&gt;</span> <span class="n">Disk</span> <span class="o">/</span><span class="n">var</span> <span class="o">-</span> <span class="n">used</span> <span class="p">:</span> <span class="mf">39.10</span> <span class="n">Go</span> <span class="o">-</span> <span class="n">size</span> <span class="p">:</span> <span class="mf">56.00</span> <span class="n">Go</span> <span class="o">-</span> <span class="n">percent</span> <span class="p">:</span> <span class="mi">69</span> <span class="o">%</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">check_command</span> <span class="o">=&gt;</span> <span class="n">check</span><span class="o">-</span><span class="n">bench</span><span class="o">-</span><span class="n">disk</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">check_period</span> <span class="o">=&gt;</span> <span class="mi">24</span><span class="n">x7</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=&gt;</span> <span class="mi">65560</span>
+<span class="n">mer</span><span class="o">.</span> <span class="mi">28</span> <span class="n">mars</span> <span class="mi">2018</span> <span class="mi">14</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">35</span> <span class="n">CEST</span><span class="p">:</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">last_hard_state</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This log file will grow quickly, do not forget to add a log rotate.</p>
+</div>
+</div>
+<div class="section" id="use-parameters">
+<h4>Use parameters<a class="headerlink" href="#use-parameters" title="Permalink to this headline">¶</a></h4>
+<p>The Centreon Broker log functions should be used for log only. To write into a
+file, we must use the Lua dedicated function. Moreover, it is possible to use
+parameters to define the name of the log file.</p>
+<p>So it is time to improve our Stream Connector:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">init</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+  <span class="n">logFile</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;logFile&#39;</span><span class="p">]</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">set_parameters</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;/var/log/centreon-broker/debug.log&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nf">writeIntoFile</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">file</span><span class="p">,</span><span class="n">err</span> <span class="o">=</span> <span class="nb">io.open</span><span class="p">(</span><span class="n">logFile</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+  <span class="kr">if</span> <span class="n">file</span> <span class="o">==</span> <span class="kc">nil</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Couldn&#39;t open file: &quot;</span> <span class="o">..</span> <span class="n">err</span><span class="p">)</span>
+  <span class="kr">else</span>
+    <span class="n">file</span><span class="p">:</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
+  <span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nf">write</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+  <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="n">writeIntoFile</span><span class="p">(</span><span class="n">k</span> <span class="o">..</span> <span class="s2">&quot; =&gt; &quot;</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="kr">end</span>
+  <span class="kr">return</span> <span class="kc">true</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<p>Did you notice that expression <cite>local file,err = io.open(logFile, ‘a’)</cite>?</p>
+<p>Lua is able to store several variables at the same time. Also, Lua functions can
+return several variables!</p>
+<p>For example, if you want to swap variables <em>a</em> and <em>b</em>, you can enter:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>Another example that illustrates several values returned:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">fib</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<p>So, this call to <strong>io.open</strong> returns two variables, a first variable
+<strong>file</strong> that is a <em>file descriptor</em> used to access the file and a second
+variable not always defined that contains error if one occurs or <strong>nil</strong>
+(not defined) otherwise.</p>
+<p>The <strong>init()</strong> function allows to get parameters and define these from Centreon
+web interface. See technical documentation for more information. Here, we add
+the possibility to choose the destination file name. The <strong>conf</strong> table has
+a key <em>logFile</em> defined in the web interface. The corresponding value is
+the file name used to store events.</p>
+<p>Edit your Broker output to declare this parameter:</p>
+<img alt="../_images/add_parameter.png" class="align-center" src="../_images/add_parameter.png" />
+<p>It is important that the name of the parameter in the web interface matches the
+key name in the <strong>conf</strong> table. Here, it is <em>logFile</em>.</p>
+<p>Then click <strong>Save</strong> and go to generate the configuration and restart <strong>cbd</strong>.</p>
+<p>Data are stored into <strong>/var/log/centreon-broker/bbdo2file.log</strong> log file as
+this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span> <span class="o">=&gt;</span> <span class="n">error</span>
+<span class="n">category</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+<span class="n">interval</span> <span class="o">=&gt;</span> <span class="mi">300</span>
+<span class="n">rrd_len</span> <span class="o">=&gt;</span> <span class="mi">3456000</span>
+<span class="n">value</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+<span class="n">value_type</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+<span class="nb">type</span> <span class="o">=&gt;</span> <span class="mi">196612</span>
+<span class="n">ctime</span> <span class="o">=&gt;</span> <span class="mi">1522315660</span>
+<span class="n">index_id</span> <span class="o">=&gt;</span> <span class="mi">4880</span>
+<span class="n">element</span> <span class="o">=&gt;</span> <span class="mi">4</span>
+<span class="n">state</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+<span class="n">category</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+<span class="n">interval</span> <span class="o">=&gt;</span> <span class="mi">300</span>
+<span class="n">rrd_len</span> <span class="o">=&gt;</span> <span class="mi">3456000</span>
+<span class="n">is_for_rebuild</span> <span class="o">=&gt;</span> <span class="n">false</span>
+<span class="n">service_id</span> <span class="o">=&gt;</span> <span class="mi">1056</span>
+<span class="nb">type</span> <span class="o">=&gt;</span> <span class="mi">196609</span>
+<span class="n">ctime</span> <span class="o">=&gt;</span> <span class="mi">1522315660</span>
+<span class="n">host_id</span> <span class="o">=&gt;</span> <span class="mi">145</span>
+<span class="n">element</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+<span class="n">is_for_rebuild</span> <span class="o">=&gt;</span> <span class="n">false</span>
+<span class="n">metric_id</span> <span class="o">=&gt;</span> <span class="mi">11920</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="manipulate-data">
+<h4>Manipulate data<a class="headerlink" href="#manipulate-data" title="Permalink to this headline">¶</a></h4>
+<p>Here, we continue to improve our stream connector by choosing what events to
+export and also by improving outputs.</p>
+<p>We will select only the NEB category and the events regarding hosts and
+services status.</p>
+<p>We know that NEB is the category 1, also service status is the sub-category 24,
+whereas host status is the sub-category 14.</p>
+<p>So, only events with the following criteria:</p>
+<ul class="simple">
+<li>category = 1</li>
+<li>element = 14 or element = 24</li>
+</ul>
+<p>are interesting for us.</p>
+<p>Moreover, we would prefer to have a host name instead of a host id and a service
+description instead of a service id.</p>
+<p>At last, we would be interested to get status information and outputs.</p>
+<p>NEB Events with elements 14 and 24 give almost all we want except host names and
+service descriptions.</p>
+<p>To get those two information, we will have to use the <strong>broker_cache</strong> object.
+This one is filled when pollers are restarted or reloaded. So, do not forget
+to restart your pollers if you want something in your <strong>broker_cache</strong> object!</p>
+<p>If the cache is well filled, it is easy to get a host name from the host id:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">broker_cache</span><span class="p">:</span><span class="n">get_hostname</span><span class="p">(</span><span class="n">host_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And it is also easy to get the service description from the host id and service
+id:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">broker_cache</span><span class="p">:</span><span class="n">get_service_description</span><span class="p">(</span><span class="n">host_id</span><span class="p">,</span> <span class="n">service_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To install the filter on events, there is a useful function called <strong>filter()</strong>
+that takes two parameters into account: <em>category</em>, <em>element</em>.</p>
+<p>This function, if defined, is called just before <strong>write()</strong>. If it returns
+<strong>true</strong>, the <strong>write()</strong> function will be called, otherwise, the event will
+be thrown away.</p>
+<p>Let’s complete our Lua script:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">init</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+  <span class="n">logFile</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;logFile&#39;</span><span class="p">]</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">set_parameters</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;/var/log/centreon-broker/debug.log&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">writeIntoFile</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">file</span><span class="p">,</span><span class="n">err</span> <span class="o">=</span> <span class="nb">io.open</span><span class="p">(</span><span class="n">logFile</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+  <span class="kr">if</span> <span class="n">file</span> <span class="o">==</span> <span class="kc">nil</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Couldn&#39;t open file: &quot;</span> <span class="o">..</span> <span class="n">err</span><span class="p">)</span>
+  <span class="kr">else</span>
+    <span class="n">file</span><span class="p">:</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
+  <span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nf">write</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+  <span class="kd">local</span> <span class="n">host_name</span> <span class="o">=</span> <span class="n">broker_cache</span><span class="p">:</span><span class="n">get_hostname</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">host_id</span><span class="p">)</span>
+  <span class="kr">if</span> <span class="ow">not</span> <span class="n">host_name</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Unable to get name of host, please restart centengine&quot;</span><span class="p">)</span>
+    <span class="n">host_name</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">host_id</span>
+  <span class="kr">end</span>
+
+  <span class="kr">if</span> <span class="n">d</span><span class="p">.</span><span class="n">element</span> <span class="o">==</span> <span class="mi">14</span> <span class="kr">then</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;HOST:&quot;</span> <span class="o">..</span> <span class="n">host_name</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">d</span><span class="p">.</span><span class="n">host_id</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">d</span><span class="p">.</span><span class="n">state</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">d</span><span class="p">.</span><span class="n">output</span>
+    <span class="n">writeIntoFile</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+  <span class="kr">elseif</span> <span class="n">d</span><span class="p">.</span><span class="n">element</span> <span class="o">==</span> <span class="mi">24</span> <span class="kr">then</span>
+    <span class="kd">local</span> <span class="n">service_description</span> <span class="o">=</span> <span class="n">broker_cache</span><span class="p">:</span><span class="n">get_service_description</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">host_id</span><span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="n">service_id</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="ow">not</span> <span class="n">service_description</span> <span class="kr">then</span>
+      <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Unable to get description of service, please restart centengine&quot;</span><span class="p">)</span>
+      <span class="n">service_description</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">service_id</span>
+    <span class="kr">end</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;SERVICE:&quot;</span> <span class="o">..</span> <span class="n">host_name</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">d</span><span class="p">.</span><span class="n">host_id</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">service_description</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">d</span><span class="p">.</span><span class="n">service_id</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">d</span><span class="p">.</span><span class="n">state</span> <span class="o">..</span> <span class="s2">&quot;;&quot;</span> <span class="o">..</span> <span class="n">d</span><span class="p">.</span><span class="n">output</span>
+    <span class="n">writeIntoFile</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+  <span class="kr">end</span>
+  <span class="kr">return</span> <span class="kc">true</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nf">filter</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+  <span class="c1">-- Get only host status and services status from NEB category</span>
+  <span class="kr">if</span> <span class="n">category</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span><span class="n">element</span> <span class="o">==</span> <span class="mi">14</span> <span class="ow">or</span> <span class="n">element</span> <span class="o">==</span> <span class="mi">24</span><span class="p">)</span> <span class="kr">then</span>
+    <span class="kr">return</span> <span class="kc">true</span>
+  <span class="kr">end</span>
+    <span class="kr">return</span> <span class="kc">false</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<p>Just several remarks on this new script before showing what we get.</p>
+<p>In the <strong>init()</strong> function, we access the <em>logFile</em> key in the <em>conf</em> table
+by using <cite>conf[‘logFile’]</cite>. Whereas, in the <strong>write()</strong> function, we access
+the <em>element</em> key in the <em>d</em> table by using <cite>d.element</cite>…</p>
+<p>In fact, the two syntaxes are allowed : <cite>d.element</cite> is the same value than
+<cite>d[‘element’]</cite>.</p>
+<p>Another remark, in the <strong>write()</strong> function we can see something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">host_name</span> <span class="n">then</span>
+</pre></div>
+</div>
+<p>And in the <strong>writeIntoFile()</strong> function, we can see that:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">file</span> <span class="o">==</span> <span class="n">nil</span> <span class="n">then</span>
+</pre></div>
+</div>
+<p>Do they mean the same thing? Where is the difference?</p>
+<p>You must know that in Lua, a variable is considered to be <strong>true</strong> if it is
+defined and not <strong>false</strong>:</p>
+<p>so, the following code</p>
+<div class="code lua highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">toto</span> <span class="n">then</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Good&quot;</span><span class="p">)</span>
+<span class="k">else</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bad&quot;</span><span class="p">)</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>will write <em>Good</em> if <em>toto</em> is defined and not <strong>false</strong>. More precisely, it will
+write <em>Good</em> in the following cases:</p>
+<ul class="simple">
+<li>toto=12</li>
+<li>toto=true</li>
+<li>toto=”A string”</li>
+<li>toto=0 (surprising!)</li>
+</ul>
+<p>It will write <em>Bad</em> in these cases:</p>
+<ul class="simple">
+<li>toto=nil (by default a variable is nil, which means not defined)</li>
+<li>toto=false</li>
+</ul>
+<p>The <strong>/var/log/centreon-broker/bbdo2file.log</strong> file will now contain:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HOST</span><span class="p">:</span><span class="n">srv</span><span class="o">-</span><span class="n">DC</span><span class="o">-</span><span class="n">djakarta</span><span class="p">;</span><span class="mi">215</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">OK</span> <span class="o">-</span> <span class="n">srv</span><span class="o">-</span><span class="n">DC</span><span class="o">-</span><span class="n">djakarta</span><span class="p">:</span> <span class="n">rta</span> <span class="mf">0.061</span><span class="n">ms</span><span class="p">,</span> <span class="n">lost</span> <span class="mi">0</span><span class="o">%</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">titan</span><span class="o">-</span><span class="n">gateway</span><span class="p">;</span><span class="mi">92</span><span class="p">;</span><span class="n">disk</span><span class="o">-/</span><span class="n">usr</span><span class="p">;</span><span class="mi">623</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Disk</span> <span class="o">/</span><span class="n">usr</span> <span class="o">-</span> <span class="n">used</span> <span class="p">:</span> <span class="mf">42.98</span> <span class="n">Go</span> <span class="o">-</span> <span class="n">size</span> <span class="p">:</span> <span class="mf">142.00</span> <span class="n">Go</span> <span class="o">-</span> <span class="n">percent</span> <span class="p">:</span> <span class="mi">30</span> <span class="o">%</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">sun</span><span class="o">-</span><span class="n">master</span><span class="p">;</span><span class="mi">87</span><span class="p">;</span><span class="n">memory</span><span class="o">-</span><span class="n">stats</span><span class="p">;</span><span class="mi">535</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Memory</span> <span class="n">usage</span> <span class="p">(</span><span class="n">Total</span> <span class="mf">13.0</span><span class="n">GB</span><span class="p">):</span> <span class="mf">0.12</span><span class="n">GB</span> <span class="p">[</span><span class="n">buffer</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">cache</span><span class="p">:</span><span class="mf">0.01</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">pages_tables</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">mapped</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">active</span><span class="p">:</span><span class="mf">0.07</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">inactive</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">apps</span><span class="p">:</span><span class="mf">0.02</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">unused</span><span class="p">:</span><span class="mf">12.88</span><span class="n">GB</span><span class="p">]</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">saturn</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">86</span><span class="p">;</span><span class="n">traffic</span><span class="o">-</span><span class="n">eth1</span><span class="p">;</span><span class="mi">512</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Traffic</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">4.73</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">4.73</span> <span class="o">%</span><span class="p">),</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">4.79</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">4.79</span> <span class="o">%</span><span class="p">)</span> <span class="o">-</span> <span class="n">Total</span> <span class="n">RX</span> <span class="n">Bits</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">396.01</span> <span class="n">Gb</span><span class="p">,</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">393.88</span> <span class="n">Gb</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">saturn</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">86</span><span class="p">;</span><span class="n">memory</span><span class="o">-</span><span class="n">stats</span><span class="p">;</span><span class="mi">515</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Memory</span> <span class="n">usage</span> <span class="p">(</span><span class="n">Total</span> <span class="mf">16.0</span><span class="n">GB</span><span class="p">):</span> <span class="mf">8.89</span><span class="n">GB</span> <span class="p">[</span><span class="n">buffer</span><span class="p">:</span><span class="mf">0.43</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">cache</span><span class="p">:</span><span class="mf">0.95</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">pages_tables</span><span class="p">:</span><span class="mf">0.27</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">mapped</span><span class="p">:</span><span class="mf">0.15</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">active</span><span class="p">:</span><span class="mf">3.92</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">inactive</span><span class="p">:</span><span class="mf">0.29</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">apps</span><span class="p">:</span><span class="mf">2.88</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">unused</span><span class="p">:</span><span class="mf">7.11</span><span class="n">GB</span><span class="p">]</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">neptune</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">80</span><span class="p">;</span><span class="n">traffic</span><span class="o">-</span><span class="n">eth1</span><span class="p">;</span><span class="mi">392</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Traffic</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">4.82</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">4.82</span> <span class="o">%</span><span class="p">),</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">6.48</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">6.48</span> <span class="o">%</span><span class="p">)</span> <span class="o">-</span> <span class="n">Total</span> <span class="n">RX</span> <span class="n">Bits</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">398.40</span> <span class="n">Gb</span><span class="p">,</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">396.44</span> <span class="n">Gb</span>
+<span class="n">HOST</span><span class="p">:</span><span class="n">srv</span><span class="o">-</span><span class="n">DC</span><span class="o">-</span><span class="n">casablanca</span><span class="p">;</span><span class="mi">207</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">OK</span> <span class="o">-</span> <span class="n">srv</span><span class="o">-</span><span class="n">DC</span><span class="o">-</span><span class="n">casablanca</span><span class="p">:</span> <span class="n">rta</span> <span class="mf">2.042</span><span class="n">ms</span><span class="p">,</span> <span class="n">lost</span> <span class="mi">0</span><span class="o">%</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">neptune</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">80</span><span class="p">;</span><span class="n">memory</span><span class="o">-</span><span class="n">stats</span><span class="p">;</span><span class="mi">395</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Memory</span> <span class="n">usage</span> <span class="p">(</span><span class="n">Total</span> <span class="mf">9.0</span><span class="n">GB</span><span class="p">):</span> <span class="mf">0.54</span><span class="n">GB</span> <span class="p">[</span><span class="n">buffer</span><span class="p">:</span><span class="mf">0.03</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">cache</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">pages_tables</span><span class="p">:</span><span class="mf">0.01</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">mapped</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">active</span><span class="p">:</span><span class="mf">0.48</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">inactive</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">apps</span><span class="p">:</span><span class="mf">0.01</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">unused</span><span class="p">:</span><span class="mf">8.46</span><span class="n">GB</span><span class="p">]</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">mercury</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">82</span><span class="p">;</span><span class="n">traffic</span><span class="o">-</span><span class="n">eth1</span><span class="p">;</span><span class="mi">432</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Traffic</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">8.28</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">8.28</span> <span class="o">%</span><span class="p">),</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">1.23</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">1.23</span> <span class="o">%</span><span class="p">)</span> <span class="o">-</span> <span class="n">Total</span> <span class="n">RX</span> <span class="n">Bits</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">397.71</span> <span class="n">Gb</span><span class="p">,</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">400.34</span> <span class="n">Gb</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">mercury</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">82</span><span class="p">;</span><span class="n">memory</span><span class="o">-</span><span class="n">stats</span><span class="p">;</span><span class="mi">435</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Memory</span> <span class="n">usage</span> <span class="p">(</span><span class="n">Total</span> <span class="mf">12.0</span><span class="n">GB</span><span class="p">):</span> <span class="mf">1.58</span><span class="n">GB</span> <span class="p">[</span><span class="n">buffer</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">cache</span><span class="p">:</span><span class="mf">0.63</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">pages_tables</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">mapped</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">active</span><span class="p">:</span><span class="mf">0.75</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">inactive</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">apps</span><span class="p">:</span><span class="mf">0.19</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">unused</span><span class="p">:</span><span class="mf">10.42</span><span class="n">GB</span><span class="p">]</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">mars</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">84</span><span class="p">;</span><span class="n">traffic</span><span class="o">-</span><span class="n">eth1</span><span class="p">;</span><span class="mi">472</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Traffic</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">7.24</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">7.24</span> <span class="o">%</span><span class="p">),</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">3.36</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">3.36</span> <span class="o">%</span><span class="p">)</span> <span class="o">-</span> <span class="n">Total</span> <span class="n">RX</span> <span class="n">Bits</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">399.93</span> <span class="n">Gb</span><span class="p">,</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">395.67</span> <span class="n">Gb</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">mars</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">84</span><span class="p">;</span><span class="n">memory</span><span class="o">-</span><span class="n">stats</span><span class="p">;</span><span class="mi">475</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Memory</span> <span class="n">usage</span> <span class="p">(</span><span class="n">Total</span> <span class="mf">3.0</span><span class="n">GB</span><span class="p">):</span> <span class="mf">1.19</span><span class="n">GB</span> <span class="p">[</span><span class="n">buffer</span><span class="p">:</span><span class="mf">0.01</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">cache</span><span class="p">:</span><span class="mf">0.59</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">pages_tables</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">mapped</span><span class="p">:</span><span class="mf">0.00</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">active</span><span class="p">:</span><span class="mf">0.15</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">inactive</span><span class="p">:</span><span class="mf">0.04</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">apps</span><span class="p">:</span><span class="mf">0.39</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">unused</span><span class="p">:</span><span class="mf">1.81</span><span class="n">GB</span><span class="p">]</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">jupiter</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">85</span><span class="p">;</span><span class="n">traffic</span><span class="o">-</span><span class="n">eth1</span><span class="p">;</span><span class="mi">492</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Traffic</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">1.41</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">1.41</span> <span class="o">%</span><span class="p">),</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">9.08</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">9.08</span> <span class="o">%</span><span class="p">)</span> <span class="o">-</span> <span class="n">Total</span> <span class="n">RX</span> <span class="n">Bits</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">388.86</span> <span class="n">Gb</span><span class="p">,</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">394.85</span> <span class="n">Gb</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">jupiter</span><span class="o">-</span><span class="n">frontend</span><span class="p">;</span><span class="mi">85</span><span class="p">;</span><span class="n">memory</span><span class="o">-</span><span class="n">stats</span><span class="p">;</span><span class="mi">495</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Memory</span> <span class="n">usage</span> <span class="p">(</span><span class="n">Total</span> <span class="mf">12.0</span><span class="n">GB</span><span class="p">):</span> <span class="mf">0.57</span><span class="n">GB</span> <span class="p">[</span><span class="n">buffer</span><span class="p">:</span><span class="mf">0.04</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">cache</span><span class="p">:</span><span class="mf">0.23</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">pages_tables</span><span class="p">:</span><span class="mf">0.02</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">mapped</span><span class="p">:</span><span class="mf">0.02</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">active</span><span class="p">:</span><span class="mf">0.07</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">inactive</span><span class="p">:</span><span class="mf">0.03</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">apps</span><span class="p">:</span><span class="mf">0.16</span><span class="n">GB</span><span class="p">]</span> <span class="p">[</span><span class="n">unused</span><span class="p">:</span><span class="mf">11.43</span><span class="n">GB</span><span class="p">]</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">io</span><span class="o">-</span><span class="n">backend</span><span class="p">;</span><span class="mi">88</span><span class="p">;</span><span class="n">traffic</span><span class="o">-</span><span class="n">eth1</span><span class="p">;</span><span class="mi">547</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Traffic</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">1.51</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">1.51</span> <span class="o">%</span><span class="p">),</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">7.12</span> <span class="n">Mb</span><span class="o">/</span><span class="n">s</span> <span class="p">(</span><span class="mf">7.12</span> <span class="o">%</span><span class="p">)</span> <span class="o">-</span> <span class="n">Total</span> <span class="n">RX</span> <span class="n">Bits</span> <span class="n">In</span> <span class="p">:</span> <span class="mf">389.61</span> <span class="n">Gb</span><span class="p">,</span> <span class="n">Out</span> <span class="p">:</span> <span class="mf">390.54</span> <span class="n">Gb</span>
+<span class="n">SERVICE</span><span class="p">:</span><span class="n">mail</span><span class="o">-</span><span class="n">io</span><span class="o">-</span><span class="n">backend</span><span class="p">;</span><span class="mi">88</span><span class="p">;</span><span class="n">diskio</span><span class="o">-</span><span class="n">system</span><span class="p">;</span><span class="mi">551</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="n">Device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda</span><span class="p">:</span> <span class="n">avg</span> <span class="n">read</span> <span class="mf">4.78</span> <span class="p">(</span><span class="n">MB</span><span class="o">/</span><span class="n">s</span><span class="p">)</span> <span class="ow">and</span> <span class="n">write</span> <span class="mf">9.08</span> <span class="p">(</span><span class="n">MB</span><span class="o">/</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="export-performance-data-to-influxdb">
+<h2>Export performance data to InfluxDB<a class="headerlink" href="#export-performance-data-to-influxdb" title="Permalink to this headline">¶</a></h2>
+<p>Now, you have already seen many things about stream connectors. It is time to
+create something more useful!</p>
+<p><a class="reference external" href="https://www.influxdata.com/">InfluxDB</a> is a Time Series database. We will use
+this storage to insert performance data collected by the Centreon platform. For
+this example, we will use the predefined <a class="reference external" href="https://hub.docker.com/_/influxdb/">InfluxDB Docker</a>.</p>
+<p>To send data to InfluxDB, we need parameters to access to InfluxDB storage:</p>
+<ul class="simple">
+<li><strong>http_server_address</strong>: IP address of the storage</li>
+<li><strong>http_server_port</strong>: 8086 by default</li>
+<li><strong>http_server_protocol</strong>: http or https</li>
+<li><strong>influx_database</strong>: name of database</li>
+<li><strong>influx_user</strong>: user to access to database if defined</li>
+<li><strong>influx_password</strong>: password of user to access to database if defined</li>
+</ul>
+<p>In order to not saturate the storage, we will add all events in a queue and
+once its max size is reached, we will send data by bulk.</p>
+<p>We need to define the size of the queue and the maximum
+delay before sending events:</p>
+<ul class="simple">
+<li>max_buffer_size</li>
+<li>max_buffer_age</li>
+</ul>
+<p>To create this queue, we introduce a code a little more complicated. We
+construct an object <strong>event_queue</strong>. It is composed of parameters such as
+<em>events</em>, <em>influx_database</em> and methods like <em>new()</em>, <em>add()</em>.</p>
+<p>To understand how to create such an object in Lua, we recommend the Lua
+documentation <a class="reference external" href="https://www.lua.org/pil/16.1.html">here for classes</a>
+and <a class="reference external" href="https://www.lua.org/pil/13.html">there for metatables</a>.</p>
+<p>To send data to a server, we provide a <strong>broker_tcp_socket</strong> object.</p>
+<p>Its API is very simple (too simple?). This <em>socket</em>
+is a TCP socket, it does not support encryption and it can be tricky to send
+data in http. Here is an example:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Here, we create our socket</span>
+<span class="kd">local</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">broker_tcp_socket</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+
+<span class="c1">-- We establish the connection with the server</span>
+<span class="n">socket</span><span class="p">:</span><span class="n">connect</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
+<span class="c1">-- Now, we can send data</span>
+<span class="n">socket</span><span class="p">:</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;This is a text to send&quot;</span><span class="p">)</span>
+
+<span class="c1">-- If, we want an answer, we also have a function to read</span>
+<span class="kd">local</span> <span class="n">content</span> <span class="o">=</span> <span class="n">socket</span><span class="p">:</span><span class="n">read</span><span class="p">()</span>
+
+<span class="c1">-- When exchanges are finished, we can close the socket</span>
+<span class="n">socket</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For our purpose, we do not use <strong>broker_tcp_socket</strong> because of its limitations.
+We want to be able to send data to an https server.</p>
+<p>A prerequisite is to install the <a class="reference external" href="http://w3.impa.br/~diego/software/luasocket/">lua-socket library</a>. This library provides several functionalities, we
+need two of them:</p>
+<ul class="simple">
+<li>http socket</li>
+<li>ltn12</li>
+</ul>
+<p>To access them, Lua provides the <strong>require</strong> function.</p>
+<p>Let’s introduce the beginning of our new Stream Connector.</p>
+<div class="section" id="the-queue-parameters">
+<h3>The queue parameters<a class="headerlink" href="#the-queue-parameters" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- We declare the objects to import here</span>
+<span class="kd">local</span> <span class="n">http</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;socket.http&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">ltn12</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;ltn12&quot;</span><span class="p">)</span>
+
+<span class="c1">-- Here are predefined queue parameters</span>
+<span class="kd">local</span> <span class="n">event_queue</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="n">__internal_ts_last_flush</span>    <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+  <span class="n">http_server_address</span>         <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="n">http_server_port</span>            <span class="o">=</span> <span class="mi">8086</span><span class="p">,</span>
+  <span class="n">http_server_protocol</span>        <span class="o">=</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span>
+  <span class="n">events</span>                      <span class="o">=</span> <span class="p">{},</span>
+  <span class="n">influx_database</span>             <span class="o">=</span> <span class="s2">&quot;mydb&quot;</span><span class="p">,</span>
+  <span class="n">influx_user</span>                 <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="n">influx_password</span>             <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="n">max_buffer_size</span>             <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span>
+  <span class="n">max_buffer_age</span>              <span class="o">=</span> <span class="mi">5</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In this table, we give default values to parameters that can possibly
+be changed during the <strong>init()</strong> call. This table will be used to store important
+data for the script and is also our queue object.</p>
+</div>
+<div class="section" id="a-method-to-create-the-queue">
+<h3>A method to create the queue<a class="headerlink" href="#a-method-to-create-the-queue" title="Permalink to this headline">¶</a></h3>
+<p>To declare this table as a Lua object, we need a constructor. So, here it is:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Constructor of the event_queue</span>
+<span class="kr">function</span> <span class="nc">event_queue</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">o</span> <span class="ow">or</span> <span class="p">{}</span>
+  <span class="nb">setmetatable</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">self</span><span class="p">)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">__index</span> <span class="o">=</span> <span class="n">self</span>
+  <span class="kr">for</span> <span class="n">i</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="kr">if</span> <span class="n">self</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">~=</span> <span class="s2">&quot;events&quot;</span> <span class="ow">and</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span> <span class="o">~=</span> <span class="s2">&quot;__internal_&quot;</span> <span class="kr">then</span>
+      <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;event_queue:new: getting parameter &quot;</span> <span class="o">..</span> <span class="n">i</span> <span class="o">..</span> <span class="s2">&quot; =&gt; &quot;</span> <span class="o">..</span> <span class="n">v</span><span class="p">)</span>
+      <span class="n">self</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="kr">else</span>
+      <span class="n">broker_log</span><span class="p">:</span><span class="n">warning</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;event_queue:new: ignoring parameter &quot;</span> <span class="o">..</span> <span class="n">i</span> <span class="o">..</span> <span class="s2">&quot; =&gt; &quot;</span> <span class="o">..</span> <span class="n">v</span><span class="p">)</span>
+    <span class="kr">end</span>
+  <span class="kr">end</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">__internal_ts_last_flush</span> <span class="o">=</span> <span class="nb">os.time</span><span class="p">()</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;event_queue:new: setting the internal timestamp to &quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">__internal_ts_last_flush</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="n">o</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In this function, we use a Lua sugar “o = o or {}” that means <em>o</em> stays the
+same if it is <strong>true</strong>, otherwise it is affected with an empty table <cite>{}</cite>.</p>
+<p>Another point to notice is the <strong>~=</strong> operator that means <strong>different from</strong>.</p>
+<p class="last">And to finish on this function, the variable <strong>self</strong> is implicitly defined
+when we declare an object’s method. Its meaning is the same as <strong>this</strong> in
+Java or in C++. It represents the object we are working on.</p>
+</div>
+</div>
+<div class="section" id="a-method-to-add-event-in-queue">
+<h3>A method to add event in queue<a class="headerlink" href="#a-method-to-add-event-in-queue" title="Permalink to this headline">¶</a></h3>
+<p>We have a queue object. It would be great to use it like this:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- We construct it</span>
+<span class="kd">local</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">event_queue</span><span class="p">:</span><span class="n">new</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span>
+
+<span class="c1">-- We add an event to it</span>
+<span class="n">queue</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+<span class="c1">-- When the queue is full, we would like to do something like this</span>
+<span class="n">queue</span><span class="p">:</span><span class="n">flush</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Let’s do it! Below, we present an <strong>add()</strong> method that retrieves a host name
+and service description from the cache, builds a string from the event and
+pushes it on its stack.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nc">event_queue</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">metric</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">name</span>
+  <span class="c1">-- time is a reserved word in influxDB so I rename it</span>
+  <span class="kr">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;time&quot;</span> <span class="kr">then</span>
+    <span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span> <span class="o">..</span> <span class="n">metric</span>
+  <span class="kr">end</span>
+
+  <span class="c1">-- retrieve objects names instead of IDs</span>
+  <span class="kd">local</span> <span class="n">host_name</span> <span class="o">=</span> <span class="n">broker_cache</span><span class="p">:</span><span class="n">get_hostname</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">host_id</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">service_description</span> <span class="o">=</span> <span class="n">broker_cache</span><span class="p">:</span><span class="n">get_service_description</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">host_id</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">service_id</span><span class="p">)</span>
+
+  <span class="c1">-- what if we could not get them from cache</span>
+  <span class="kr">if</span> <span class="ow">not</span> <span class="n">host_name</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">warning</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;event_queue:add: host_name for id &quot;</span> <span class="o">..</span> <span class="n">e</span><span class="p">.</span><span class="n">host_id</span> <span class="o">..</span> <span class="s2">&quot; not found. Restarting centengine should fix this.&quot;</span><span class="p">)</span>
+    <span class="n">host_name</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">host_id</span>
+  <span class="kr">end</span>
+  <span class="kr">if</span> <span class="ow">not</span> <span class="n">service_description</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">warning</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;event_queue:add: service_description for id &quot;</span> <span class="o">..</span> <span class="n">e</span><span class="p">.</span><span class="n">host_id</span> <span class="o">..</span> <span class="s2">&quot;.&quot;</span> <span class="o">..</span> <span class="n">e</span><span class="p">.</span><span class="n">service_id</span> <span class="o">..</span> <span class="s2">&quot; not found. Restarting centengine should fix this.&quot;</span><span class="p">)</span>
+    <span class="n">service_description</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">service_id</span>
+  <span class="kr">else</span>
+    <span class="n">service_description</span> <span class="o">=</span> <span class="n">service_description</span><span class="p">:</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+  <span class="kr">end</span>
+
+  <span class="c1">-- we finally append the event to the events table</span>
+  <span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span><span class="p">:</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;event_queue:add: adding  &#39;</span> <span class="o">..</span> <span class="n">service_description</span> <span class="o">..</span> <span class="s2">&quot;,host=&quot;</span> <span class="o">..</span> <span class="n">host_name</span> <span class="o">..</span> <span class="s2">&quot; &quot;</span> <span class="o">..</span> <span class="n">metric</span> <span class="o">..</span> <span class="s2">&quot;=&quot;</span> <span class="o">..</span> <span class="n">e</span><span class="p">.</span><span class="n">value</span> <span class="o">..</span> <span class="s2">&quot; &quot;</span> <span class="o">..</span> <span class="n">e</span><span class="p">.</span><span class="n">ctime</span> <span class="o">..</span> <span class="s1">&#39;000000000&quot; to event list.&#39;</span><span class="p">)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">events</span><span class="p">[</span><span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">events</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">service_description</span> <span class="o">..</span> <span class="s2">&quot;,host=&quot;</span> <span class="o">..</span> <span class="n">host_name</span> <span class="o">..</span> <span class="s2">&quot; &quot;</span> <span class="o">..</span> <span class="n">metric</span> <span class="o">..</span> <span class="s2">&quot;=&quot;</span> <span class="o">..</span> <span class="n">e</span><span class="p">.</span><span class="n">value</span> <span class="o">..</span> <span class="s2">&quot; &quot;</span> <span class="o">..</span> <span class="n">e</span><span class="p">.</span><span class="n">ctime</span> <span class="o">..</span> <span class="s2">&quot;000000000</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+  <span class="c1">-- then we check whether it is time to send the events to the receiver and flush</span>
+  <span class="kr">if</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">events</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">max_buffer_size</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;event_queue:add: flushing because buffer size reached &quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">max_buffer_size</span> <span class="o">..</span> <span class="s2">&quot; elements.&quot;</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">:</span><span class="n">flush</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="kc">true</span>
+  <span class="kr">elseif</span> <span class="nb">os.time</span><span class="p">()</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">__internal_ts_last_flush</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">max_buffer_age</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;event_queue:add: flushing &quot;</span> <span class="o">..</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">events</span> <span class="o">..</span> <span class="s2">&quot; elements because buffer age reached &quot;</span> <span class="o">..</span> <span class="p">(</span><span class="nb">os.time</span><span class="p">()</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">__internal_ts_last_flush</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&quot;s and max age is &quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">max_buffer_age</span> <span class="o">..</span> <span class="s2">&quot;s.&quot;</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">:</span><span class="n">flush</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="kc">true</span>
+  <span class="kr">else</span>
+    <span class="kr">return</span> <span class="kc">false</span>
+  <span class="kr">end</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-method-to-flush-the-queue">
+<h3>A method to flush the queue<a class="headerlink" href="#a-method-to-flush-the-queue" title="Permalink to this headline">¶</a></h3>
+<p>Once the events added in the queue and the maximum size of the queue or the
+timeout is reached, events will be sent to the InfluxDB storage.</p>
+<p>This function builds data from the queue and sends them to the storage. If an
+error occurs, it dumps a log error.</p>
+<p>It is here that we use the <strong>http</strong> and <strong>ltn12</strong> objects loaded at the
+beginning of the script.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nc">event_queue</span><span class="p">:</span><span class="nf">flush</span><span class="p">()</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;event_queue:flush: Concatenating all the events as one string&quot;</span><span class="p">)</span>
+  <span class="c1">--  we concatenate all the events</span>
+  <span class="kd">local</span> <span class="n">http_post_data</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+  <span class="kd">local</span> <span class="n">http_result_body</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="kr">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">raw_event</span> <span class="kr">in</span> <span class="nb">ipairs</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">events</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="n">http_post_data</span> <span class="o">=</span> <span class="n">http_post_data</span> <span class="o">..</span> <span class="n">raw_event</span>
+  <span class="kr">end</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;event_queue:flush: HTTP POST request &quot;&#39;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">http_server_protocol</span> <span class="o">..</span> <span class="s2">&quot;://&quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">http_server_address</span> <span class="o">..</span> <span class="s2">&quot;:&quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">http_server_port</span> <span class="o">..</span> <span class="s2">&quot;/write?db=&quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">influx_database</span> <span class="o">..</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;event_queue:flush: HTTP POST data are: &#39;&quot;</span> <span class="o">..</span> <span class="n">http_post_data</span> <span class="o">..</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+
+  <span class="c1">-- build url</span>
+  <span class="kd">local</span> <span class="n">influxdb_url</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">http_server_protocol</span> <span class="o">..</span> <span class="s2">&quot;://&quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">http_server_address</span> <span class="o">..</span> <span class="s2">&quot;:&quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">http_server_port</span> <span class="o">..</span> <span class="s2">&quot;/write?db=&quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">influx_database</span>
+  <span class="c1">-- add authentication if needed</span>
+  <span class="kr">if</span> <span class="nb">string.len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">influx_user</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">string.len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">influx_password</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="kr">then</span>
+    <span class="n">influxdb_url</span> <span class="o">=</span> <span class="n">influxdb_url</span> <span class="o">..</span> <span class="s2">&quot;&amp;u=&quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">influx_user</span> <span class="o">..</span> <span class="s2">&quot;&amp;p=&quot;</span><span class="o">..</span><span class="n">self</span><span class="p">.</span><span class="n">influx_password</span>
+  <span class="kr">end</span>
+
+  <span class="kd">local</span> <span class="n">hr_result</span><span class="p">,</span> <span class="n">hr_code</span><span class="p">,</span> <span class="n">hr_header</span><span class="p">,</span> <span class="n">hr_s</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">request</span><span class="p">{</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">influxdb_url</span><span class="p">,</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+    <span class="c1">-- sink is where the request result&#39;s body will go</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">ltn12</span><span class="p">.</span><span class="n">sink</span><span class="p">.</span><span class="n">table</span><span class="p">(</span><span class="n">http_result_body</span><span class="p">),</span>
+    <span class="c1">-- request body needs to be formatted as a LTN12 source</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">ltn12</span><span class="p">.</span><span class="n">source</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">http_post_data</span><span class="p">),</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="c1">-- mandatory for POST request with body</span>
+      <span class="p">[</span><span class="s2">&quot;content-length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">string.len</span><span class="p">(</span><span class="n">http_post_data</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="c1">-- Handling the return code</span>
+  <span class="kr">if</span> <span class="n">hr_code</span> <span class="o">==</span> <span class="mi">204</span> <span class="kr">then</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;event_queue:flush: HTTP POST request successful: return code is &quot;</span> <span class="o">..</span> <span class="n">hr_code</span><span class="p">)</span>
+  <span class="kr">else</span>
+    <span class="n">broker_log</span><span class="p">:</span><span class="nb">error</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;event_queue:flush: HTTP POST request FAILED: return code is &quot;</span> <span class="o">..</span> <span class="n">hr_code</span><span class="p">)</span>
+    <span class="kr">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="kr">in</span> <span class="nb">ipairs</span><span class="p">(</span><span class="n">http_result_body</span><span class="p">)</span> <span class="kr">do</span>
+      <span class="n">broker_log</span><span class="p">:</span><span class="nb">error</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;event_queue:flush: HTTP POST request FAILED: message line &quot;</span> <span class="o">..</span> <span class="n">i</span> <span class="o">..</span> <span class="s1">&#39; is &quot;&#39;</span> <span class="o">..</span> <span class="n">v</span> <span class="o">..</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+    <span class="kr">end</span>
+  <span class="kr">end</span>
+
+  <span class="c1">-- now that the data has been sent, we empty the events array</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">events</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="c1">-- and update the timestamp</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">__internal_ts_last_flush</span> <span class="o">=</span> <span class="nb">os.time</span><span class="p">()</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-init-function-to-get-parameters-and-create-the-queue">
+<h3>The init() function to get parameters and create the queue<a class="headerlink" href="#the-init-function-to-get-parameters-and-create-the-queue" title="Permalink to this headline">¶</a></h3>
+<p>In this case, the <strong>init()</strong> function creates the queue with parameters
+defined by users in the web interface or uses default parameters already
+defined in the queue. This alternative is managed by the queue constructor.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">init</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">set_parameters</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;/var/log/centreon-broker/stream-connector-influxdb.log&quot;</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;init: Beginning init() function&quot;</span><span class="p">)</span>
+  <span class="n">queue</span> <span class="o">=</span> <span class="n">event_queue</span><span class="p">:</span><span class="n">new</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;init: Ending init() function, Event queue created&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>queue</strong> is not defined as local, this is important so that it is accessible
+from all the functions.</p>
+</div>
+</div>
+<div class="section" id="the-write-function-to-insert-events-in-queue">
+<h3>The write() function to insert events in queue<a class="headerlink" href="#the-write-function-to-insert-events-in-queue" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>write()</strong> function is only used to insert filtered events into the queue:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">write</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;write: Beginning write() function&quot;</span><span class="p">)</span>
+  <span class="n">queue</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+  <span class="n">broker_log</span><span class="p">:</span><span class="n">info</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;write: Ending write() function</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="kc">true</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-filter-function-to-select-only-performance-data-events">
+<h3>The filter() function to select only performance data events<a class="headerlink" href="#the-filter-function-to-select-only-performance-data-events" title="Permalink to this headline">¶</a></h3>
+<p>To select only performance data, we need to select <em>category</em> 3 (“Storage”)
+and <em>element</em> 1 for <em>metric</em>:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span> <span class="nf">filter</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+  <span class="kr">if</span> <span class="n">category</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">element</span> <span class="o">==</span> <span class="mi">1</span> <span class="kr">then</span>
+    <span class="kr">return</span> <span class="kc">true</span>
+  <span class="kr">end</span>
+  <span class="kr">return</span> <span class="kc">false</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complete-script">
+<h3>Complete script<a class="headerlink" href="#complete-script" title="Permalink to this headline">¶</a></h3>
+<p>The complete script can be downloaded <a class="reference external" href="https://github.com/centreon/centreon-stream-connector-scripts/tree/master/influxdb">here</a>.</p>
+</div>
+<div class="section" id="configure-centreon-broker">
+<h3>Configure Centreon Broker<a class="headerlink" href="#configure-centreon-broker" title="Permalink to this headline">¶</a></h3>
+<p>Configure the new output into Centreon Web interface in
+<strong>Configuration &gt; Pollers &gt; Broker configuration &gt; Central Broker</strong>.
+In <strong>Output</strong> tab select <strong>Generic – Stream connector</strong> and click <strong>Add</strong>:</p>
+<img alt="../_images/add_stream_connector.png" class="align-center" src="../_images/add_stream_connector.png" />
+<p>Define the name of this output and the path to the Lua connector:</p>
+<a class="reference internal image-reference" href="../_images/broker_influxdb_output.png"><img alt="../_images/broker_influxdb_output.png" class="align-center" src="../_images/broker_influxdb_output.png" style="width: 1225.9px; height: 882.7px;" /></a>
+<p>Then click <strong>Save</strong> and go to generate the configuration and restart <strong>cbd</strong>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don’t forget to restart “centengine” too to create the Centreon Broker cache.</p>
+</div>
+<p>If you install the <a class="reference external" href="https://grafana.com/">Grafana</a> dashboard, you can visualize the stored data:</p>
+<a class="reference internal image-reference" href="../_images/visualize_data_grafana.png"><img alt="../_images/visualize_data_grafana.png" class="align-center" src="../_images/visualize_data_grafana.png" style="width: 1191.45px; height: 486.2px;" /></a>
+</div>
+<div class="section" id="discover-other-centreon-stream-connectors">
+<h3>Discover other Centreon Stream Connectors<a class="headerlink" href="#discover-other-centreon-stream-connectors" title="Permalink to this headline">¶</a></h3>
+<p>Centreon provides a Github repository to host Lua scripts developed by Centreon
+and the community. Please go to the <a class="reference external" href="http://github.com/centreon/centreon-stream-connector-scripts">dedicated Github</a>.</p>
+<p>Need help to develop your Stream connector? You want to share your experience with
+the community? Join the <a class="reference external" href="https://centreon.github.io/">Centreon community Slack channel</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to write a Stream Connector</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#creating-a-new-lua-script">Creating a new Lua script</a><ul>
+<li><a class="reference internal" href="#programming-language">Programming language</a></li>
+<li><a class="reference internal" href="#storage-of-lua-scripts">Storage of Lua scripts</a></li>
+<li><a class="reference internal" href="#write-all-information-into-a-file">Write all information into a file</a><ul>
+<li><a class="reference internal" href="#store-raw-data">Store raw data</a></li>
+<li><a class="reference internal" href="#use-parameters">Use parameters</a></li>
+<li><a class="reference internal" href="#manipulate-data">Manipulate data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#export-performance-data-to-influxdb">Export performance data to InfluxDB</a><ul>
+<li><a class="reference internal" href="#the-queue-parameters">The queue parameters</a></li>
+<li><a class="reference internal" href="#a-method-to-create-the-queue">A method to create the queue</a></li>
+<li><a class="reference internal" href="#a-method-to-add-event-in-queue">A method to add event in queue</a></li>
+<li><a class="reference internal" href="#a-method-to-flush-the-queue">A method to flush the queue</a></li>
+<li><a class="reference internal" href="#the-init-function-to-get-parameters-and-create-the-queue">The init() function to get parameters and create the queue</a></li>
+<li><a class="reference internal" href="#the-write-function-to-insert-events-in-queue">The write() function to insert events in queue</a></li>
+<li><a class="reference internal" href="#the-filter-function-to-select-only-performance-data-events">The filter() function to select only performance data events</a></li>
+<li><a class="reference internal" href="#complete-script">Complete script</a></li>
+<li><a class="reference internal" href="#configure-centreon-broker">Configure Centreon Broker</a></li>
+<li><a class="reference internal" href="#discover-other-centreon-stream-connectors">Discover other Centreon Stream Connectors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="writewidget.html"
+                        title="previous chapter">How to write a widget</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="translatecentreon.html"
+                        title="next chapter">How to translate Centreon</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/writestreamconnector.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="translatecentreon.html" title="How to translate Centreon"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="writewidget.html" title="How to write a widget"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Developer</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

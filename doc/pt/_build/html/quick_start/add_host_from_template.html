@@ -1,0 +1,134 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Fazer deploy de host pelo o template &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fazer deploy de serviços de um template" href="add_svc_from_template.html" />
+    <link rel="prev" title="Adicionar um Serviço" href="add_services.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="add_svc_from_template.html" title="Fazer deploy de serviços de um template"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="add_services.html" title="Adicionar um Serviço"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Inicio Rápido</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="fazer-deploy-de-host-pelo-o-template">
+<span id="add-host-template"></span><h1>Fazer deploy de host pelo o template<a class="headerlink" href="#fazer-deploy-de-host-pelo-o-template" title="Permalink to this headline">¶</a></h1>
+<p>No inicio rápido anterior, você <a class="reference internal" href="add_host.html#add-host"><span class="std std-ref">adicionou um host novo</span></a> usando o template <strong>generic-host</strong>.
+Este template provê uma configuração minima pré-definida para um host.</p>
+<p>Porém, o template de host no Centreon web pode oferecer muito mais do que uma lista de valores pré-definidos.
+No Centreon web você pode <a class="reference internal" href="../configuration_guide/models.html#hosttemplates"><span class="std std-ref">associar templates de serviço em templates de host</span></a>.
+Com este processo, você pode gerar de forma fácil o deploy de um host e seus serviços ao mesmo tempo.</p>
+<p>Neste exemplo nó vamos usar um template de host fornecido pelo os <strong>Pacotes de plugin Centreon</strong> para monitorar
+um servidor Linux. Este template permite que você faça deploy dos seguintes serviços:</p>
+<ul class="simple">
+<li>CPU</li>
+<li>Load</li>
+<li>Memory</li>
+<li>Swap</li>
+</ul>
+<p>Primeiro, <a class="reference internal" href="login.html#centreon-login"><span class="std std-ref">conecte</span></a> a sua interface Centreon web com uma conta de administrador ou uma conta que permita você gerenciamento os objetos a serem monitorados.</p>
+<p>Vá ao menu <strong>Configuration &gt; Hosts &gt; Hosts</strong> e clique no botão <strong>Add</strong>:</p>
+<img alt="../_images/add_host_menu.png" class="align-center" src="../_images/add_host_menu.png" />
+<p>Você terá acesso a um formulário para definir as configurações do seu equipamento para monitorar. Para iniciar o monitoramento do seu equipamento, configure:</p>
+<ul class="simple">
+<li>O nome do objeto no campo <strong>Host Name</strong></li>
+<li>Descrição do seu objeto no campo <strong>Alias</strong></li>
+<li>Configure o endereço de IP/Hostname (DNS) no campo <strong>IP Address / DNS</strong></li>
+<li>Clique no botão <strong>+ Add a new entry</strong> e selecione <strong>OS-Linux-SNMP</strong></li>
+<li>Clique no botão <strong>Yes</strong> para o botão <strong>Create Services linked to the Template too</strong></li>
+</ul>
+<img alt="../_images/add_template_form.png" class="align-center" src="../_images/add_template_form.png" />
+<p>Salve as modificações clicando no botão <strong>Save</strong>.</p>
+<img alt="../_images/add_template_list.png" class="align-center" src="../_images/add_template_list.png" />
+<p>O host esta agora definido na interface Centreon web, porém o motor de monitoramento ainda não esta monitorando!</p>
+<p>Você deve agora <a class="reference internal" href="../configuration_guide/deploy.html#deployconfiguration"><span class="std std-ref">gerar a configuração, exportar e enviar para o motor de monitoramento (poller)</span></a>.</p>
+<p>Você pode ver o resultado no menu <strong>Monitoring &gt; Status Details &gt; Hosts</strong>:</p>
+<img alt="../_images/add_template_monitoring.png" class="align-center" src="../_images/add_template_monitoring.png" />
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="add_services.html"
+                        title="previous chapter">Adicionar um Serviço</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="add_svc_from_template.html"
+                        title="next chapter">Fazer deploy de serviços de um template</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/quick_start/add_host_from_template.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="add_svc_from_template.html" title="Fazer deploy de serviços de um template"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="add_services.html" title="Adicionar um Serviço"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Inicio Rápido</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

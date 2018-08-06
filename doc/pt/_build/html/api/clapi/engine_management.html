@@ -1,0 +1,275 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Poller management &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Object management" href="objects/index.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="objects/index.html" title="Object management"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Command Line API</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="poller-management">
+<h1>Poller management<a class="headerlink" href="#poller-management" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="list-available-pollers">
+<h2>List available pollers<a class="headerlink" href="#list-available-pollers" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available pollers, use the <strong>POLLERLIST</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERLIST</span>
+<span class="n">poller_id</span><span class="p">;</span><span class="n">name</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">Local</span> <span class="n">Poller</span>
+<span class="mi">2</span><span class="p">;</span><span class="n">Remote</span> <span class="n">Poller</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-local-configuration-files-for-a-poller">
+<h2>Generate local configuration files for a poller<a class="headerlink" href="#generate-local-configuration-files-for-a-poller" title="Permalink to this headline">¶</a></h2>
+<p>In order to generate configuration files for poller “Local Poller” of id 1, use the <strong>POLLERGENERATE</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERGENERATE -v 1</span>
+<span class="n">Configuration</span> <span class="n">files</span> <span class="n">generated</span> <span class="k">for</span> <span class="n">poller</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>You can generate the configuration using the poller name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERGENERATE -v &quot;Local Poller&quot;</span>
+<span class="n">Configuration</span> <span class="n">files</span> <span class="n">generated</span> <span class="k">for</span> <span class="n">poller</span> <span class="s1">&#39;Local Poller&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-monitoring-engine-configuration-of-a-poller">
+<h2>Test monitoring engine configuration of a poller<a class="headerlink" href="#test-monitoring-engine-configuration-of-a-poller" title="Permalink to this headline">¶</a></h2>
+<p>In order to test configuration files for poller “Remote Poller” of id 2, use the <strong>POLLERTEST</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERTEST -v 1</span>
+<span class="n">OK</span><span class="p">:</span> <span class="n">Nagios</span> <span class="n">Poller</span> <span class="mi">2</span> <span class="n">can</span> <span class="n">restart</span> <span class="n">without</span> <span class="n">problem</span><span class="o">...</span>
+</pre></div>
+</div>
+<p>You can test the configuration using the poller name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERTEST -v &quot;Local Poller&quot;</span>
+<span class="ne">Warning</span><span class="p">:</span> <span class="n">Nagios</span> <span class="n">Poller</span> <span class="n">poller</span> <span class="n">can</span> <span class="n">restart</span> <span class="n">but</span> <span class="n">configuration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">optimal</span><span class="o">.</span> <span class="n">Please</span> <span class="n">see</span> <span class="n">debug</span> <span class="n">bellow</span> <span class="p">:</span>
+<span class="o">---------------------------------------------------------------------------------------------------</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Reading</span> <span class="n">main</span> <span class="n">configuration</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon//filesGeneration/nagiosCFG/5/nagiosCFG.DEBUG&#39;</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/hosts.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/hostTemplates.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/serviceTemplates.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/services.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/misccommands.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/checkcommands.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/contactgroups.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/contactTemplates.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/contacts.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/hostgroups.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/servicegroups.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/timeperiods.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/escalations.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/dependencies.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/connectors.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-command.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-contact.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-contactgroup.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-dependencies.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-escalations.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-host.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-services.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Processing</span> <span class="nb">object</span> <span class="n">config</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/centreon-bam-timeperiod.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Reading</span> <span class="n">resource</span> <span class="n">file</span> <span class="s1">&#39;/usr/share/centreon/filesGeneration/nagiosCFG/5/resource.cfg&#39;</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checking</span> <span class="k">global</span> <span class="n">event</span> <span class="n">handlers</span><span class="o">...</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checking</span> <span class="n">obsessive</span> <span class="n">compulsive</span> <span class="n">processor</span> <span class="n">commands</span><span class="o">...</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">55</span> <span class="n">commands</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">0</span> <span class="n">connectors</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">7</span> <span class="n">contacts</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">0</span> <span class="n">host</span> <span class="n">dependencies</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">0</span> <span class="n">host</span> <span class="n">escalations</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">0</span> <span class="n">host</span> <span class="n">groups</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">1</span> <span class="n">hosts</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">0</span> <span class="n">service</span> <span class="n">dependencies</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">0</span> <span class="n">service</span> <span class="n">escalations</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">0</span> <span class="n">service</span> <span class="n">groups</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">1</span> <span class="n">services</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Checked</span> <span class="mi">5</span> <span class="n">time</span> <span class="n">periods</span><span class="o">.</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Total</span> <span class="n">Warnings</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">1440681047</span><span class="p">]</span> <span class="p">[</span><span class="mi">15559</span><span class="p">]</span> <span class="n">Total</span> <span class="n">Errors</span><span class="p">:</span>   <span class="mi">0</span>
+
+<span class="o">---------------------------------------------------------------------------------------------------</span>
+<span class="n">Return</span> <span class="n">code</span> <span class="n">end</span> <span class="p">:</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="move-monitoring-engine-configuration-files">
+<h2>Move monitoring engine configuration files<a class="headerlink" href="#move-monitoring-engine-configuration-files" title="Permalink to this headline">¶</a></h2>
+<p>In order to move configuration files for poller “Local Poller” of id 1 to the final engine directory, use the <strong>CFGMOVE</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a CFGMOVE -v 2</span>
+<span class="n">OK</span><span class="p">:</span> <span class="n">All</span> <span class="n">configuration</span> <span class="n">will</span> <span class="n">be</span> <span class="n">send</span> <span class="n">to</span> <span class="s1">&#39;Remote Poller&#39;</span> <span class="n">by</span> <span class="n">centcore</span> <span class="ow">in</span> <span class="n">several</span> <span class="n">minutes</span><span class="o">.</span>
+<span class="n">Return</span> <span class="n">code</span> <span class="n">end</span> <span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>You can move the configuration files using the poller name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a CFGMOVE -v &quot;Remote Poller&quot;</span>
+<span class="n">OK</span><span class="p">:</span> <span class="n">All</span> <span class="n">configuration</span> <span class="n">will</span> <span class="n">be</span> <span class="n">send</span> <span class="n">to</span> <span class="s1">&#39;Remote Poller&#39;</span> <span class="n">by</span> <span class="n">centcore</span> <span class="ow">in</span> <span class="n">several</span> <span class="n">minutes</span><span class="o">.</span>
+<span class="n">Return</span> <span class="n">code</span> <span class="n">end</span> <span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="restart-monitoring-engine-of-a-poller">
+<h2>Restart monitoring engine of a poller<a class="headerlink" href="#restart-monitoring-engine-of-a-poller" title="Permalink to this headline">¶</a></h2>
+<p>In order to restart the monitoring process on poller “Local Poller” of id 1, use the the <strong>POLLERRESTART</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERRESTART -v 2</span>
+<span class="n">OK</span><span class="p">:</span> <span class="n">A</span> <span class="n">restart</span> <span class="n">signal</span> <span class="n">has</span> <span class="n">been</span> <span class="n">sent</span> <span class="n">to</span> <span class="s1">&#39;Remote Poller&#39;</span>
+<span class="n">Return</span> <span class="n">code</span> <span class="n">end</span> <span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>You can restart the poller using its name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u Remote Poller -p centreon -a POLLERRESTART -v &quot;Remote Poller&quot;</span>
+<span class="n">OK</span><span class="p">:</span> <span class="n">A</span> <span class="n">restart</span> <span class="n">signal</span> <span class="n">has</span> <span class="n">been</span> <span class="n">sent</span> <span class="n">to</span> <span class="s1">&#39;Remote Poller&#39;</span>
+<span class="n">Return</span> <span class="n">code</span> <span class="n">end</span> <span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="all-in-one-command">
+<h2>All in one command<a class="headerlink" href="#all-in-one-command" title="Permalink to this headline">¶</a></h2>
+<p>Use the <strong>APPLYCFG</strong> command in order to execute all of the above with one single command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a APPLYCFG -v 1</span>
+</pre></div>
+</div>
+<p>You can execute using the poller name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a APPLYCFG -v &quot;Remote Poller&quot;</span>
+</pre></div>
+</div>
+<p>This will execute <strong>POLLERGENERATE</strong>, <strong>POLLERTEST</strong>, <strong>CFGMOVE</strong> and <strong>POLLERRELOAD</strong>.</p>
+</div>
+<div class="section" id="reload-monitoring-engine-of-a-poller">
+<h2>Reload monitoring engine of a poller<a class="headerlink" href="#reload-monitoring-engine-of-a-poller" title="Permalink to this headline">¶</a></h2>
+<p>In order to reload the monitoring process on poller “Remote Poller” of id 2, use the <strong>POLLERRELOAD</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERRELOAD -v 2</span>
+<span class="n">OK</span><span class="p">:</span> <span class="n">A</span> <span class="n">reload</span> <span class="n">signal</span> <span class="n">has</span> <span class="n">been</span> <span class="n">sent</span> <span class="n">to</span> <span class="n">Remote</span> <span class="n">Pollerpoller</span><span class="s1">&#39;</span>
+<span class="n">Return</span> <span class="n">code</span> <span class="n">end</span> <span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>You can reload poller using its name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLERRELOAD -v &quot;Remote Poller&quot;</span>
+<span class="n">OK</span><span class="p">:</span> <span class="n">A</span> <span class="n">reload</span> <span class="n">signal</span> <span class="n">has</span> <span class="n">been</span> <span class="n">sent</span> <span class="n">to</span> <span class="s1">&#39;Remote Poller&#39;</span>
+<span class="n">Return</span> <span class="n">code</span> <span class="n">end</span> <span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="execute-post-generation-commands-of-a-poller">
+<h2>Execute post generation commands of a poller<a class="headerlink" href="#execute-post-generation-commands-of-a-poller" title="Permalink to this headline">¶</a></h2>
+<p>In order to execute post generation commands of a poller, use the <strong>POLLEREXECCMD</strong> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLEREXECCMD -v 2</span>
+<span class="n">Running</span> <span class="n">configuration</span> <span class="n">check</span><span class="o">...</span><span class="n">done</span><span class="o">.</span>
+<span class="n">Reloading</span> <span class="n">nagios</span> <span class="n">configuration</span><span class="o">...</span><span class="n">done</span>
+</pre></div>
+</div>
+<p>You can execute post generation commands of a poller using its name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="n">core</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -a POLLEREXECCMD -v &quot;Remote Poller&quot;</span>
+<span class="n">Running</span> <span class="n">configuration</span> <span class="n">check</span><span class="o">...</span><span class="n">done</span><span class="o">.</span>
+<span class="n">Reloading</span> <span class="n">nagios</span> <span class="n">configuration</span><span class="o">...</span><span class="n">done</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Poller management</a><ul>
+<li><a class="reference internal" href="#list-available-pollers">List available pollers</a></li>
+<li><a class="reference internal" href="#generate-local-configuration-files-for-a-poller">Generate local configuration files for a poller</a></li>
+<li><a class="reference internal" href="#test-monitoring-engine-configuration-of-a-poller">Test monitoring engine configuration of a poller</a></li>
+<li><a class="reference internal" href="#move-monitoring-engine-configuration-files">Move monitoring engine configuration files</a></li>
+<li><a class="reference internal" href="#restart-monitoring-engine-of-a-poller">Restart monitoring engine of a poller</a></li>
+<li><a class="reference internal" href="#all-in-one-command">All in one command</a></li>
+<li><a class="reference internal" href="#reload-monitoring-engine-of-a-poller">Reload monitoring engine of a poller</a></li>
+<li><a class="reference internal" href="#execute-post-generation-commands-of-a-poller">Execute post generation commands of a poller</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="objects/index.html"
+                        title="next chapter">Object management</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/clapi/engine_management.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="objects/index.html" title="Object management"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Command Line API</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,321 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Instances (Pollers) &#8212; Centreon 2.8.16 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="LDAP configuration" href="ldap_servers.html" />
+    <link rel="prev" title="Host group services" href="host_group_services.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ldap_servers.html" title="LDAP configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="host_group_services.html" title="Host group services"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" accesskey="U">Object management</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="instances-pollers">
+<h1>Instances (Pollers)<a class="headerlink" href="#instances-pollers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Object name: <strong>INSTANCE</strong></p>
+</div>
+<div class="section" id="show">
+<h2>Show<a class="headerlink" href="#show" title="Permalink to this headline">¶</a></h2>
+<p>In order to list available instances, use the <strong>SHOW</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o INSTANCE -a show</span>
+<span class="nb">id</span><span class="p">;</span><span class="n">name</span><span class="p">;</span><span class="n">localhost</span><span class="p">;</span><span class="n">ip</span> <span class="n">address</span><span class="p">;</span><span class="n">activate</span><span class="p">;</span><span class="n">status</span><span class="p">;</span><span class="n">init</span> <span class="n">script</span><span class="p">;</span><span class="n">monitoring</span> <span class="n">engine</span><span class="p">;</span><span class="nb">bin</span><span class="p">;</span><span class="n">stats</span> <span class="nb">bin</span><span class="p">;</span><span class="n">perfdata</span><span class="p">;</span><span class="n">ssh</span> <span class="n">port</span>
+<span class="mi">1</span><span class="p">;</span><span class="n">Central</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">nagios</span><span class="p">;</span><span class="n">NAGIOS</span><span class="p">;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">nagios</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">nagios</span><span class="p">;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">nagios</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">nagiostats</span><span class="p">;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">nagios</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">service</span><span class="o">-</span><span class="n">perfdata</span><span class="p">;</span><span class="mi">22</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Columns are the following:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="79%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ID</td>
+<td>ID</td>
+</tr>
+<tr class="row-odd"><td>Name</td>
+<td>Name</td>
+</tr>
+<tr class="row-even"><td>Localhost</td>
+<td><em>1</em> if it is the main poller, <em>0</em> otherwise</td>
+</tr>
+<tr class="row-odd"><td>IP Address</td>
+<td>IP address of the poller</td>
+</tr>
+<tr class="row-even"><td>Activate</td>
+<td><em>1</em> if poller is enabled, <em>0</em> otherwise</td>
+</tr>
+<tr class="row-odd"><td>Status</td>
+<td><em>1</em> if poller is running, <em>0</em> otherwise</td>
+</tr>
+<tr class="row-even"><td>Init script</td>
+<td>Init script path</td>
+</tr>
+<tr class="row-odd"><td>Bin</td>
+<td>Path of the Scheduler binary</td>
+</tr>
+<tr class="row-even"><td>Stats Bin</td>
+<td>Path of the Nagios Stats binary</td>
+</tr>
+<tr class="row-odd"><td>SSH Port</td>
+<td>SSH Port</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="add">
+<h2>Add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h2>
+<p>In order to add an instance you use the <strong>ADD</strong> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o INSTANCE -a add -v &quot;Poller test;10.30.2.55;22;NAGIOS&quot;</span>
+</pre></div>
+</div>
+<p>Required fields are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Name</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Address</td>
+<td>IP address of the poller</td>
+</tr>
+<tr class="row-even"><td>SSH Port</td>
+<td>SSH port</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="del">
+<h2>Del<a class="headerlink" href="#del" title="Permalink to this headline">¶</a></h2>
+<p>If you want to remove an instance, use the <strong>DEL</strong> action. The Name is used for identifying the instance to delete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o INSTANCE -a del -v &quot;Poller test&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setparam">
+<h2>Setparam<a class="headerlink" href="#setparam" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change a specific parameter of an instance, use the <strong>SETPARAM</strong> command. The Name is used for identifying the instance to update:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o INSTANCE -a setparam -v &quot;Poller test;ns_ip_address;10.30.2.99&quot;</span>
+</pre></div>
+</div>
+<p>Arguments are composed of the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Column description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Name of instance</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Parameter name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Parameter value</td>
+</tr>
+</tbody>
+</table>
+<p>Parameters that you may change are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>name</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>localhost</td>
+<td><em>1</em> if it is the main poller, <em>0</em> otherwise</td>
+</tr>
+<tr class="row-even"><td>ns_ip_address</td>
+<td>IP address of the poller</td>
+</tr>
+<tr class="row-odd"><td>ns_activate</td>
+<td><em>1</em> if poller is enabled, <em>0</em> otherwise</td>
+</tr>
+<tr class="row-even"><td>init_script</td>
+<td>Init script path</td>
+</tr>
+<tr class="row-odd"><td>nagios_bin</td>
+<td>Path of the Scheduler binary</td>
+</tr>
+<tr class="row-even"><td>nagiostats_bin</td>
+<td>Path of the Nagios Stats binary</td>
+</tr>
+<tr class="row-odd"><td>ssh_port</td>
+<td>SSH Port</td>
+</tr>
+<tr class="row-even"><td>centreonbroker_cfg_path</td>
+<td>Centreon Broker Configuration path</td>
+</tr>
+<tr class="row-odd"><td>centreonbroker_module_path</td>
+<td>Centreon Broker Module path</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="gethosts">
+<h2>Gethosts<a class="headerlink" href="#gethosts" title="Permalink to this headline">¶</a></h2>
+<p>If you want to list all hosts that are monitored by a poller, use the <strong>GETHOSTS</strong> action. The Name is used for identifying the instance to query:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@centreon</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ./centreon -u admin -p centreon -o INSTANCE -a GETHOSTS -v &quot;Poller test&quot;</span>
+<span class="mi">14</span><span class="p">;</span><span class="n">Centreon</span><span class="o">-</span><span class="n">Server</span><span class="p">;</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+<span class="mi">17</span><span class="p">;</span><span class="n">srv</span><span class="o">-</span><span class="n">website</span><span class="p">;</span><span class="mf">10.30</span><span class="o">.</span><span class="mf">2.1</span>
+</pre></div>
+</div>
+<p>Returned info is the following:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="79%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Host ID</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Host name</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Host address</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Instances (Pollers)</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#show">Show</a></li>
+<li><a class="reference internal" href="#add">Add</a></li>
+<li><a class="reference internal" href="#del">Del</a></li>
+<li><a class="reference internal" href="#setparam">Setparam</a></li>
+<li><a class="reference internal" href="#gethosts">Gethosts</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="host_group_services.html"
+                        title="previous chapter">Host group services</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ldap_servers.html"
+                        title="next chapter">LDAP configuration</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/clapi/objects/instances.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="ldap_servers.html" title="LDAP configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="host_group_services.html" title="Host group services"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Centreon 2.8.16 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../index.html" >Command Line API</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="index.html" >Object management</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018 Centreon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>
