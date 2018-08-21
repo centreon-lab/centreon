@@ -2,7 +2,7 @@
 Managing logical dependencies
 =============================
 
-We have seen in the :ref:`dependencies <dependancy>` configuration chapter how to configure dependences between objects (hosts, services, host groups, etc.). 
+We have seen in the :ref:`dependencies <dependancy>` configuration chapter how to configure dependencies between objects (hosts, services, host groups, etc.).
 This sub-chapter illustrates the use of these dependences via a few actual cases.
 
 .. note::
@@ -61,7 +61,7 @@ Service Groups dependences
 Let us take the example of a set of Oracle services on which the ERP application bases itself. Two service groups are needed:
 
 * The Oracle Application group
-* The ERP Application group 
+* The ERP Application group
 
 If the Oracle services become critical, the services of the ERP application are automatically critical.
 It is necessary to create a dependence link to prevent the check and notification of the services of the application ERP if the Oracle application is Not-OK.
@@ -74,5 +74,5 @@ To create this dependence:
 #. Enter the name and the description of the dependence
 #. For the **Execution Failure Criteria** and **Notification Failure Criteria** fields, check Critical and Pending
 #. In the **Service Group Names** list select the service group Oracle Application
-#. In the **Dependent Service Group Names** list, select the service group ERP Application 
+#. In the **Dependent Service Group Names** list, select the service group ERP Application
 #. Save
